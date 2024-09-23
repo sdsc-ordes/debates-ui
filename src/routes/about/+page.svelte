@@ -65,10 +65,8 @@
   }
 
   .subtitle {
-    width: 600px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
+    width: 500px;
+    padding: 20px;
     font-size: 18px;
     white-space: pre-wrap;
     min-height: 100px;
