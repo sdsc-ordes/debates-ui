@@ -11,12 +11,15 @@
   let currentSpeaker = '';
   let subtitles: { start: number; end: number; text: string, speaker: string }[] = [];
   let speakers: { speaker: string, start: number }[] = [];
+  let chair = ''; // First speaker, which will be treated as the "Chair"
+  let chairStatements: { start: number }[] = []; // Track each statement of the chair
 
   // Function to parse the SRT file into an array of subtitles with start and end times
   function parseSRT(srtContent: string) {
     const regex = /(\d+)\n(\d{2}):(\d{2}):(\d{2}),(\d{3}) --> (\d{2}):(\d{2}):(\d{2}),(\d{3})\n([\s\S]*?)(?=\n\d|\n*$)/g;
     let result;
     let tempSpeakers: { speaker: string, start: number }[] = [];
+    let tempChairStatements: { start: number }[] = [];
     let lastSpeaker = ''; // Track the last speaker to only push when it changes
     let parsedSubtitles: { start: number; end: number; text: string, speaker: string }[] = [];
 
@@ -25,15 +28,30 @@
       const end = parseTime(result[6], result[7], result[8], result[9]);
       const text = result[10].replace(/\n/g, ' ');
       const [speaker, content] = parseSpeakerAndText(text); // Split speaker and content
-      parsedSubtitles.push({ start, end, text: content, speaker });
 
-      // Only add to speakers list if speaker name changes
-      if (speaker !== lastSpeaker) {
-        tempSpeakers.push({ speaker, start });
-        lastSpeaker = speaker;
+      // Set the first speaker as the "Chair"
+      if (!chair) {
+        chair = speaker;
       }
 
+      parsedSubtitles.push({ start, end, text: content, speaker });
+
+      // Handle chair's multiple statements
+      if (speaker === chair) {
+        // Add a new entry for each time the chair speaks
+        if (lastSpeaker !== speaker) {
+          tempChairStatements.push({ start });
+        }
+      } else {
+        // Add other speakers only if the speaker name changes
+        if (speaker !== lastSpeaker) {
+          tempSpeakers.push({ speaker, start });
+        }
+      }
+      lastSpeaker = speaker;
+
       speakers = tempSpeakers; // Reassign the array to trigger reactivity
+      chairStatements = tempChairStatements; // Reassign the array to trigger reactivity
     }
     return parsedSubtitles;
   }
@@ -124,6 +142,12 @@
 
   .speakers-list {
     margin-top: 20px;
+    display: flex;
+    justify-content: space-between; /* Ensures both columns are side by side */
+  }
+
+  .speakers-list div {
+    width: 48%; /* Makes both columns equally wide */
   }
 
   .speakers-list button {
@@ -159,11 +183,24 @@
 
   <!-- List of Speakers with Jump Buttons -->
   <div class="speakers-list">
-    <h2>Speakers</h2>
-    {#each speakers as { speaker, start }, index}
-      <button on:click={() => jumpToTime(start)}>
-        {index + 1}. {speaker} - Start at {start.toFixed(2)}s
-      </button>
-    {/each}
+    <!-- Chair Column -->
+    <div>
+      <h2>Chair</h2>
+      {#each chairStatements as { start }, index}
+        <button on:click={() => jumpToTime(start)}>
+          Chair Statement {index + 1} - Start at {start.toFixed(2)}s
+        </button>
+      {/each}
+    </div>
+
+    <!-- Speakers Column -->
+    <div>
+      <h2>Speakers</h2>
+      {#each speakers as { speaker, start }, index}
+        <button on:click={() => jumpToTime(start)}>
+          {index + 1}. {speaker} - Start at {start.toFixed(2)}s
+        </button>
+      {/each}
+    </div>
   </div>
 </div>
