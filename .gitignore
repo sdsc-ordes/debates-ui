@@ -1,5 +1,8 @@
 node_modules
 
+# Input
+/static/input
+
 # Output
 .output
 .vercel
