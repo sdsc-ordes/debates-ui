@@ -1,5 +1,4 @@
 <script>
-	import Counter from './Counter.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
 </script>
@@ -18,14 +17,17 @@
 			</picture>
 		</span>
 
-		to your new<br />SvelteKit app
+		To the UNHCR Political Debates PoC
 	</h1>
 
 	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
+		Searching in video transcripts
 	</h2>
+	<ul>
+		<li>Currently there is only one video available</li>
+		<li>But the goal will be to add many more ...</li>
+	</ul>	
 
-	<Counter />
 </section>
 
 <style>
