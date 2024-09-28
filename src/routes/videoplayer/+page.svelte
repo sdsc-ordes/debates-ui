@@ -17,6 +17,9 @@
   let speakers: { speaker: string, start: number }[] = [];
   let chair = ''; // First speaker, which will be treated as the "Chair"
   let chairStatements: { start: number }[] = []; // Track each statement of the chair
+  
+  let videoSrc = '/input/video.mp4';
+  let trackSrc = '/input/subtitles.srt';
 
   // Load the SRT file
   async function loadSubtitles() {
@@ -53,8 +56,8 @@
   <div class="video-container">
     <!-- Video Player -->
     <video class="video" bind:this={video} on:timeupdate={onTimeUpdate} controls>
-      <source src="/input/video.mp4" type="video/mp4">
-      <track src="/input/subtitles.srt" kind="captions" srclang="en" label="english_captions">
+      <source src="{videoSrc}" type="video/mp4">
+      <track src="{trackSrc}" kind="captions" srclang="en" label="english_captions">
       Your browser does not support the video tag.
     </video>
 
