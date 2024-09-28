@@ -5,6 +5,7 @@
 
 <script lang="ts">
   import { onMount } from 'svelte';
+  import './page.css';
 
   let video: HTMLVideoElement;
   let subtitle = '';
@@ -106,58 +107,6 @@
   // Load subtitles on mount
   onMount(loadSubtitles);
 </script>
-
-<style>
-  .video-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .video {
-    width: 600px;
-    border: 1px solid #ddd;
-  }
-
-  .subtitle-container {
-    width: 400px;
-    min-height: 100px;
-    padding: 10px;
-    font-size: 18px;
-    white-space: pre-wrap;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    visibility: hidden;
-  }
-
-  .subtitle-container.show {
-    visibility: visible;
-  }
-
-  .speaker {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  .speakers-list {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between; /* Ensures both columns are side by side */
-  }
-
-  .speakers-list div {
-    width: 48%; /* Makes both columns equally wide */
-  }
-
-  .speakers-list button {
-    display: block;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-</style>
 
 <div class="text-column">
   <h1>Debate with Transcript</h1>
