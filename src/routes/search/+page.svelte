@@ -63,9 +63,13 @@
     padding: 10px;
     border: 1px solid #ccc;
 }
+.statement {
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
 .statement-header {
-    font-weight: bold;
-    margin-bottom: 5px;
+font-weight: bold;
+margin-bottom: 5px;
 }
 </style>
   
@@ -92,33 +96,23 @@
 
     <!-- Statements -->
     <div class="statements">
-        <h3>Statements</h3>
         {#if $data.response && $data.response.docs}
           {#each $data.response.docs as doc}
             <div class="statement">
+            <!-- Single line header without labels -->
               <div class="statement-header">
-                <div hidden>Id: {doc.id}</div>
-                <div>Date: {doc.date}</div>
-                <div>Time Start: {doc.time_start}</div>
-                <div>Time End: {doc.time_end}</div>
-                <div>Speaker: {doc.speaker_name}</div>
-                <div>Segment ID: {doc.segment_id}</div>
+                {doc.date} - {doc.time_start} - {doc.time_end} - {doc.speaker_name} - {doc.segment_id}
               </div>
-              {#if $data.highlighting && $data.highlighting[doc.id]}
-                <!-- Render highlighted statements -->
-                <div class="statement-body">
-                  {#each $data.highlighting[doc.id].statement as highlightedStatement}
-                    <p>{@html highlightedStatement}</p>
-                  {/each}
-                </div>
-              {:else if doc.statement}
-                <!-- Render original statements if no highlighting available -->
-                <div class="statement-body">
-                  {#each doc.statement as statement}
-                    <p>{statement}</p>
-                  {/each}
-                </div>
-              {/if}
+            <!-- Statement as clickable link -->
+            {#if $data.highlighting && $data.highlighting[doc.id]}
+              <a href={`/videoplayer?date=${encodeURIComponent(doc.date)}&start=${encodeURIComponent(doc.time_start)}`} class="statement">
+                {@html $data.highlighting[doc.id].statement[0]}
+              </a>
+            {:else if doc.statement}
+              <a href={`/videoplayer?date=${encodeURIComponent(doc.date)}&start=${encodeURIComponent(doc.time_start)}`} class="statement">
+                {doc.statement[0]}
+              </a>
+            {/if}
             </div>
           {/each}
         {:else}
