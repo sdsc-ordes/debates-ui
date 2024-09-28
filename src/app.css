@@ -61,6 +61,11 @@ h2 {
 	font-size: 1rem;
 }
 
+em {
+	color:red;
+	background-color: yellow;
+}
+
 pre {
 	font-size: 16px;
 	font-family: var(--font-mono);
