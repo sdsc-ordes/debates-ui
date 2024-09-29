@@ -15,10 +15,10 @@
   let video: HTMLVideoElement;
   let subtitle = '';
   let currentSpeaker = '';
-  let subtitles: { start: number; end: number; text: string, speaker: string }[] = [];
-  let speakers: { speaker: string, start: number }[] = [];
+  let subtitles: { start: number; end: number; text: string, speaker: string; time_start: string; time_end:string}[] = [];
+  let speakers: { speaker: string, start: number, time_start: string }[] = [];
   let chair = ''; // First speaker, which will be treated as the "Chair"
-  let chairStatements: { start: number }[] = []; // Track each statement of the chair
+  let chairStatements: { speaker: string, start: number, time_start: string }[] = []; // Track each statement of the chair
 
   let videoId = $page.url.searchParams.get('video_id');
   let startTime = $page.url.searchParams.get('start') || 0;
@@ -33,6 +33,7 @@
     speakers = parsedData.tempSpeakers;
     chairStatements = parsedData.tempChairStatements;
     chair = parsedData.chair;
+    console.log(startTime);
     video.currentTime = startTime;
     onTimeUpdate();
     video.play();     
@@ -85,9 +86,9 @@
     <!-- Chair Column -->
     <div>
       <h2>Chair</h2>
-      {#each chairStatements as { start }, index}
+      {#each chairStatements as { speaker, start, time_start }, index}
         <button on:click={() => jumpToTime(start)}>
-          Chair Statement {index + 1} - Start at {start.toFixed(2)}s
+          {speaker} {time_start} ({start.toFixed(2)}s)
         </button>
       {/each}
     </div>
@@ -95,9 +96,9 @@
     <!-- Speakers Column -->
     <div>
       <h2>Speakers</h2>
-      {#each speakers as { speaker, start }, index}
+      {#each speakers as { speaker, start, time_start }, index}
         <button on:click={() => jumpToTime(start)}>
-          {index + 1}. {speaker} - Start at {start.toFixed(2)}s
+          {speaker} {time_start} ({start.toFixed(2)}s)
         </button>
       {/each}
     </div>
