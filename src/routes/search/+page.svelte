@@ -5,8 +5,14 @@
 
 <script lang=ts>
   import { writable } from 'svelte/store';
-  import { getFirstNonEmptyStatement } from './statement-utils';
+  import { getFirstNonEmptyStatement, getFullStatement} from './statement-utils';
   import './page.css';
+
+  let showFullStatement = writable(false);
+
+  const toggleFullStatement = () => {
+      showFullStatement.update(value => !value);
+  };  
 
   let data = writable(null);
   let queryTerm = "";
@@ -96,7 +102,22 @@
               <a href={`/videoplayer?start=${encodeURIComponent(doc.start)}`} 
               class="statement">
                  {@html getFirstNonEmptyStatement($data.highlighting[doc.id].statement)}
-              </a>            
+              </a> 
+              <!-- Toggle button -->
+              <button on:click={toggleFullStatement}>
+                {#if $showFullStatement}
+                  Show Less
+                {:else}
+                  Show More
+                {/if}
+              </button>
+
+              <!-- Full Statement -->
+              {#if $showFullStatement}
+                <p>
+                  {@html getFullStatement(doc.statement, $data.highlighting[doc.id].statement)}
+                </p>
+              {/if}                    
             {:else if doc.statement}
               <a href={`/videoplayer?start=${encodeURIComponent(doc.start)}`} 
                  class="statement">
