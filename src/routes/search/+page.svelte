@@ -93,12 +93,12 @@
               </div>
             <!-- Statement as clickable link -->
             {#if $data.highlighting && $data.highlighting[doc.id]}
-              <a href={`/videoplayer?date=${encodeURIComponent(doc.date)}&start=${encodeURIComponent(doc.time_start)}`} 
+              <a href={`/videoplayer?start=${encodeURIComponent(doc.start)}`} 
               class="statement">
                  {@html getFirstNonEmptyStatement($data.highlighting[doc.id].statement)}
               </a>            
             {:else if doc.statement}
-              <a href={`/videoplayer?date=${encodeURIComponent(doc.date)}&start=${encodeURIComponent(doc.time_start)}`} 
+              <a href={`/videoplayer?start=${encodeURIComponent(doc.start)}`} 
                  class="statement">
                 {doc.statement[0]}
               </a>
