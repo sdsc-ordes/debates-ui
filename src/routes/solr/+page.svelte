@@ -3,7 +3,6 @@
   import { onMount } from 'svelte';  // Import onMount for lifecycle management
   
   let data = writable(null);
-  let url = '';
 
   // Use the CORS proxy URL here
   const apiUrl = 'http://localhost:8010/solr/debates/select?q=racism&indent=true&hl=true&df=statement';
