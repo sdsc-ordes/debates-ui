@@ -6,9 +6,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import './page.css';
+  import { page } from '$app/stores';
 
   import { parseSRT } from './parseSrt';
   import { updateSubtitle } from './subtilteUtils';
+  import { getMediaSources } from './mediaUtils';
 
   let video: HTMLVideoElement;
   let subtitle = '';
@@ -17,12 +19,13 @@
   let speakers: { speaker: string, start: number }[] = [];
   let chair = ''; // First speaker, which will be treated as the "Chair"
   let chairStatements: { start: number }[] = []; // Track each statement of the chair
-  
-  let videoSrc = '/input/video.mp4';
-  let trackSrc = '/input/subtitles.srt';
+
+  let videoId = $page.url.searchParams.get('video_id');
+  let startTime = $page.url.searchParams.get('start') || 0;
+  let {videoSrc, trackSrc} = getMediaSources(videoId)
 
   // Load the SRT file
-  async function loadSubtitles() {
+  async function loadSubtitles(startTime: number) {
     const response = await fetch('/input/subtitles.srt');
     const srtText = await response.text();
     const parsedData = parseSRT(srtText);
@@ -30,6 +33,9 @@
     speakers = parsedData.tempSpeakers;
     chairStatements = parsedData.tempChairStatements;
     chair = parsedData.chair;
+    video.currentTime = startTime;
+    onTimeUpdate();
+    video.play();     
   }
 
   // Update subtitles when the video time updates
@@ -46,7 +52,9 @@
   }
 
   // Load subtitles on mount
-  onMount(loadSubtitles);
+  onMount(() => {
+    loadSubtitles(Number(startTime));
+  });
 </script>
 
 
@@ -55,7 +63,7 @@
 
   <div class="video-container">
     <!-- Video Player -->
-    <video class="video" bind:this={video} on:timeupdate={onTimeUpdate} controls>
+    <video class="video" bind:this={video} on:timeupdate={onTimeUpdate} controls autoplay>
       <source src="{videoSrc}" type="video/mp4">
       <track src="{trackSrc}" kind="captions" srclang="en" label="english_captions">
       Your browser does not support the video tag.
