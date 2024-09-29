@@ -3,78 +3,66 @@
   <meta name="description" content="Political Debates Search" />
 </svelte:head>
 
-<script>
-    import { Search, Button } from 'flowbite-svelte';
-    import { onMount } from "svelte";
-    import { writable } from 'svelte/store';
-  
-    let data = writable(null);
-  
-    // Function to handle the button click and fetch the JSON file
-    const handleSearch = async () => {
-      try {
-        const response = await fetch('/input/result.json');
-        if (response.ok) {
-          const json = await response.json();
-          data.set(json);
-        } else {
-          console.error('Error fetching JSON:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error reading JSON:', error);
-      }
-    };
-    // Function to reset the search result
-    const handleReset = () => {
-        data.set(null);
-    };    
-    const solrUrl = import.meta.env.VITE_SOLR_API_URL;
-    console.log('Solr Url:', solrUrl);    
+<script lang=ts>
+  import { writable } from 'svelte/store';
+  import { getFirstNonEmptyStatement } from './statement-utils';
+  import './page.css';
 
-    onMount(async () => {
-        fetch("https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=Bourbon")
-        //fetch("http://debates_solr:8983/solr/debates/select?df=statement&hl=true&indent=true&q.op=OR&q=racism")
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        }).catch(error => {
-            console.log(error);
-            return [];
-        });
-    }); 
-//{#if $data}
-//<pre>{JSON.stringify($data, null, 2)}</pre>
-//{/if}
+  let data = writable(null);
+  let queryTerm = "";
+  let params = {
+      indent: "true",
+      df: "statement",
+      hl: "true",
+      q: "",
+      facet: "true",
+      "facet.field": "speaker_name",
+  };
+
+  // Function to handle the button click and fetch the JSON file
+  const handleSearch = async () => {
+      if (!queryTerm.trim()) {
+          console.error('Search term is required');
+          return;
+      }
+
+      params.q = queryTerm; // Set the query term in the parameters
+      const apiUrl = `http://localhost:8010/solr/debates/select?${new URLSearchParams(params).toString()}`;
+
+      try {
+          const response = await fetch(apiUrl, {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json"
+              }
+          });
+
+          if (response.ok) {
+              const json = await response.json();
+              data.set(json); // Update the store with the fetched data
+          } else {
+              console.error('Error fetching JSON:', response.statusText);
+          }
+      } catch (error) {
+          console.error('Error reading JSON:', error);
+      }
+  };
+
+  // Function to reset the search result
+  const handleReset = () => {
+      queryTerm = ""; // Clear the input field
+      data.set(null); // Reset the data
+  };
 </script>
 
+<div class="container">
+  <div class="input-container">
+      <input type="text" id="query-input" bind:value={queryTerm} placeholder="Enter search term" />
+      <button id="search-button" on:click={handleSearch}>Search</button>
+      <button id="reset-button" on:click={handleReset}>Reset search</button>
+  </div>
+</div>
 
-<style>
-.container {
-    display: flex;
-    gap: 20px;
-}
-.facets {
-    width: 25%;
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-.statements {
-    width: 75%;
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-.statement {
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
-.statement-header {
-font-weight: bold;
-margin-bottom: 5px;
-}
-</style>
-  
-<button on:click={handleSearch}>Search</button>
-<button on:click={handleReset}>Reset</button>
 
 {#if $data}
 <div class="container">
@@ -105,11 +93,13 @@ margin-bottom: 5px;
               </div>
             <!-- Statement as clickable link -->
             {#if $data.highlighting && $data.highlighting[doc.id]}
-              <a href={`/videoplayer?date=${encodeURIComponent(doc.date)}&start=${encodeURIComponent(doc.time_start)}`} class="statement">
-                {@html $data.highlighting[doc.id].statement[0]}
-              </a>
+              <a href={`/videoplayer?date=${encodeURIComponent(doc.date)}&start=${encodeURIComponent(doc.time_start)}`} 
+              class="statement">
+                 {@html getFirstNonEmptyStatement($data.highlighting[doc.id].statement)}
+              </a>            
             {:else if doc.statement}
-              <a href={`/videoplayer?date=${encodeURIComponent(doc.date)}&start=${encodeURIComponent(doc.time_start)}`} class="statement">
+              <a href={`/videoplayer?date=${encodeURIComponent(doc.date)}&start=${encodeURIComponent(doc.time_start)}`} 
+                 class="statement">
                 {doc.statement[0]}
               </a>
             {/if}
