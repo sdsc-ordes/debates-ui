@@ -41,5 +41,5 @@ You can preview the production build with `npm run preview`.
 test urls for services
 
 ```
-docker-compose exec frontend curl 'http://debates_solr:8983/solr/debates/select?q=racism&indent=true&hl=true&df=statement'
+docker-compose exec frontend curl ''http://debates_solr:8983/solr/debates/select?q=racism&indent=true&hl=true&df=statement''
 ```
