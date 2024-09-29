@@ -1,5 +1,4 @@
 <script>
-    import { onMount } from "svelte";
     import { writable } from 'svelte/store';
   
     let data = writable(null);
@@ -29,54 +28,68 @@
     const handleReset = () => {
       data.set(null);
     };
-  
-    const solrUrl = import.meta.env.VITE_SOLR_API_URL;
-    console.log('Solr Url:', solrUrl);
   </script>
   
   <style>
     .container {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
       max-width: 600px;
       margin: 0 auto;
       padding: 1rem;
     }
   
-    #url-input {
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-  
-    .buttons {
+    .input-container {
       display: flex;
-      gap: 0.5rem;
-      flex-direction: column;
-      width: 100%;
+      align-items: center;
+      margin-bottom: 0.5rem;
     }
   
-    button {
+    #url-input {
+      flex: 1;
       padding: 0.5rem;
       font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px 0 0 4px;
+    }
+  
+    #search-button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      background-color: #ff3e00;
+      border: none;
+      border-radius: 0 4px 4px 0;
       cursor: pointer;
-      width: fit-content;
+      transition: background-color 0.3s;
+    }
+
+    #reset-button {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #ff3e00;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      margin-left: 2rem;
+    }
+  
+    #reset-button:hover {
+      text-decoration: underline;
     }
   </style>
   
   <div class="container">
-    <label for="url-input">Enter URL:</label>
-    <input type="text" id="url-input" bind:value={url} placeholder="Enter URL to fetch data" />
-  
-    <div class="buttons">
-      <button on:click={handleSearch}>Search</button>
-      <button on:click={handleReset}>Reset</button>
+    <div class="input-container">
+      <input type="text" id="url-input" bind:value={url} placeholder="Enter URL to fetch data" />
+      <button id="search-button" on:click={handleSearch}>Search</button>
+      <button id="reset-button" on:click={handleReset}>Reset search</button>
     </div>
+    
   </div>
   
   {#if $data}
     <pre>{JSON.stringify($data, null, 2)}</pre>
-  {/if}
-  
+  {/if}  
