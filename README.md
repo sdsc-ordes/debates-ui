@@ -36,3 +36,10 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+
+test urls for services
+
+```
+docker-compose exec frontend curl 'http://debates_solr:8983/solr/debates/select?q=racism&indent=true&hl=true&df=statement'
+```
