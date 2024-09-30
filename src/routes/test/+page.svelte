@@ -20,5 +20,8 @@
 
 
 {#if $result}
+  <p>
+    {$result.responseHeader.params.q}
+  </p>
   <pre>{JSON.stringify($result, null, 2)}</pre>
 {/if}
