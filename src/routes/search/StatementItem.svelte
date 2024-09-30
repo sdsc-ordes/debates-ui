@@ -5,6 +5,7 @@
     } from "./statement-utils";
 
     export let doc;
+    export let query;
     export let highlighting;
 
     let expandedStatements = writable({});
@@ -19,7 +20,7 @@
     };
 
     const navigateToVideoPlayer = () => {
-        window.location.href = `/videoplayer?start=${encodeURIComponent(doc.start)}`;
+        window.location.href = `/videoplayer?start=${encodeURIComponent(doc.start)}&q=${encodeURIComponent(query)}`;
     };
 
     function replaceWithHighlightedVersion(
@@ -83,7 +84,7 @@
     </button>
 
     <!-- Button to navigate to video player -->
-    <button class="option-button" on:click={() => navigateToVideoPlayer(doc)}>
+    <button class="option-button" on:click={() => navigateToVideoPlayer(doc, query)}>
         Go to Video Player
     </button>
 </div>

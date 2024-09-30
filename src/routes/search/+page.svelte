@@ -20,7 +20,6 @@
   };
 </script>
 
-
 <SolrSearch {solrUrl} on:dataFetched={handleDataFetched} />
 
 {#if $result}
@@ -45,7 +44,7 @@
     <div class="statements">
       {#if $result && $result.response && $result.response.docs}
         {#each $result.response.docs as doc}
-          <StatementItem {doc} highlighting={$result.highlighting} />
+          <StatementItem {doc} query={$result.responseHeader.params.q} highlighting={$result.highlighting} />
         {/each}
       {:else}
         <p>No statements available.</p>
