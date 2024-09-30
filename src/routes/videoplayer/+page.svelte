@@ -20,8 +20,8 @@
   let chair = ''; // First speaker, which will be treated as the "Chair"
   let chairStatements: { speaker: string, start: number, time_start: string }[] = []; // Track each statement of the chair
 
-  let videoId = $page.url.searchParams.get('video_id');
   let startTime = $page.url.searchParams.get('start') || 0;
+  let videoId = $page.url.searchParams.get('video_id');
   let {videoSrc, trackSrc} = getMediaSources(videoId)
 
   // Load the SRT file
@@ -33,7 +33,6 @@
     speakers = parsedData.tempSpeakers;
     chairStatements = parsedData.tempChairStatements;
     chair = parsedData.chair;
-    console.log(startTime);
     video.currentTime = startTime;
     onTimeUpdate();
     video.play();     

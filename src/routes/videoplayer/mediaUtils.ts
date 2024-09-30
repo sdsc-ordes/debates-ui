@@ -1,7 +1,9 @@
+const videoInput = import.meta.env.VITE_VIDEO_INPUT;
+const subtitlesInput = import.meta.env.VITE_SUBTITLES_INPUT;
+
 export function getMediaSources(videoId?: any): { videoSrc: string; trackSrc: string } {
-    // Default values
-    let videoSrc = '/input/video.mp4';
-    let trackSrc = '/input/subtitles.srt';
+    let videoSrc = `/input/${videoInput}`;
+    let trackSrc = `/input/${subtitlesInput}`;
   
     // Check if video_id exists, and customize return values if needed in the future
     if (videoId) {
