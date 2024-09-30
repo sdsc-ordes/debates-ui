@@ -1,45 +1,91 @@
 <script lang="ts">
-    import { writable } from 'svelte/store';
-    import { getFirstNonEmptyStatement, getFullStatement } from './statement-utils';
-  
+    import { writable } from "svelte/store";
+    import {
+        getFirstNonEmptyStatement,
+        getFullStatement,
+    } from "./statement-utils";
+
     export let doc;
     export let highlighting;
-  
+
     let showFullStatement = writable(false);
-  
-    const toggleFullStatement = () => {
-      showFullStatement.update(value => !value);
+    let expandedStatements = writable({});
+
+    const toggleFullStatement = (docId: any) => {
+        expandedStatements.update((state) => {
+            return {
+                ...state,
+                [docId]: !state[docId],
+            };
+        });
     };
-  </script>
-  
-  <div class="statement">
+
+    const navigateToVideoPlayer = () => {
+        window.location.href = `/videoplayer?start=${encodeURIComponent(doc.start)}`;
+    };
+
+    function replaceWithHighlightedVersion(
+        statements: string[],
+        highlighting: string[],
+    ) {
+        const updatedStatements = [...statements];
+
+        highlighting.forEach((highlighted) => {
+            if (highlighted === "") return;
+
+            // Remove <em> tags to get the unhighlighted part
+            const regex = /<\/?em>/g;
+            const unhighlighted = highlighted.replace(regex, "");
+
+            // Find and replace only the matching parts of each statement
+            updatedStatements.forEach((statement, index) => {
+                if (statement.includes(unhighlighted.trim())) {
+                    const highlightedRegex = new RegExp(
+                        unhighlighted.trim(),
+                        "g",
+                    );
+                    updatedStatements[index] = statement.replace(
+                        highlightedRegex,
+                        (match) => highlighted,
+                    );
+                }
+            });
+        });
+
+        return updatedStatements;
+    }
+</script>
+
+<div class="statement">
     <!-- Single line header without labels -->
     <div class="statement-header">
-      {doc.date} - {doc.time_start} - {doc.time_end} - {doc.speaker_name} - {doc.segment_id}
+        {doc.date} - {doc.time_start} - {doc.time_end} - {doc.speaker_name} - {doc.segment_id}
     </div>
-  
-    <!-- Statement as clickable link -->
-    {#if highlighting && highlighting[doc.id]}
-      <a href={`/videoplayer?start=${encodeURIComponent(doc.start)}`} class="statement">
-        {@html getFirstNonEmptyStatement(highlighting[doc.id].statement)}
-      </a>
-      <!-- Toggle button -->
-      <button on:click={toggleFullStatement}>
-        {#if $showFullStatement}
-          Show Less
-        {:else}
-          Show More
-        {/if}
-      </button>
-  
-      <!-- Full Statement -->
-      {#if $showFullStatement}
-        <p>{@html getFullStatement(doc.statement, highlighting[doc.id].statement)}</p>
-      {/if}
-    {:else if doc.statement}
-      <a href={`/videoplayer?start=${encodeURIComponent(doc.start)}`} class="statement">
-        {doc.statement[0]}
-      </a>
+
+    {#if $expandedStatements[doc.id]}
+        <!-- Full statement with highlighted version -->
+        <p>
+            {@html replaceWithHighlightedVersion(
+                doc.statement,
+                highlighting[doc.id].statement,
+            )}
+        </p>
+    {:else}
+        <!-- Short version of the statement -->
+        <p>{@html getFirstNonEmptyStatement(highlighting[doc.id].statement)}</p>
     {/if}
-  </div>
-  
+
+    <!-- Toggle button to show full statement -->
+    <button on:click={() => toggleFullStatement(doc.id)}>
+        {#if $expandedStatements[doc.id]}
+            Show Less
+        {:else}
+            Show More
+        {/if}
+    </button>
+
+    <!-- Button to navigate to video player -->
+    <button on:click={() => navigateToVideoPlayer(doc)}>
+        Go to Video Player
+    </button>
+</div>
