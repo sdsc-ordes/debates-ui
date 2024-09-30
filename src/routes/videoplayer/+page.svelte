@@ -70,6 +70,11 @@
 
 <SolrSearch {solrUrl} on:dataFetched={handleDataFetched} />  
 
+{#if $result}
+  <p>
+    {$result.responseHeader.params.q}
+  </p>
+{/if}
 <div class="text-column">
   <h1>Debate with Transcript</h1>
 
