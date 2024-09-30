@@ -4,24 +4,29 @@
 </svelte:head>
 
 <script lang="ts">
-  import SolrSearch from "$lib/SolrSearch.svelte";
+  import SolrForm from "$lib/SearchForm.svelte";
+  import { fetchSolrData } from "$lib/solrSearch";
   import { writable } from "svelte/store";
+
   const solrUrl = import.meta.env.VITE_SOLR_URL;
+  let searchResults = writable(null);
 
-  let result = writable(null);
+  async function handleSearch(queryTerm: string) {
+    try {
+      const data = await fetchSolrData(solrUrl, queryTerm);
+      searchResults.set(data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
-  const handleDataFetched = ({ detail }) => {
-    result.set(detail);
-    console.log(detail);
-  };
+  function handleReset() {
+    searchResults.set(null);
+  }
 </script>
 
-<SolrSearch {solrUrl} on:dataFetched={handleDataFetched} />
+<SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
 
-
-{#if $result}
-  <p>
-    {$result.responseHeader.params.q}
-  </p>
-  <pre>{JSON.stringify($result, null, 2)}</pre>
+{#if $searchResults}
+  <pre>{JSON.stringify($searchResults, null, 2)}</pre>
 {/if}
