@@ -1,45 +1,27 @@
-# create-svelte
+# debates ui
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+## About
 
-## Creating a project
+This is the user interface for a PoC to search in video transcripts and to play videos
+with the transcript  on the side
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Technology 
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- The frontend uses SvelteKit.  
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Dependencies
 
-## Developing
+- The transcript is expected in SRT
+- The frontend needs a Solr instance up and running
+- Since Solr implements CORS, it needs also a proxy to connect to Solr
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Setup
 
-```bash
-npm run dev
+Because of the complicated setup, it is recommended to use a docker compose that is provided in the main repository:
+https://github.com/sdsc-ordes/political-debates-ui
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Once the docker-compose is up and running, the frontend can also setup and developed on its own:
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-
-test urls for services
-
-```
-docker-compose exec frontend curl ''http://debates_solr:8983/solr/debates/select?q=racism&indent=true&hl=true&df=statement''
-```
+- clone the repo
+- npm install
+- pnpm dev
