@@ -2,13 +2,11 @@
     import { writable } from "svelte/store";
     import {
         getFirstNonEmptyStatement,
-        getFullStatement,
     } from "./statement-utils";
 
     export let doc;
     export let highlighting;
 
-    let showFullStatement = writable(false);
     let expandedStatements = writable({});
 
     const toggleFullStatement = (docId: any) => {
