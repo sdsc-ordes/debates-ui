@@ -1,23 +1,9 @@
 <script lang="ts">
   import { writable } from "svelte/store";
-  import {
-    getFirstNonEmptyStatement,
-    getFullStatement,
-  } from "./statement-utils";
   import StatementItem from "./StatementItem.svelte";
   import "./page.css";
+  const solrUrl = import.meta.env.VITE_SOLR_URL;
 
-  let showFullStatement = writable(false);
-
-  const toggleFullStatement = () => {
-    showFullStatement.update((value) => !value);
-  };
-
-  const getStatementText = (doc: any, highlighting: any) => {
-    return $showFullStatement
-      ? getFullStatement(doc.statement, highlighting[doc.id].statement)
-      : getFirstNonEmptyStatement(highlighting[doc.id].statement);
-  };
   let data = writable(null);
   let queryTerm = "";
   let params = {
@@ -37,7 +23,7 @@
     }
 
     params.q = queryTerm; // Set the query term in the parameters
-    const apiUrl = `http://localhost:8010/solr/debates/select?${new URLSearchParams(params).toString()}`;
+    const apiUrl = `${solrUrl}?${new URLSearchParams(params).toString()}`;
 
     try {
       const response = await fetch(apiUrl, {
