@@ -11,12 +11,13 @@
   import { parseSRT } from './parseSrt';
   import { updateSubtitle } from './subtilteUtils';
   import { getMediaSources } from './mediaUtils';
-  import SolrSearch from "$lib/SolrSearch.svelte";
   import { writable } from "svelte/store";
+  import SolrForm from "$lib/SearchForm.svelte";
+  import { fetchSolrData } from "$lib/solrSearch";  
 
   const solrUrl = import.meta.env.VITE_SOLR_URL;
 
-  let result = writable(null);  
+  let searchResults = writable(null);  
 
   let video: HTMLVideoElement;
   let subtitle = '';
@@ -62,19 +63,22 @@
     loadSubtitles(Number(startTime));
   });
 
-  const handleDataFetched = ({ detail }) => {
-    result.set(detail);
-    console.log(detail);
-  };
+  async function handleSearch(queryTerm: string) {
+    try {
+      const data = await fetchSolrData(solrUrl, queryTerm);
+      searchResults.set(data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  function handleReset() {
+    searchResults.set(null);
+  }  
 </script>
 
-<SolrSearch {solrUrl} on:dataFetched={handleDataFetched} />  
+<SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
 
-{#if $result}
-  <p>
-    {$result.responseHeader.params.q}
-  </p>
-{/if}
 <div class="text-column">
   <h1>Debate with Transcript</h1>
 
