@@ -79,7 +79,7 @@
       placeholder="Enter search term"
     />
     <button id="search-button" on:click={handleSearch}>Search</button>
-    <button id="reset-button" on:click={handleReset}>Reset search</button>
+    <button class="option-button" on:click={handleReset}>Reset search</button>
   </div>
 </div>
 

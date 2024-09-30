@@ -76,7 +76,7 @@
     {/if}
 
     <!-- Toggle button to show full statement -->
-    <button on:click={() => toggleFullStatement(doc.id)}>
+    <button class="option-button" on:click={() => toggleFullStatement(doc.id)}>
         {#if $expandedStatements[doc.id]}
             Show Less
         {:else}
@@ -85,7 +85,7 @@
     </button>
 
     <!-- Button to navigate to video player -->
-    <button on:click={() => navigateToVideoPlayer(doc)}>
+    <button class="option-button" on:click={() => navigateToVideoPlayer(doc)}>
         Go to Video Player
     </button>
 </div>
