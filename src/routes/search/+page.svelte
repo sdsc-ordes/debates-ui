@@ -1,37 +1,46 @@
+<script lang="ts">
+  import { writable } from "svelte/store";
+  import StatementItem from "./StatementItem.svelte";
+  import "./page.css";
+  import SolrForm from "$lib/SearchForm.svelte";
+  import { fetchSolrData } from "$lib/solrSearch";
+
+  const solrUrl = import.meta.env.VITE_SOLR_URL;
+  let searchResults = writable(null);
+
+  async function handleSearch(queryTerm: string) {
+    try {
+      const data = await fetchSolrData(solrUrl, queryTerm);
+      searchResults.set(data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  function handleReset() {
+    searchResults.set(null);
+  }
+</script>
 
 <svelte:head>
   <title>Political Debates Search</title>
   <meta name="description" content="Political Debates Search" />
 </svelte:head>
 
-<script lang="ts">
-  import { writable } from "svelte/store";
-  import StatementItem from "./StatementItem.svelte";
-  import "./page.css";
-  import SolrSearch from "$lib/SolrSearch.svelte";
+<SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
 
-  const solrUrl = import.meta.env.VITE_SOLR_URL;
-
-  let result = writable(null);
-
-  const handleDataFetched = ({ detail }) => {
-    result.set(detail);
-    console.log(detail);
-  };
-</script>
-
-<SolrSearch {solrUrl} on:dataFetched={handleDataFetched} />
-
-{#if $result}
+{#if $searchResults}
   <div class="container">
     <!-- Facet Counts -->
     <div class="facets">
       <h3>Facet Counts</h3>
-      {#if $result.facet_counts}
-        {#each $result.facet_counts.facet_fields.speaker_name as facet, index}
+      {#if $searchResults.facet_counts}
+        {#each $searchResults.facet_counts.facet_fields.speaker_name as facet, index}
           {#if index % 2 === 0}
             <div>
-              {facet}: {$result.facet_counts.facet_fields.speaker_name[index + 1]}
+              {facet}: {$searchResults.facet_counts.facet_fields.speaker_name[
+                index + 1
+              ]}
             </div>
           {/if}
         {/each}
@@ -42,9 +51,13 @@
 
     <!-- Statements -->
     <div class="statements">
-      {#if $result && $result.response && $result.response.docs}
-        {#each $result.response.docs as doc}
-          <StatementItem {doc} query={$result.responseHeader.params.q} highlighting={$result.highlighting} />
+      {#if $searchResults && $searchResults.response && $searchResults.response.docs}
+        {#each $searchResults.response.docs as doc}
+          <StatementItem
+            {doc}
+            query={$searchResults.responseHeader.params.q}
+            highlighting={$searchResults.highlighting}
+          />
         {/each}
       {:else}
         <p>No statements available.</p>
