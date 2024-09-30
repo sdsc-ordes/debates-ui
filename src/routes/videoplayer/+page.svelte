@@ -11,6 +11,12 @@
   import { parseSRT } from './parseSrt';
   import { updateSubtitle } from './subtilteUtils';
   import { getMediaSources } from './mediaUtils';
+  import SolrSearch from "$lib/SolrSearch.svelte";
+  import { writable } from "svelte/store";
+
+  const solrUrl = import.meta.env.VITE_SOLR_URL;
+
+  let result = writable(null);  
 
   let video: HTMLVideoElement;
   let subtitle = '';
@@ -55,8 +61,14 @@
   onMount(() => {
     loadSubtitles(Number(startTime));
   });
+
+  const handleDataFetched = ({ detail }) => {
+    result.set(detail);
+    console.log(detail);
+  };
 </script>
 
+<SolrSearch {solrUrl} on:dataFetched={handleDataFetched} />  
 
 <div class="text-column">
   <h1>Debate with Transcript</h1>
