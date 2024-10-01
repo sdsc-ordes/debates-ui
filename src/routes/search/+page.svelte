@@ -1,6 +1,7 @@
 <script lang="ts">
   import { writable } from "svelte/store";
   import StatementItem from "./StatementItem.svelte";
+  import FacetCounts from "./FacetCounts.svelte";
   import "./page.css";
   import SolrForm from "$lib/SearchForm.svelte";
   import { fetchSolrData } from "$lib/solrSearch";
@@ -31,23 +32,7 @@
 
 {#if $searchResults}
   <div class="container">
-    <!-- Facet Counts -->
-    <div class="facets">
-      <h3>Facet Counts</h3>
-      {#if $searchResults.facet_counts}
-        {#each $searchResults.facet_counts.facet_fields.speaker_name as facet, index}
-          {#if index % 2 === 0}
-            <div>
-              {facet}: {$searchResults.facet_counts.facet_fields.speaker_name[
-                index + 1
-              ]}
-            </div>
-          {/if}
-        {/each}
-      {:else}
-        <p>No facet counts available.</p>
-      {/if}
-    </div>
+    <FacetCounts facetCounts={$searchResults.facet_counts} />    
 
     <!-- Statements -->
     <div class="statements">
