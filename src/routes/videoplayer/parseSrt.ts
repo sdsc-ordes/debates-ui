@@ -23,8 +23,7 @@ export function parseSRT(srtContent: string) {
     console.log(srtContent)
     const regex = /(\d+)\n(\d{2}):(\d{2}):(\d{2}),(\d{3}) --> (\d{2}):(\d{2}):(\d{2}),(\d{3})\n([\s\S]*?)(?=\n\d|\n*$)/g;
     let result;
-    let tempSpeakers: { speaker: string, start: number, time_start: string }[] = [];
-    let tempChairStatements: { speaker: string, start: number, time_start: string }[] = [];
+    let speakers: { speaker: string, start: number, time_start: string }[] = [];
     let lastSpeaker = ''; // Track the last speaker to only push when it changes
     let parsedSubtitles: { start: number; end: number; text: string, speaker: string; time_start: string, time_end:string }[] = [];
     let chair = '';
@@ -37,32 +36,16 @@ export function parseSRT(srtContent: string) {
         const text = result[10].replace(/\n/g, ' ');
         const [speaker, content] = parseSpeakerAndText(text); // Split speaker and content
 
-        // Set the first speaker as the "Chair"
-        if (!chair) {
-            chair = speaker;
-        }
-
         parsedSubtitles.push({ start, end, text: content, speaker, time_start, time_end });
 
-        // Handle chair's multiple statements
-        if (speaker === chair) {
-            // Add a new entry for each time the chair speaks
-            if (lastSpeaker !== speaker) {
-                tempChairStatements.push({ speaker, start, time_start });
-            }
-        } else {
-            // Add other speakers only if the speaker name changes
-            if (speaker !== lastSpeaker) {
-                tempSpeakers.push({ speaker, start, time_start });
-            }
+        if (speaker !== lastSpeaker) {
+            speakers.push({ speaker, start, time_start });
         }
         lastSpeaker = speaker;
     }
 
     return {
         parsedSubtitles,
-        tempSpeakers,
-        tempChairStatements,
-        chair
+        speakers,
     };
 }

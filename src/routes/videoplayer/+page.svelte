@@ -24,9 +24,6 @@
   let currentSpeaker = '';
   let subtitles: { start: number; end: number; text: string, speaker: string; time_start: string; time_end:string}[] = [];
   let speakers: { speaker: string, start: number, time_start: string }[] = [];
-  let chair = ''; // First speaker, which will be treated as the "Chair"
-  let chairStatements: { speaker: string, start: number, time_start: string }[] = []; // Track each statement of the chair
-
   let startTime = $page.url.searchParams.get('start') || 0;
   let videoId = $page.url.searchParams.get('video_id');
   let {videoSrc, trackSrc} = getMediaSources(videoId)
@@ -37,9 +34,7 @@
     const srtText = await response.text();
     const parsedData = parseSRT(srtText);
     subtitles = parsedData.parsedSubtitles;
-    speakers = parsedData.tempSpeakers;
-    chairStatements = parsedData.tempChairStatements;
-    chair = parsedData.chair;
+    speakers = parsedData.speakers;
     video.currentTime = startTime;
     onTimeUpdate();
     video.play();     
@@ -103,16 +98,6 @@
 
   <!-- List of Speakers with Jump Buttons -->
   <div class="speakers-list">
-    <!-- Chair Column -->
-    <div>
-      <h2>Chair</h2>
-      {#each chairStatements as { speaker, start, time_start }, index}
-        <button on:click={() => jumpToTime(start)}>
-          {speaker} {time_start} ({start.toFixed(2)}s)
-        </button>
-      {/each}
-    </div>
-
     <!-- Speakers Column -->
     <div>
       <h2>Speakers</h2>
