@@ -1,29 +1,32 @@
-<svelte:head>
-  <title>Debate with transcript</title>
-  <meta name="description" content="Debate with transcript" />
-</svelte:head>
-
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import './page.css';
-  import { page } from '$app/stores';
+  import { onMount } from "svelte";
+  import "./page.css";
+  import { page } from "$app/stores";
   import { writable } from "svelte/store";
   import SolrForm from "$lib/SearchForm.svelte";
   import { fetchSolrData } from "$lib/solrSearch";
-  import { loadSubtitles, onTimeUpdate, jumpToTime } from './videoUtils';
-  import { getMediaSources } from './mediaUtils';
+  import SpeakersList from "./SpeakersList.svelte";
+  import { loadSubtitles, onTimeUpdate, jumpToTime } from "./videoUtils";
+  import { getMediaSources } from "./mediaUtils";
 
   const solrUrl = import.meta.env.VITE_SOLR_URL;
 
   let searchResults = writable(null);
 
   let video: HTMLVideoElement;
-  let subtitle = '';
-  let currentSpeaker = '';
-  let subtitles: { start: number; end: number; text: string, speaker: string; time_start: string; time_end:string }[] = [];
-  let speakers: { speaker: string, start: number, time_start: string }[] = [];
-  let startTime = $page.url.searchParams.get('start') || 0;
-  let videoId = $page.url.searchParams.get('video_id');
+  let subtitle = "";
+  let currentSpeaker = "";
+  let subtitles: {
+    start: number;
+    end: number;
+    text: string;
+    speaker: string;
+    time_start: string;
+    time_end: string;
+  }[] = [];
+  let speakers: { speaker: string; start: number; time_start: string }[] = [];
+  let startTime = $page.url.searchParams.get("start") || 0;
+  let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
 
   onMount(async () => {
@@ -49,6 +52,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>Debate with transcript</title>
+  <meta name="description" content="Debate with transcript" />
+</svelte:head>
+
 <SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
 
 <div class="text-column">
@@ -56,9 +64,20 @@
 
   <div class="video-container">
     <!-- Video Player -->
-    <video class="video" bind:this={video} on:timeupdate={handleTimeUpdate} controls autoplay>
-      <source src="{videoSrc}" type="video/mp4">
-      <track src="{trackSrc}" kind="captions" srclang="en" label="english_captions">
+    <video
+      class="video"
+      bind:this={video}
+      on:timeupdate={handleTimeUpdate}
+      controls
+      autoplay
+    >
+      <source src={videoSrc} type="video/mp4" />
+      <track
+        src={trackSrc}
+        kind="captions"
+        srclang="en"
+        label="english_captions"
+      />
       Your browser does not support the video tag.
     </video>
 
@@ -73,17 +92,5 @@
     </div>
   </div>
 
-  <!-- List of Speakers with Jump Buttons -->
-  <div class="speakers-list">
-    <!-- Speakers Column -->
-    <div>
-      <h2>Speakers</h2>
-      {#each speakers as { speaker, start, time_start }}
-        <button on:click={() => jumpToTime(video, start)}>
-          {speaker} {time_start} ({start.toFixed(2)}s)
-        </button>
-      {/each}
-    </div>
-  </div>
+  <SpeakersList {speakers} {video} />
 </div>
-
