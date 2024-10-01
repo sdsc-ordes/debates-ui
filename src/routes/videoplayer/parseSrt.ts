@@ -26,7 +26,6 @@ export function parseSRT(srtContent: string) {
     let speakers: { speaker: string, start: number, time_start: string }[] = [];
     let lastSpeaker = ''; // Track the last speaker to only push when it changes
     let parsedSubtitles: { start: number; end: number; text: string, speaker: string; time_start: string, time_end:string }[] = [];
-    let chair = '';
 
     while ((result = regex.exec(srtContent)) !== null) {
         const start = parseTime(result[2], result[3], result[4], result[5]);
