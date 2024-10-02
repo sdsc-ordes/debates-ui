@@ -44,42 +44,32 @@
     const data = await fetchSolrData(solrUrl, queryTerm);
     if (data) {
       searchResults.set(data);
-      solrData.set(mapSolrData(data));
-      mergeSpeakersWithSolrData();
+      console.log(data.response.docs);
+      let docs = data.response.docs;
+      console.log(docs);
+      speakers = mergeSpeakersWithSolrData(docs, speakers);
     } else {
       console.warn("No data found or an error occurred.");
     }
   });
 
-  function mapSolrData(data: any): any {
-    return data.response.docs.reduce(
-      (
-        acc: Record<string, { role: string; statement: string[] }>,
-        doc: any
-      ) => {
-        acc[doc.speaker_name] = {
-          role: doc.speaker_role,
-          statement: doc.statement,
-        };
-        return acc;
-      },
-      {}
-    );
-  }
-
-  function mergeSpeakersWithSolrData() {
-    const solrDataValue = $solrData;
-    speakers = speakers.map((speaker) => {
-      const solrInfo = solrDataValue[speaker.speaker];
-      if (solrInfo) {
-        return {
-          ...speaker,
-          role: solrInfo.role,
+  function mergeSpeakersWithSolrData(docs: any, speakers: any): any {
+    console.log(docs);
+    console.log(speakers);
+    if (docs && docs.length === speakers.length) {
+      for (let i = 0; i < speakers.length; i++) {
+        const solrInfo = docs[i];
+        speakers[i] = {
+          ...speakers[i],
+          role: solrInfo.speaker_role,
           statement: solrInfo.statement,
         };
       }
-      return speaker;
-    });
+      console.log(speakers);
+    } else {
+      console.warn("Speakers and Docs data lists are not of equal length.");
+    }
+    return speakers; // Add this return statement
   }
 
   function handleTimeUpdate() {
@@ -136,21 +126,25 @@
     <h2>Speakers</h2>
     {#each speakers as { speaker, role, statement, start, time_start, showStatement }, index}
       <div class="speaker-info">
-        <button on:click={() => jumpToTime(video, start)}>
-          <strong>{speaker}</strong> {#if role}({role}){/if}
+        <div class="speaker-details">
+          <strong>{speaker}</strong>
+          {#if role} ({role}){/if}
           <span> - {time_start} ({start.toFixed(2)}s)</span>
-        </button>
-        {#if statement && statement.length > 0}
-          <button class="show_statement_button" on:click={() => toggleStatement(index)}>
-            {#if showStatement}Hide Statement{:else}Show Statement{/if}
+          <button class="option-button" on:click={() => jumpToTime(video, start)}>
+            Play Segment
           </button>
-          {#if showStatement}
-            <div class="statement">
-              <p>{statement.join(" ")}</p>
-            </div>
+          {#if statement && statement.length > 0}
+            <button class="option-button" on:click={() => toggleStatement(index)}>
+              {#if showStatement}Hide Statement{:else}Show Statement{/if}
+            </button>
           {/if}
+        </div>
+        {#if showStatement}
+          <div class="statement">
+            <p>{statement.join(" ")}</p>
+          </div>
         {/if}
       </div>
     {/each}
-  </div>
+  </div>  
 </div>

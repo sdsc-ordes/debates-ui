@@ -10,6 +10,7 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string) {
         hl: "true",
         q: queryTerm,
         facet: "true",
+        rows: 100,
     };
     
     const facetFields = ["speaker_name", "countries", "speaker_role"];
@@ -18,6 +19,7 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string) {
     // Add each facet field individually
     facetFields.forEach(field => searchParams.append("facet.field", field));
     searchParams.append("hl.snippets", "10")
+    searchParams.append("sort", "time_start asc")
     
     const apiUrl = `${solrUrl}?${searchParams.toString()}`;
     console.log(apiUrl);

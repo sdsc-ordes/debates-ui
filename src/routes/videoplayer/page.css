@@ -25,40 +25,36 @@
     visibility: visible;
 }
 
-.speaker {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.speakers-list {
-    margin-top: 20px;
+.speaker-info {
+    margin-bottom: 20px;
     display: flex;
-    justify-content: space-between;
-    /* Ensures both columns are side by side */
+    flex-direction: column;
 }
 
-.speakers-list div {
-    width: 48%;
-    /* Makes both columns equally wide */
+.speaker-details {
+    display: flex;
+    align-items: center;
 }
 
-.speakers-list button {
-    display: block;
-    margin-bottom: 10px;
-    padding: 5px 10px;
+.speaker-details > * {
+    margin-right: 1rem;
+}
+
+strong, .option-button, .speaker-details span {
+    line-height: 1.5rem;
+}
+
+.option-button {
+    font-size: 0.8rem;
+    color: #ff3e00;
+    background: none;
+    border: none;
     cursor: pointer;
-    font-size: 16px;
+    margin-right: 20px;
+    padding: 0;
 }
 
-.speakers-list {
-    margin-top: 20px;
-    display: block;
-}
-
-.speakers-list button {
-    display: block;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 16px;
+.statement {
+    margin-top: 10px;
+    width: 100%;
 }
