@@ -1,6 +1,7 @@
 export async function fetchSolrData(solrUrl: string, queryTerm: string) {
     if (!queryTerm.trim()) {
-        throw new Error("Search term is required");
+        console.error("Search term is required");
+        return null;
     }
 
     const params = {
@@ -21,16 +22,21 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string) {
     const apiUrl = `${solrUrl}?${searchParams.toString()}`;
     console.log(apiUrl);
 
-    const response = await fetch(apiUrl, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
+    try {
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-    if (!response.ok) {
-        throw new Error(`Error fetching JSON: ${response.statusText}`);
+        if (!response.ok) {
+            throw new Error(`Error fetching JSON: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching Solr data: ${error.message}`);
+        return null;
     }
-
-    return response.json();
 }

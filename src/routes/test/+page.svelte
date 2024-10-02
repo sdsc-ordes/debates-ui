@@ -1,8 +1,3 @@
-<svelte:head>
-  <title>Test Page</title>
-  <meta name="description" content="Testpage" />
-</svelte:head>
-
 <script lang="ts">
   import SolrForm from "$lib/SearchForm.svelte";
   import { fetchSolrData } from "$lib/solrSearch";
@@ -12,11 +7,11 @@
   let searchResults = writable(null);
 
   async function handleSearch(queryTerm: string) {
-    try {
-      const data = await fetchSolrData(solrUrl, queryTerm);
+    const data = await fetchSolrData(solrUrl, queryTerm);
+    if (data) {
       searchResults.set(data);
-    } catch (error) {
-      console.error(error.message);
+    } else {
+      console.warn("No data found or an error occurred.");
     }
   }
 
@@ -24,6 +19,11 @@
     searchResults.set(null);
   }
 </script>
+
+<svelte:head>
+  <title>Test Page</title>
+  <meta name="description" content="Testpage" />
+</svelte:head>
 
 <SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
 

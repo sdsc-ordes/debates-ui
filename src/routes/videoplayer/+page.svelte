@@ -28,27 +28,36 @@
   let startTime = $page.url.searchParams.get("start") || 0;
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
+  let transformedResults = writable(null);
 
   onMount(async () => {
+    const queryTerm = "*:*";
     const parsedData = await loadSubtitles(Number(startTime), video);
     subtitles = parsedData.parsedSubtitles;
     speakers = parsedData.speakers;
+    const data = await fetchSolrData(solrUrl, queryTerm);
+      if (data) {
+        searchResults.set(data);
+        transformedResults.set(transformResult(data));
+      } else {
+        console.warn("No data found or an error occurred.");
+      }    
   });
+
+  function transformResult(data: any): any {
+    return data.response.docs.reduce(
+      (acc: Record<string, string>, doc: any) => {
+        acc[doc.speaker_name] = doc.speaker_role;
+        return acc;
+      },
+      {},
+    );
+  }
 
   function handleTimeUpdate() {
     const updatedData = onTimeUpdate(video, subtitles);
     subtitle = updatedData.subtitle;
     currentSpeaker = updatedData.currentSpeaker;
-  }
-
-  function handleSearch(queryTerm: string) {
-    fetchSolrData(solrUrl, queryTerm)
-      .then((data) => searchResults.set(data))
-      .catch((error) => console.error(error.message));
-  }
-
-  function handleReset() {
-    searchResults.set(null);
   }
 </script>
 
@@ -56,9 +65,7 @@
   <title>Debate with transcript</title>
   <meta name="description" content="Debate with transcript" />
 </svelte:head>
-
-<SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
-
+<pre>{JSON.stringify($transformedResults, null, 2)}</pre>
 <div class="text-column">
   <h1>Debate with Transcript</h1>
 

@@ -10,11 +10,11 @@
   let searchResults = writable(null);
 
   async function handleSearch(queryTerm: string) {
-    try {
-      const data = await fetchSolrData(solrUrl, queryTerm);
+    const data = await fetchSolrData(solrUrl, queryTerm);
+    if (data) {
       searchResults.set(data);
-    } catch (error) {
-      console.error(error.message);
+    } else {
+      console.warn("No data found or an error occurred.");
     }
   }
 
