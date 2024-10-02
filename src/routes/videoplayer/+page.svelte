@@ -22,7 +22,14 @@
     time_start: string;
     time_end: string;
   }[] = [];
-  let speakers: { speaker: string; start: number; time_start: string }[] = [];
+  let speakers: {
+    speaker: string;
+    role?: string;
+    statement?: string[];
+    start: number;
+    time_start: string;
+    showStatement?: boolean;
+  }[] = [];
   let startTime = $page.url.searchParams.get("start") || 0;
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
@@ -33,10 +40,12 @@
     const parsedData = await loadSubtitles(Number(startTime), video);
     subtitles = parsedData.parsedSubtitles;
     speakers = parsedData.speakers;
+
     const data = await fetchSolrData(solrUrl, queryTerm);
     if (data) {
       searchResults.set(data);
       solrData.set(mapSolrData(data));
+      mergeSpeakersWithSolrData();
     } else {
       console.warn("No data found or an error occurred.");
     }
@@ -46,7 +55,7 @@
     return data.response.docs.reduce(
       (
         acc: Record<string, { role: string; statement: string[] }>,
-        doc: any,
+        doc: any
       ) => {
         acc[doc.speaker_name] = {
           role: doc.speaker_role,
@@ -54,8 +63,23 @@
         };
         return acc;
       },
-      {},
+      {}
     );
+  }
+
+  function mergeSpeakersWithSolrData() {
+    const solrDataValue = $solrData;
+    speakers = speakers.map((speaker) => {
+      const solrInfo = solrDataValue[speaker.speaker];
+      if (solrInfo) {
+        return {
+          ...speaker,
+          role: solrInfo.role,
+          statement: solrInfo.statement,
+        };
+      }
+      return speaker;
+    });
   }
 
   function handleTimeUpdate() {
@@ -63,13 +87,17 @@
     subtitle = updatedData.subtitle;
     currentSpeaker = updatedData.currentSpeaker;
   }
+
+  function toggleStatement(index: number) {
+    speakers[index].showStatement = !speakers[index].showStatement;
+  }
 </script>
 
 <svelte:head>
   <title>Debate with transcript</title>
   <meta name="description" content="Debate with transcript" />
 </svelte:head>
-<pre>{JSON.stringify($solrData, null, 2)}</pre>
+
 <div class="text-column">
   <h1>Debate with Transcript</h1>
 
@@ -103,14 +131,26 @@
     </div>
   </div>
 
+  <!-- Merged Speakers List -->
   <div class="speakers-list">
     <h2>Speakers</h2>
-    {#each speakers as { speaker, start, time_start }}
-      <button on:click={() => jumpToTime(video, start)}>
-        {speaker}
-        {time_start} ({start.toFixed(2)}s)
-      </button>
+    {#each speakers as { speaker, role, statement, start, time_start, showStatement }, index}
+      <div class="speaker-info">
+        <button on:click={() => jumpToTime(video, start)}>
+          <strong>{speaker}</strong> {#if role}({role}){/if}
+          <span> - {time_start} ({start.toFixed(2)}s)</span>
+        </button>
+        {#if statement && statement.length > 0}
+          <button class="show_statement_button" on:click={() => toggleStatement(index)}>
+            {#if showStatement}Hide Statement{:else}Show Statement{/if}
+          </button>
+          {#if showStatement}
+            <div class="statement">
+              <p>{statement.join(" ")}</p>
+            </div>
+          {/if}
+        {/if}
+      </div>
     {/each}
   </div>
-  <pre>{JSON.stringify($solrData, null, 2)}</pre>
 </div>
