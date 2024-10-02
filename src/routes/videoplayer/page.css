@@ -49,3 +49,16 @@
     cursor: pointer;
     font-size: 16px;
 }
+
+.speakers-list {
+    margin-top: 20px;
+    display: block;
+}
+
+.speakers-list button {
+    display: block;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+}

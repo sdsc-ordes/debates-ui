@@ -3,9 +3,7 @@
   import "./page.css";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import SolrForm from "$lib/SearchForm.svelte";
   import { fetchSolrData } from "$lib/solrSearch";
-  import SpeakersList from "./SpeakersList.svelte";
   import { loadSubtitles, onTimeUpdate, jumpToTime } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
 
@@ -28,7 +26,7 @@
   let startTime = $page.url.searchParams.get("start") || 0;
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
-  let transformedResults = writable(null);
+  let solrData = writable(null);
 
   onMount(async () => {
     const queryTerm = "*:*";
@@ -36,18 +34,24 @@
     subtitles = parsedData.parsedSubtitles;
     speakers = parsedData.speakers;
     const data = await fetchSolrData(solrUrl, queryTerm);
-      if (data) {
-        searchResults.set(data);
-        transformedResults.set(transformResult(data));
-      } else {
-        console.warn("No data found or an error occurred.");
-      }    
+    if (data) {
+      searchResults.set(data);
+      solrData.set(mapSolrData(data));
+    } else {
+      console.warn("No data found or an error occurred.");
+    }
   });
 
-  function transformResult(data: any): any {
+  function mapSolrData(data: any): any {
     return data.response.docs.reduce(
-      (acc: Record<string, string>, doc: any) => {
-        acc[doc.speaker_name] = doc.speaker_role;
+      (
+        acc: Record<string, { role: string; statement: string[] }>,
+        doc: any,
+      ) => {
+        acc[doc.speaker_name] = {
+          role: doc.speaker_role,
+          statement: doc.statement,
+        };
         return acc;
       },
       {},
@@ -65,7 +69,7 @@
   <title>Debate with transcript</title>
   <meta name="description" content="Debate with transcript" />
 </svelte:head>
-<pre>{JSON.stringify($transformedResults, null, 2)}</pre>
+<pre>{JSON.stringify($solrData, null, 2)}</pre>
 <div class="text-column">
   <h1>Debate with Transcript</h1>
 
@@ -99,5 +103,14 @@
     </div>
   </div>
 
-  <SpeakersList {speakers} {video} />
+  <div class="speakers-list">
+    <h2>Speakers</h2>
+    {#each speakers as { speaker, start, time_start }}
+      <button on:click={() => jumpToTime(video, start)}>
+        {speaker}
+        {time_start} ({start.toFixed(2)}s)
+      </button>
+    {/each}
+  </div>
+  <pre>{JSON.stringify($solrData, null, 2)}</pre>
 </div>
