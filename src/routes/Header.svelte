@@ -24,9 +24,6 @@
 			</li>			
 			<li aria-current={$page.url.pathname === '/videoplayer' ? 'page' : undefined}>
 				<a href="/videoplayer">Videoplayer</a>
-			</li>	
-			<li aria-current={$page.url.pathname === '/test' ? 'page' : undefined}>
-				<a href="/test">Test</a>
 			</li>						
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
