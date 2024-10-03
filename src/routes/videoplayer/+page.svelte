@@ -41,7 +41,7 @@
     subtitles = parsedData.parsedSubtitles;
     speakers = parsedData.speakers;
 
-    const data = await fetchSolrData(solrUrl, queryTerm);
+    const data = await fetchSolrData(solrUrl, queryTerm, true);
     if (data) {
       searchResults.set(data);
       let docs = data.response.docs;

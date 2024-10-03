@@ -1,4 +1,4 @@
-export async function fetchSolrData(solrUrl: string, queryTerm: string) {
+export async function fetchSolrData(solrUrl: string, queryTerm: string, sort: Boolean) {
     if (!queryTerm.trim()) {
         console.error("Search term is required");
         return null;
@@ -19,7 +19,9 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string) {
     // Add each facet field individually
     facetFields.forEach(field => searchParams.append("facet.field", field));
     searchParams.append("hl.snippets", "10")
-    searchParams.append("sort", "time_start asc")
+    if (sort) {
+       searchParams.append("sort", "time_start asc")
+    }
     
     const apiUrl = `${solrUrl}?${searchParams.toString()}`;
     console.log(apiUrl);

@@ -10,7 +10,7 @@
   let searchResults = writable(null);
 
   async function handleSearch(queryTerm: string) {
-    const data = await fetchSolrData(solrUrl, queryTerm);
+    const data = await fetchSolrData(solrUrl, queryTerm, false);
     if (data) {
       searchResults.set(data);
     } else {
