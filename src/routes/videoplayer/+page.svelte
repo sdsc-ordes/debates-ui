@@ -33,6 +33,7 @@
   let startTime = $page.url.searchParams.get("start") || 0;
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
+  let isVideoPaused = writable(true); // State to track if video is paused
 
   onMount(async () => {
     const queryTerm = "*:*";
@@ -48,6 +49,8 @@
     } else {
       console.warn("No data found or an error occurred.");
     }
+    video.addEventListener("play", () => isVideoPaused.set(false));
+    video.addEventListener("pause", () => isVideoPaused.set(true));
   });
 
   function mergeSpeakersWithSolrData(docs: any, speakers: any): any {
@@ -121,7 +124,7 @@
             type="text"
             bind:value={currentSpeaker}
             class="editable-input"
-          />
+            disabled={!$isVideoPaused} />
         </div>
       {/if}
       {#if subtitle}
@@ -131,7 +134,7 @@
             id="subtitle"
             bind:value={subtitle}
             class="editable-textarea"
-          ></textarea>
+            disabled={!$isVideoPaused} />
         </div>
       {/if}
     </div>

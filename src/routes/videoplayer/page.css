@@ -62,7 +62,7 @@ strong,
 }
 
 .highlight {
-    color: #ff3e00;
+    background-color: hsl(15, 100%, 90%);
 }
 
 .editable-input {
