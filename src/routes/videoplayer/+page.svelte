@@ -77,12 +77,12 @@
   }
 
   function highlightSubtitle(statement: string[], subtitle: string): string {
-    console.log(statement)
-    console.log(subtitle)
+    console.log(statement);
+    console.log(subtitle);
     const joinedStatement = statement.join(" ");
     const highlighted = joinedStatement.replace(
       new RegExp(`(${subtitle})`, "gi"),
-      '<span class="highlight">$1</span>'
+      '<span class="highlight">$1</span>',
     );
     console.log(highlighted);
     return highlighted;
@@ -114,10 +114,25 @@
     <!-- Subtitle Display -->
     <div class="subtitle-container {subtitle ? 'show' : ''}">
       {#if currentSpeaker}
-        <div class="speaker">{currentSpeaker}</div>
+        <div class="speaker">
+          <label for="speaker">Speaker:</label>
+          <input
+            id="speaker"
+            type="text"
+            bind:value={currentSpeaker}
+            class="editable-input"
+          />
+        </div>
       {/if}
       {#if subtitle}
-        <div>{subtitle}</div>
+        <div>
+          <label for="subtitle">Subtitle:</label>
+          <textarea
+            id="subtitle"
+            bind:value={subtitle}
+            class="editable-textarea"
+          ></textarea>
+        </div>
       {/if}
     </div>
   </div>
@@ -129,13 +144,20 @@
       <div class="speaker-info">
         <div class="speaker-details">
           <strong>{speaker}</strong>
-          {#if role} ({role}){/if}
+          {#if role}
+            ({role}){/if}
           <span> - {time_start} ({start.toFixed(2)}s)</span>
-          <button class="option-button" on:click={() => jumpToTime(video, start)}>
+          <button
+            class="option-button"
+            on:click={() => jumpToTime(video, start)}
+          >
             Play Segment
           </button>
           {#if statement && statement.length > 0}
-            <button class="option-button" on:click={() => toggleStatement(index)}>
+            <button
+              class="option-button"
+              on:click={() => toggleStatement(index)}
+            >
               {#if showStatement}Hide Statement{:else}Show Statement{/if}
             </button>
           {/if}
@@ -147,5 +169,5 @@
         {/if}
       </div>
     {/each}
-  </div>  
+  </div>
 </div>
