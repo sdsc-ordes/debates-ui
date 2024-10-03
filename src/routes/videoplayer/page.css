@@ -58,3 +58,7 @@ strong, .option-button, .speaker-details span {
     margin-top: 10px;
     width: 100%;
 }
+
+.highlight {
+    color: #ff3e00;
+}

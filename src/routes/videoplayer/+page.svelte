@@ -33,7 +33,6 @@
   let startTime = $page.url.searchParams.get("start") || 0;
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
-  let solrData = writable(null);
 
   onMount(async () => {
     const queryTerm = "*:*";
@@ -44,9 +43,7 @@
     const data = await fetchSolrData(solrUrl, queryTerm);
     if (data) {
       searchResults.set(data);
-      console.log(data.response.docs);
       let docs = data.response.docs;
-      console.log(docs);
       speakers = mergeSpeakersWithSolrData(docs, speakers);
     } else {
       console.warn("No data found or an error occurred.");
@@ -54,8 +51,6 @@
   });
 
   function mergeSpeakersWithSolrData(docs: any, speakers: any): any {
-    console.log(docs);
-    console.log(speakers);
     if (docs && docs.length === speakers.length) {
       for (let i = 0; i < speakers.length; i++) {
         const solrInfo = docs[i];
@@ -65,11 +60,10 @@
           statement: solrInfo.statement,
         };
       }
-      console.log(speakers);
     } else {
       console.warn("Speakers and Docs data lists are not of equal length.");
     }
-    return speakers; // Add this return statement
+    return speakers;
   }
 
   function handleTimeUpdate() {
@@ -81,12 +75,19 @@
   function toggleStatement(index: number) {
     speakers[index].showStatement = !speakers[index].showStatement;
   }
-</script>
 
-<svelte:head>
-  <title>Debate with transcript</title>
-  <meta name="description" content="Debate with transcript" />
-</svelte:head>
+  function highlightSubtitle(statement: string[], subtitle: string): string {
+    console.log(statement)
+    console.log(subtitle)
+    const joinedStatement = statement.join(" ");
+    const highlighted = joinedStatement.replace(
+      new RegExp(`(${subtitle})`, "gi"),
+      '<span class="highlight">$1</span>'
+    );
+    console.log(highlighted);
+    return highlighted;
+  }
+</script>
 
 <div class="text-column">
   <h1>Debate with Transcript</h1>
@@ -141,7 +142,7 @@
         </div>
         {#if showStatement}
           <div class="statement">
-            <p>{statement.join(" ")}</p>
+            <p>{@html highlightSubtitle(statement, subtitle)}</p>
           </div>
         {/if}
       </div>
