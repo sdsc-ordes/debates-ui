@@ -1,0 +1,85 @@
+.video-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.video {
+    width: 600px;
+    border: 1px solid #ddd;
+}
+
+.subtitle-container {
+    width: 400px;
+    min-height: 100px;
+    padding: 10px;
+    font-size: 18px;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    visibility: hidden;
+}
+
+.subtitle-container.show {
+    visibility: visible;
+}
+
+.speaker-info {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.speaker-details {
+    display: flex;
+    align-items: center;
+}
+
+.speaker-details>* {
+    margin-right: 1rem;
+}
+
+strong,
+.option-button,
+.speaker-details span {
+    line-height: 1.5rem;
+}
+
+.option-button {
+    font-size: 0.8rem;
+    color: #ff3e00;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 20px;
+    padding: 0;
+}
+
+.statement {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.highlight {
+    background-color: hsl(15, 100%, 90%);
+}
+
+.editable-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.editable-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    /* Allow resizing of the textarea */
+}

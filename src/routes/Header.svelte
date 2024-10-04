@@ -24,7 +24,10 @@
 			</li>			
 			<li aria-current={$page.url.pathname === '/videoplayer' ? 'page' : undefined}>
 				<a href="/videoplayer">Videoplayer</a>
-			</li>		
+			</li>	
+			<li aria-current={$page.url.pathname === '/videoplayermongo' ? 'page' : undefined}>
+				<a href="/videoplayermongo">Videoplayer Mongo</a>
+			</li>					
 			<li aria-current={$page.url.pathname === '/testsolr' ? 'page' : undefined}>
 				<a href="/testsolr">Test-Solr</a>
 			</li>		
