@@ -25,9 +25,12 @@
 			<li aria-current={$page.url.pathname === '/videoplayer' ? 'page' : undefined}>
 				<a href="/videoplayer">Videoplayer</a>
 			</li>		
-			<li aria-current={$page.url.pathname === '/test' ? 'page' : undefined}>
-				<a href="/test">Test</a>
-			</li>							
+			<li aria-current={$page.url.pathname === '/testsolr' ? 'page' : undefined}>
+				<a href="/testsolr">Test-Solr</a>
+			</li>		
+			<li aria-current={$page.url.pathname === '/testmongo' ? 'page' : undefined}>
+				<a href="/testmongo">Test-Mongo</a>
+			</li>								
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
