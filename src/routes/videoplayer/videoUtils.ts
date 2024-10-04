@@ -13,6 +13,9 @@ export async function loadSubtitles(startTime: number, video: HTMLVideoElement) 
 }
 
 export function onTimeUpdate(video: HTMLVideoElement, subtitles: any[]) {
+    console.log("on time update");
+    console.log(video.currentTime);
+    console.log(subtitles)
     const updatedData = updateSubtitle(video.currentTime, subtitles);
     return {
         subtitle: updatedData.subtitle,

@@ -1,19 +1,9 @@
-
-import { parseSRT } from './parseSrt';
-import { updateSubtitle } from './subtilteUtils';
-
-export async function loadSubtitles(startTime: number, video: HTMLVideoElement) {
-    const response = await fetch('/input/subtitles.srt');
-    const srtText = await response.text();
-    const parsedData = parseSRT(srtText);
-    video.currentTime = startTime;
-    onTimeUpdate(video, parsedData.parsedSubtitles);
-    video.play();
-    return parsedData;
-}
-
 export function onTimeUpdate(video: HTMLVideoElement, subtitles: any[]) {
+    console.log("update subtitle on time");
+    console.log(video.currentTime);
+    console.log(subtitles);
     const updatedData = updateSubtitle(video.currentTime, subtitles);
+    console.log(updatedData);
     return {
         subtitle: updatedData.subtitle,
         currentSpeaker: updatedData.currentSpeaker,
@@ -41,4 +31,23 @@ export function formatTime(seconds: number): string {
     // Return formatted time string
     return `${hrsStr}:${minsStr}:${secsStr},${millisStr}`;
   }
-  
+
+  export function updateSubtitle(currentTime: number, subtitles: { start: number; end: number; text: string, speaker: string }[]) {
+    console.log("find subtitle");
+    console.log(currentTime)
+    console.log(subtitles);
+    const currentSubtitle = subtitles.find(sub => currentTime >= sub.start && currentTime <= sub.end);
+    console.log("================?")
+    console.log(currentSubtitle);
+    if (currentSubtitle) {
+        return {
+            subtitle: currentSubtitle.text,
+            currentSpeaker: currentSubtitle.speaker
+        };
+    }
+    return {
+        subtitle: '',
+        currentSpeaker: ''
+    };
+}
+ 
