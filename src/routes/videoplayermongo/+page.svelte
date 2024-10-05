@@ -6,13 +6,13 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import { onTimeUpdate, formatTimeDisplay, formatTime, handleTimeUpdate } from "./videoUtils";
+  import { onTimeUpdate, formatTime } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
 
   let video: HTMLVideoElement;
   let subtitle = "";
   let currentSpeaker = "";
-  let subtitles = [];
+  let subtitles = writable([]);
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
   let isVideoPaused = writable(true);
@@ -20,26 +20,38 @@
   onMount(async () => {
     if (data && data.video && data.video[0]) {
       const videoData = data.video[0];
-      subtitles = videoData.subtitles.map((subtitle) => ({
-        index: subtitle.index,
-        start: subtitle.start,
-        end: subtitle.end,
-        text: subtitle.fragment,
-        speaker: subtitle.speaker,
-        time_start: formatTime(subtitle.start),
-        time_end: formatTime(subtitle.end),
-      }));
+      subtitles.set(
+        videoData.subtitles.map((subtitle) => ({
+          index: subtitle.index,
+          start: subtitle.start,
+          end: subtitle.end,
+          text: subtitle.fragment,
+          speaker: subtitle.speaker,
+          time_start: formatTime(subtitle.start),
+          time_end: formatTime(subtitle.end),
+        }))
+      );
 
       video.addEventListener("play", () => isVideoPaused.set(false));
       video.addEventListener("pause", () => isVideoPaused.set(true));
     }
   });
 
-  function handleTimeUpdateEvent() {
-  const updatedData = handleTimeUpdate(video, subtitles);
-  subtitle = `${updatedData.subtitle}`;
-  currentSpeaker = `${updatedData.currentSpeaker}`;
-}  
+  function handleTimeUpdate() {
+    subtitles.subscribe((subs) => {
+      const updatedData = onTimeUpdate(video, subs);
+      subtitle = updatedData.subtitle;
+      currentSpeaker = updatedData.currentSpeaker;
+    });
+  }
+
+  function updateSubtitle(index: number, updatedText: string) {
+    subtitles.update((subs) => {
+      const updatedSubtitles = [...subs];
+      updatedSubtitles[index].text = updatedText;
+      return updatedSubtitles;
+    });
+  }
 </script>
 
 <svelte:head>
@@ -54,7 +66,7 @@
   <video
     class="video"
     bind:this={video}
-    on:timeupdate={handleTimeUpdateEvent}
+    on:timeupdate={handleTimeUpdate}
     controls
     autoplay
   >
@@ -82,16 +94,17 @@
         />
       </div>
     {/if}
-    {#if subtitle}
+    {#each $subtitles as sub, index}
       <div>
-        <label for="subtitle">Subtitle:</label>
+        <label for={`subtitle-${index}`}>Subtitle:</label>
         <textarea
-          id="subtitle"
-          bind:value={subtitle}
+          id={`subtitle-${index}`}
+          bind:value={sub.text}
+          on:input={(e) => updateSubtitle(index, e.target.value)}
           class="editable-textarea"
           disabled={!$isVideoPaused}
         />
       </div>
-    {/if}
+    {/each}
   </div>
 </div>
