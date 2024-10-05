@@ -6,15 +6,13 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import { onTimeUpdate } from "./videoUtils";
+  import { onTimeUpdate, formatTimeDisplay, formatTime, handleTimeUpdate } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
 
   let video: HTMLVideoElement;
   let subtitle = "";
   let currentSpeaker = "";
   let subtitles = [];
-  let speakers = [];
-  let startTime = $page.url.searchParams.get("start") || 0;
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
   let isVideoPaused = writable(true);
@@ -31,27 +29,17 @@
         time_start: formatTime(subtitle.start),
         time_end: formatTime(subtitle.end),
       }));
-      console.log(subtitles);
 
       video.addEventListener("play", () => isVideoPaused.set(false));
       video.addEventListener("pause", () => isVideoPaused.set(true));
     }
   });
 
-  function handleTimeUpdate() {
-    const updatedData = onTimeUpdate(video, subtitles);
-    console.log("Updated Subtitle:", updatedData.subtitle);
-    console.log("Updated Speaker:", updatedData.currentSpeaker);
-    subtitle = `${updatedData.subtitle}`; // Convert to string to ensure reactivity
-    currentSpeaker = `${updatedData.currentSpeaker}`;
-    subtitle = updatedData.subtitle;
-    currentSpeaker = updatedData.currentSpeaker;
-  }
-
-  function formatTime(seconds: number): string {
-    const date = new Date(seconds * 1000);
-    return date.toISOString().substr(11, 8); // Format as HH:MM:SS
-  }
+  function handleTimeUpdateEvent() {
+  const updatedData = handleTimeUpdate(video, subtitles);
+  subtitle = `${updatedData.subtitle}`;
+  currentSpeaker = `${updatedData.currentSpeaker}`;
+}  
 </script>
 
 <svelte:head>
@@ -66,7 +54,7 @@
   <video
     class="video"
     bind:this={video}
-    on:timeupdate={handleTimeUpdate}
+    on:timeupdate={handleTimeUpdateEvent}
     controls
     autoplay
   >
