@@ -7,6 +7,7 @@ export function onTimeUpdate(video: HTMLVideoElement, subtitles: any[]) {
     return {
         subtitle: updatedData.subtitle,
         currentSpeaker: updatedData.currentSpeaker,
+        index: updatedData.index,
     };
 }
 
@@ -39,12 +40,14 @@ export function updateSubtitle(
     if (currentSubtitle) {
         return {
             subtitle: currentSubtitle.text,
-            currentSpeaker: currentSubtitle.speaker
+            currentSpeaker: currentSubtitle.speaker,
+            index: currentSubtitle.index,
         };
     }
     return {
         subtitle: '',
-        currentSpeaker: ''
+        currentSpeaker: '',
+        index: -1,
     };
 }
 
@@ -53,18 +56,15 @@ export function formatTimeDisplay(seconds: number): string {
     return date.toISOString().substr(11, 8);
 }
 
-// videoUtils.ts
 export function handleTimeUpdate(video: HTMLVideoElement, subtitles: any[]) {
     const currentTime = video.currentTime;
-  
-    // Find the current subtitle and speaker based on the current time
     const currentSubtitle = subtitles.find(
       (subtitle) => currentTime >= subtitle.start && currentTime <= subtitle.end
     );
-  
     const updatedData = {
       subtitle: currentSubtitle ? currentSubtitle.text : "",
       currentSpeaker: currentSubtitle ? currentSubtitle.speaker : "",
+      index: currentSubtitle ? currentSubtitle.index : -1
     };
   
     return updatedData;

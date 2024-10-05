@@ -8,20 +8,23 @@
   import { writable } from "svelte/store";
   import { onTimeUpdate, formatTime } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
+  import type { Subtitle } from './subtitle.interface';
 
   let video: HTMLVideoElement;
   let subtitle = "";
   let currentSpeaker = "";
-  let subtitles = writable([]);
+
+  let subtitles: Writable<Subtitle[]> = writable([]);
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
   let isVideoPaused = writable(true);
+  let currentSubtitleIndex = -1;
 
   onMount(async () => {
     if (data && data.video && data.video[0]) {
       const videoData = data.video[0];
       subtitles.set(
-        videoData.subtitles.map((subtitle) => ({
+        videoData.subtitles.map((subtitle): Subtitle => ({
           index: subtitle.index,
           start: subtitle.start,
           end: subtitle.end,
@@ -29,7 +32,7 @@
           speaker: subtitle.speaker,
           time_start: formatTime(subtitle.start),
           time_end: formatTime(subtitle.end),
-        }))
+        })),
       );
 
       video.addEventListener("play", () => isVideoPaused.set(false));
@@ -42,6 +45,7 @@
       const updatedData = onTimeUpdate(video, subs);
       subtitle = updatedData.subtitle;
       currentSpeaker = updatedData.currentSpeaker;
+      currentSubtitleIndex = updatedData.index - 1;
     });
   }
 
@@ -52,6 +56,7 @@
       return updatedSubtitles;
     });
   }
+  $: currentSubtitle = $subtitles[currentSubtitleIndex];
 </script>
 
 <svelte:head>
@@ -94,17 +99,17 @@
         />
       </div>
     {/if}
-    {#each $subtitles as sub, index}
+    {#if currentSubtitle}
       <div>
-        <label for={`subtitle-${index}`}>Subtitle:</label>
+        <label for={`subtitle-${currentSubtitleIndex}`}>Subtitle:</label>
         <textarea
-          id={`subtitle-${index}`}
-          bind:value={sub.text}
-          on:input={(e) => updateSubtitle(index, e.target.value)}
+          id={`subtitle-${currentSubtitleIndex}`}
+          bind:value={currentSubtitle.text}
+          on:input={(e) => updateSubtitle(currentSubtitleIndex, e.target.value)}
           class="editable-textarea"
           disabled={!$isVideoPaused}
         />
       </div>
-    {/each}
+    {/if}
   </div>
 </div>
