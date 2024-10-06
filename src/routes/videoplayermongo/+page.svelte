@@ -27,6 +27,7 @@
           start: subtitle.start,
           end: subtitle.end,
           text: subtitle.content,
+          segment_nr: subtitle.segment_nr,
           speaker: subtitle.speaker_id,
           time_start: formatTime(subtitle.start),
           time_end: formatTime(subtitle.end),

@@ -6,4 +6,5 @@ export interface Subtitle {
     speaker: string;
     time_start: string;
     time_end: string;
+    segment_nr: string
 }
