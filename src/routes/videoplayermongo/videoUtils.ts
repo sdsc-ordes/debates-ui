@@ -30,22 +30,6 @@ export function formatTime(seconds: number): string {
     return `${hrsStr}:${minsStr}:${secsStr},${millisStr}`;
 }
 
-export function updateSubtitle(
-    currentTime: number, subtitles: Subtitle[]) {
-    const currentSubtitle = subtitles.find(sub => currentTime >= sub.start && currentTime <= sub.end);
-    if (currentSubtitle) {
-        return {
-            subtitle: currentSubtitle.text,
-            index: currentSubtitle.index,
-        };
-    }
-    return {
-        subtitle: '',
-        currentSpeaker: '',
-        index: -1,
-    };
-}
-
 export function formatTimeDisplay(seconds: number): string {
     const date = new Date(seconds * 1000);
     return date.toISOString().substr(11, 8);
