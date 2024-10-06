@@ -1,8 +1,9 @@
+import type { Subtitle } from "./subtitle.interface";
+
 export function onTimeUpdate(time: number, subtitles: any[]) {
     const updatedData = updateSubtitle(time, subtitles);
     return {
         subtitle: updatedData.subtitle,
-        currentSpeaker: updatedData.currentSpeaker,
         index: updatedData.index,
     };
 }
@@ -30,13 +31,11 @@ export function formatTime(seconds: number): string {
 }
 
 export function updateSubtitle(
-    currentTime: number, subtitles: { 
-        start: number; end: number; text: string, speaker: string }[]) {
+    currentTime: number, subtitles: Subtitle[]) {
     const currentSubtitle = subtitles.find(sub => currentTime >= sub.start && currentTime <= sub.end);
     if (currentSubtitle) {
         return {
             subtitle: currentSubtitle.text,
-            currentSpeaker: currentSubtitle.speaker,
             index: currentSubtitle.index,
         };
     }
