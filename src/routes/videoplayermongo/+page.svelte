@@ -41,13 +41,13 @@
   });
 
   function handleTimeUpdate() {
-    subtitles.subscribe((subs) => {
-      const updatedData = onTimeUpdate(video, subs);
-      subtitle = updatedData.subtitle;
-      currentSpeaker = updatedData.currentSpeaker;
-      currentSubtitleIndex = updatedData.index - 1;
-      console.log(currentSubtitleIndex);
-    });
+    const subs = $subtitles;
+    const updatedData = onTimeUpdate(video, subs);
+    console.log(updatedData);
+    subtitle = updatedData.subtitle;
+    currentSpeaker = updatedData.currentSpeaker;    
+    currentSubtitleIndex = updatedData.index - 1;
+    console.log(currentSubtitleIndex);
   }
 
   function updateSubtitle(index: number, updatedText: string) {
