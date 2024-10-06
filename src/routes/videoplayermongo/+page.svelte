@@ -1,19 +1,17 @@
 <script lang="ts">
   import type { PageData } from "./$types";
-  export let data: PageData;
-  import "./page.css";
-
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
   import { onTimeUpdate, formatTime } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
   import type { Subtitle } from './subtitle.interface';
+  import "./page.css";
 
+  export let data: PageData;
   let video: HTMLVideoElement;
   let subtitle = "";
   let currentSpeaker = "";
-
   let subtitles: Writable<Subtitle[]> = writable([]);
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
@@ -34,7 +32,6 @@
           time_end: formatTime(subtitle.end),
         })),
       );
-      console.log($subtitles);
       video.addEventListener("play", () => isVideoPaused.set(false));
       video.addEventListener("pause", () => isVideoPaused.set(true));
     }
@@ -47,7 +44,6 @@
     subtitle = updatedData.subtitle;
     currentSpeaker = updatedData.currentSpeaker;    
     currentSubtitleIndex = updatedData.index - 1;
-    console.log(currentSubtitleIndex);
   }
 
   function updateSubtitle(index: number, updatedText: string) {
@@ -58,7 +54,6 @@
     });
   }
   $: currentSubtitle = $subtitles[currentSubtitleIndex];
-  console.log("display", $subtitles[currentSubtitleIndex]);
 </script>
 
 <svelte:head>
