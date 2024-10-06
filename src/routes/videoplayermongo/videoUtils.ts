@@ -51,17 +51,3 @@ export function formatTimeDisplay(seconds: number): string {
     const date = new Date(seconds * 1000);
     return date.toISOString().substr(11, 8);
 }
-
-export function handleTimeUpdate(video: HTMLVideoElement, subtitles: any[]) {
-    const currentTime = video.currentTime;
-    const currentSubtitle = subtitles.find(
-      (subtitle) => currentTime >= subtitle.start && currentTime <= subtitle.end
-    );
-    const updatedData = {
-      subtitle: currentSubtitle ? currentSubtitle.text : "",
-      currentSpeaker: currentSubtitle ? currentSubtitle.speaker : "",
-      index: currentSubtitle ? currentSubtitle.index : -1
-    };
-  
-    return updatedData;
-  }
