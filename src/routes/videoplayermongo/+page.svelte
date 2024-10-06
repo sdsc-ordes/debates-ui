@@ -41,9 +41,7 @@
   function handleTimeUpdate() {
     const subs = $subtitles;
     const updatedData = onTimeUpdate(video.currentTime, subs);
-    console.log(updatedData);
-    subtitle = updatedData.subtitle;
-    currentSpeaker = updatedData.currentSpeaker;    
+    console.log(updatedData);    
     currentSubtitleIndex = updatedData.index - 1;
   }
 
@@ -84,7 +82,7 @@
   </video>
 
   <!-- Subtitle Display -->
-  <div class="subtitle-container {subtitle ? 'show' : ''}">
+  <div class="subtitle-container {currentSubtitleIndex >= 0 ? 'show' : ''}">
     {#if currentSpeaker}
       <div class="speaker">
         <label for="speaker">Speaker:</label>
