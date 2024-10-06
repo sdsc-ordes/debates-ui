@@ -5,6 +5,7 @@
   import { writable } from "svelte/store";
   import { onTimeUpdate, formatTime } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
+  import { mapSubtitles } from ".//mapMongoDbToPage";
   import type { Subtitle } from './subtitle.interface';
   import "./page.css";
 
@@ -21,18 +22,8 @@
   onMount(async () => {
     if (data && data.video && data.video[0]) {
       const videoData = data.video[0];
-      subtitles.set(
-        videoData.subtitles.map((subtitle): Subtitle => ({
-          index: subtitle.index,
-          start: subtitle.start,
-          end: subtitle.end,
-          text: subtitle.content,
-          segment_nr: subtitle.segment_nr,
-          speaker: subtitle.speaker_id,
-          time_start: formatTime(subtitle.start),
-          time_end: formatTime(subtitle.end),
-        })),
-      );
+      subtitles.set(mapSubtitles(videoData.subtitles));
+      console.log("subtitles after loading", $subtitles)
       video.addEventListener("play", () => isVideoPaused.set(false));
       video.addEventListener("pause", () => isVideoPaused.set(true));
     }
@@ -100,7 +91,7 @@
         <label for={`subtitle-${currentSubtitleIndex}`}>Subtitle:</label>
         <textarea
           id={`subtitle-${currentSubtitleIndex}`}
-          bind:value={currentSubtitle.text}
+          bind:value={currentSubtitle.content}
           on:input={(e) => updateSubtitle(currentSubtitleIndex, e.target.value)}
           class="editable-textarea"
           disabled={!$isVideoPaused}
