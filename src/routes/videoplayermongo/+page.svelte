@@ -5,25 +5,30 @@
   import { writable } from "svelte/store";
   import { onTimeUpdate, formatTime } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
-  import { mapSubtitles } from ".//mapMongoDbToPage";
+  import { mapSubtitles, mapSpeakers, mapSegments } from ".//mapMongoDbToPage";
   import type { Subtitle } from './subtitle.interface';
+  import type { Segment } from './segment.interface';
   import "./page.css";
 
   export let data: PageData;
   let video: HTMLVideoElement;
-  let subtitle = "";
   let currentSpeaker = "";
   let subtitles: Writable<Subtitle[]> = writable([]);
+  let speakers: Writable<Speaker[]> = writable([]);
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
   let isVideoPaused = writable(true);
   let currentSubtitleIndex = -1;
+  let segments: Segment[] = [];
 
   onMount(async () => {
     if (data && data.video && data.video[0]) {
       const videoData = data.video[0];
       subtitles.set(mapSubtitles(videoData.subtitles));
-      console.log("subtitles after loading", $subtitles)
+      speakers.set(mapSpeakers(videoData.speakers));
+      segments = mapSegments(videoData.segments);
+      console.log($speakers);
+      console.log(segments);
       video.addEventListener("play", () => isVideoPaused.set(false));
       video.addEventListener("pause", () => isVideoPaused.set(true));
     }
@@ -32,7 +37,6 @@
   function handleTimeUpdate() {
     const subs = $subtitles;
     const updatedIndex = onTimeUpdate(video.currentTime, subs);
-    console.log(updatedIndex);    
     currentSubtitleIndex = updatedIndex - 1;
   }
 
