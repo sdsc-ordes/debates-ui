@@ -1,9 +1,5 @@
 export function onTimeUpdate(video: HTMLVideoElement, subtitles: any[]) {
-    console.log("update subtitle on time");
-    console.log(video.currentTime);
-    console.log(subtitles);
     const updatedData = updateSubtitle(video.currentTime, subtitles);
-    console.log(updatedData);
     return {
         subtitle: updatedData.subtitle,
         currentSpeaker: updatedData.currentSpeaker,
