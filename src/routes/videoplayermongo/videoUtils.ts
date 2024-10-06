@@ -1,11 +1,11 @@
 import type { Subtitle } from "./subtitle.interface";
 
-export function onTimeUpdate(time: number, subtitles: any[]) {
-    const updatedData = updateSubtitle(time, subtitles);
-    return {
-        subtitle: updatedData.subtitle,
-        index: updatedData.index,
-    };
+export function onTimeUpdate(currentTime: number, subtitles: Subtitle[]): number {
+    const currentSubtitle = subtitles.find(sub => currentTime >= sub.start && currentTime <= sub.end);
+    if (currentSubtitle) {
+        return currentSubtitle.index;
+    }
+    return -1;
 }
 
 export function jumpToTime(video: HTMLVideoElement, time: number) {

@@ -40,9 +40,9 @@
 
   function handleTimeUpdate() {
     const subs = $subtitles;
-    const updatedData = onTimeUpdate(video.currentTime, subs);
-    console.log(updatedData);    
-    currentSubtitleIndex = updatedData.index - 1;
+    const updatedIndex = onTimeUpdate(video.currentTime, subs);
+    console.log(updatedIndex);    
+    currentSubtitleIndex = updatedIndex - 1;
   }
 
   function updateSubtitle(index: number, updatedText: string) {
