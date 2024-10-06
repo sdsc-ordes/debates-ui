@@ -40,7 +40,7 @@
 
   function handleTimeUpdate() {
     const subs = $subtitles;
-    const updatedData = onTimeUpdate(video, subs);
+    const updatedData = onTimeUpdate(video.currentTime, subs);
     console.log(updatedData);
     subtitle = updatedData.subtitle;
     currentSpeaker = updatedData.currentSpeaker;    
