@@ -28,13 +28,13 @@
           index: subtitle.index,
           start: subtitle.start,
           end: subtitle.end,
-          text: subtitle.fragment,
-          speaker: subtitle.speaker,
+          text: subtitle.content,
+          speaker: subtitle.speaker_id,
           time_start: formatTime(subtitle.start),
           time_end: formatTime(subtitle.end),
         })),
       );
-
+      console.log($subtitles);
       video.addEventListener("play", () => isVideoPaused.set(false));
       video.addEventListener("pause", () => isVideoPaused.set(true));
     }
@@ -46,6 +46,7 @@
       subtitle = updatedData.subtitle;
       currentSpeaker = updatedData.currentSpeaker;
       currentSubtitleIndex = updatedData.index - 1;
+      console.log(currentSubtitleIndex);
     });
   }
 
@@ -57,6 +58,7 @@
     });
   }
   $: currentSubtitle = $subtitles[currentSubtitleIndex];
+  console.log("display", $subtitles[currentSubtitleIndex]);
 </script>
 
 <svelte:head>
