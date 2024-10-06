@@ -9,7 +9,6 @@ export const load: PageServerLoad = async () => {
       ...video,
       _id: video._id.toString(),
     }));
-    console.log(serializedData);
     return {
       video: serializedData
     }
