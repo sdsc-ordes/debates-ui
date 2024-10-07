@@ -123,8 +123,7 @@
             id="speaker"
             type="text"
             bind:value={currentSpeaker}
-            class="editable-input"
-            disabled={!$isVideoPaused} />
+            class="editable-input"/>
         </div>
       {/if}
       {#if subtitle}
@@ -133,8 +132,7 @@
           <textarea
             id="subtitle"
             bind:value={subtitle}
-            class="editable-textarea"
-            disabled={!$isVideoPaused} />
+            class="editable-textarea"/>
         </div>
       {/if}
     </div>
