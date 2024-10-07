@@ -1,4 +1,3 @@
-
 import { parseSRT } from './parseSrt';
 import { updateSubtitle } from './subtilteUtils';
 
@@ -24,3 +23,20 @@ export function jumpToTime(video: HTMLVideoElement, time: number) {
     video.currentTime = time;
     video.play(); // Optionally start playing after jump
 }
+
+// videoUtils.ts
+export function handleTimeUpdate(video: HTMLVideoElement, subtitles: any[]) {
+    const currentTime = video.currentTime;
+  
+    // Find the current subtitle and speaker based on the current time
+    const currentSubtitle = subtitles.find(
+      (subtitle) => currentTime >= subtitle.start && currentTime <= subtitle.end
+    );
+  
+    const updatedData = {
+      subtitle: currentSubtitle ? currentSubtitle.text : "",
+      currentSpeaker: currentSubtitle ? currentSubtitle.speaker : "",
+    };
+  
+    return updatedData;
+  }

@@ -2,7 +2,7 @@
   import type { PageData } from "./$types";
   export let data: PageData;
 
-  $: ({segments} = data)
+  $: ({video} = data)
 </script>
 
 <svelte:head>
@@ -10,6 +10,6 @@
   <meta name="description" content="Testpage" />
 </svelte:head>
 
-{#if segments}
-  <pre>{JSON.stringify(segments, null, 2)}</pre>
+{#if video}
+  <pre>{JSON.stringify(video, null, 2)}</pre>
 {/if}
