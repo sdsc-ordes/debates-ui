@@ -137,9 +137,7 @@
           Play Segment
         </button>
         <p>
-          {#each segments as segment, index}
           {getSegmentContentDisplay(segment, $subtitles)}
-          {/each}
         </p>
         <button class="option-button" on:click={() => toggleStatement(index)}>
           {#if segment.show_full_content}Hide Statement{:else}Show Statement{/if}

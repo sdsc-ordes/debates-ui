@@ -48,7 +48,7 @@ function concatenateSubtitles(subtitles: Subtitle[], firstIndex: number, lastInd
       throw new Error('Invalid indices provided');
     }
   
-    return subtitles.slice(firstIndex, lastIndex + 1)
+    return subtitles.slice(firstIndex, lastIndex)
       .map(subtitle => subtitle.content)
       .join(' ');
   }
