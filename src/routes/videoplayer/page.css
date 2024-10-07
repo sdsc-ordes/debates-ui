@@ -83,3 +83,18 @@ strong,
     resize: vertical;
     /* Allow resizing of the textarea */
 }
+
+.segment-list {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .segment-item {
+    margin-bottom: 1rem;
+  }
+  
