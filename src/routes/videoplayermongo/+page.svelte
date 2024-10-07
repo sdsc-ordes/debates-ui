@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import { onTimeUpdate, formatTime, jumpToTime } from "./videoUtils";
+  import { onTimeUpdate, jumpToTime } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
   import { mapSubtitles, mapSpeakers, mapSegments } from ".//mapMongoDbToPage";
   import type { Subtitle } from "./subtitle.interface";
@@ -107,6 +107,20 @@
     </div>
   </div>
 
+  <!-- Segment List -->
+  <div class="segment-list">
+    {#each segments as segment, index}
+      <div class="segment-item">
+        {index + 1}.
+        <span>{segment.time_start} - {segment.time_end}</span>
+        <button class="option-button" on:click={() => jumpToTime(video, segment.start)}>
+          Play Segment
+        </button>
+      </div>
+    {/each}
+  </div>
+</div>
+
   <!-- Speakers List -->
   <div class="speakers-list">
     <h2>Speakers</h2>
@@ -117,22 +131,6 @@
       </div>
     {/each}
   </div>
-
-  <!-- Segment List -->
-  <div class="segment-list">
-    <h2>Segments</h2>
-    {#each segments as segment, index}
-      <div class="segment-item">
-        Segment {index + 1}
-        <span>Start Time: {formatTime(segment.start)}</span>
-        <span>End Time: {formatTime(segment.end)}</span>
-        <button class="option-button" on:click={() => jumpToTime(video, segment.start)}>
-          Play Segment
-        </button>
-      </div>
-    {/each}
-  </div>
-</div>
 
 
 <style>

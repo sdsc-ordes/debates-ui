@@ -1,4 +1,4 @@
-import { formatTime } from "./videoUtils";
+import { formatTimeForDisplay } from "./videoUtils";
 import type { Subtitle, SubtitleDB } from './subtitle.interface';
 import type { Speaker, SpeakerDB } from './speaker.interface';
 
@@ -8,8 +8,8 @@ export function mapSubtitles(subtitles: SubtitleDB[]): Subtitle[] {
         start: subtitle.start,
         end: subtitle.end,
         content: subtitle.content,
-        time_start: formatTime(subtitle.start),
-        time_end: formatTime(subtitle.end),
+        time_start: formatTimeForDisplay(subtitle.start),
+        time_end: formatTimeForDisplay(subtitle.end),
         segment_nr: subtitle.segment_nr,
     }));
 }
@@ -29,8 +29,8 @@ export function mapSegments(segments: SegmentDB[]): Segment[] {
         end: segment.end,
         first_index: segment.first_index,
         last_index: segment.last_index,
-        time_start: formatTime(segment.start),
-        time_end: formatTime(segment.end),
+        time_start: formatTimeForDisplay(segment.start),
+        time_end: formatTimeForDisplay(segment.end),
         segment_nr: segment.segment_nr,
     }));
 }
