@@ -7,6 +7,7 @@ export interface Segment {
     first_index: number,
     last_index: number,
     segment_nr: number,
+    show_full_content: boolean;
 }
 
 export interface SegmentDB {

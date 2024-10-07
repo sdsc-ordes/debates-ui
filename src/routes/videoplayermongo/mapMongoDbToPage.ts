@@ -1,6 +1,7 @@
 import { formatTimeForDisplay } from "./videoUtils";
 import type { Subtitle, SubtitleDB } from './subtitle.interface';
 import type { Speaker, SpeakerDB } from './speaker.interface';
+import type { Segment, SegmentDB } from './segment.interface';
 
 export function mapSubtitles(subtitles: SubtitleDB[]): Subtitle[] {
     return subtitles.map((subtitle: SubtitleDB): Subtitle => ({
@@ -32,5 +33,6 @@ export function mapSegments(segments: SegmentDB[]): Segment[] {
         time_start: formatTimeForDisplay(segment.start),
         time_end: formatTimeForDisplay(segment.end),
         segment_nr: segment.segment_nr,
+        show_full_content: false,
     }));
 }

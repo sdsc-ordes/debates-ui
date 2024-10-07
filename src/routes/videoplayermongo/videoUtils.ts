@@ -36,6 +36,23 @@ export function getSpeakerDisplay(speakerId: string, speakers: Speaker[]): Strin
     }
 }
 
+export function getSegmentContentDisplay(segment: Segment, subtitles: Subtitle[]): string {
+    if (!segment.show_full_content) {
+        return subtitles[segment.first_index-1].content;
+    }
+    return concatenateSubtitles(subtitles, segment.first_index, segment.last_index)
+}
+
+function concatenateSubtitles(subtitles: Subtitle[], firstIndex: number, lastIndex: number): string {
+    if (firstIndex < 0 || lastIndex >= subtitles.length || firstIndex > lastIndex) {
+      throw new Error('Invalid indices provided');
+    }
+  
+    return subtitles.slice(firstIndex, lastIndex + 1)
+      .map(subtitle => subtitle.content)
+      .join(' ');
+  }
+
 export function jumpToTime(video: HTMLVideoElement, time: number) {
     video.currentTime = time;
     video.play(); // Optionally start playing after jump

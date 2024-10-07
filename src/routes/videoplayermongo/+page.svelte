@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import { onTimeUpdate, jumpToTime, getMatchingSegment, 
+  import { onTimeUpdate, jumpToTime, getMatchingSegment, getSegmentContentDisplay,
     getMatchingSpeakerIndex, getSpeakerDisplay } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
   import { mapSubtitles, mapSpeakers, mapSegments } from ".//mapMongoDbToPage";
@@ -60,6 +60,11 @@
       return updatedSubtitles;
     });
   }
+
+  function toggleStatement(index: number) {
+    segments[index].show_full_content = !segments[index].show_full_content;
+  }
+
   $: currentSubtitle = $subtitles[currentSubtitleIndex];
   $: currentSpeaker = $speakers[currentSpeakerIndex];
 </script>
@@ -131,6 +136,14 @@
         <button class="option-button" on:click={() => jumpToTime(video, segment.start)}>
           Play Segment
         </button>
+        <p>
+          {#each segments as segment, index}
+          {getSegmentContentDisplay(segment, $subtitles)}
+          {/each}
+        </p>
+        <button class="option-button" on:click={() => toggleStatement(index)}>
+          {#if segment.show_full_content}Hide Statement{:else}Show Statement{/if}
+        </button>        
       </div>
     {/each}
   </div>
