@@ -12,7 +12,6 @@
 
   export let data: PageData;
   let video: HTMLVideoElement;
-  let currentSpeaker = "";
   let subtitles: Writable<Subtitle[]> = writable([]);
   let speakers: Writable<Speaker[]> = writable([]);
   let videoId = $page.url.searchParams.get("video_id");
@@ -47,6 +46,7 @@
     console.log(currentSegment);
     currentSpeakerIndex = getMatchingSpeakerIndex(currentSegment.speaker_id, $speakers);
     console.log(currentSpeakerIndex);
+    console.log($speakers[currentSpeakerIndex])
   } catch (error) {
     console.error('Error during time update:', error);
   }
@@ -60,6 +60,7 @@
     });
   }
   $: currentSubtitle = $subtitles[currentSubtitleIndex];
+  $: currentSpeaker = $speakers[currentSpeakerIndex];
 </script>
 
 <svelte:head>
@@ -93,11 +94,11 @@
     <div class="subtitle-container {currentSubtitleIndex >= 0 ? 'show' : ''}">
       {#if currentSpeaker}
         <div class="speaker">
-          <label for="speaker">Speaker:</label>
+          <label for="speaker">Speaker: {currentSpeaker.speaker_id}</label>
           <input
             id="speaker"
             type="text"
-            bind:value={currentSpeaker}
+            bind:value={currentSpeaker.name}
             class="editable-input"
             disabled={!$isVideoPaused}
           />
@@ -124,6 +125,8 @@
     {#each segments as segment, index}
       <div class="segment-item">
         {index + 1}.
+        <span>{$speakers[getMatchingSpeakerIndex(segment.speaker_id, $speakers)].speaker_id}</span>
+        <span>{$speakers[getMatchingSpeakerIndex(segment.speaker_id, $speakers)].name}</span>
         <span>{segment.time_start} - {segment.time_end}</span>
         <button class="option-button" on:click={() => jumpToTime(video, segment.start)}>
           Play Segment
@@ -132,18 +135,6 @@
     {/each}
   </div>
 </div>
-
-  <!-- Speakers List -->
-  <div class="speakers-list">
-    <h2>Speakers</h2>
-    {#each $speakers as speaker}
-      <div class="speaker-item">
-        <p><strong>{speaker.name}</strong></p>
-        <p>{speaker.description}</p>
-      </div>
-    {/each}
-  </div>
-
 
 <style>
 .video-subtitle-container {
