@@ -188,17 +188,6 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.speaker-item {
-  margin-bottom: 1rem;
-}
-
-.segment-list {
-  width: 100%;
-  max-width: 800px;
-  margin-top: 2rem;
-  padding: 1rem;
-}
-
 .segment-item {
   margin-bottom: 1rem;
 }
