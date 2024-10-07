@@ -28,8 +28,6 @@
       subtitles.set(mapSubtitles(videoData.subtitles));
       speakers.set(mapSpeakers(videoData.speakers));
       segments = mapSegments(videoData.segments);
-      console.log($speakers);
-      console.log(segments);
       video.addEventListener("play", () => isVideoPaused.set(false));
       video.addEventListener("pause", () => isVideoPaused.set(true));
     }
@@ -44,10 +42,7 @@
   }
   try {
     const currentSegment = getMatchingSegment($subtitles[currentSubtitleIndex].segment_nr, segments);
-    console.log(currentSegment);
     currentSpeakerIndex = getMatchingSpeakerIndex(currentSegment.speaker_id, $speakers);
-    console.log(currentSpeakerIndex);
-    console.log($speakers[currentSpeakerIndex])
   } catch (error) {
     console.error('Error during time update:', error);
   }
