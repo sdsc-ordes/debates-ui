@@ -3,6 +3,7 @@
     import {
         getFirstNonEmptyStatement,
     } from "./statement-utils";
+    import { formatTimeForDisplay, displayIsoDate } from "$lib/displayUtils";
 
     export let doc;
     export let query;
@@ -56,13 +57,22 @@
 </script>
 
 <div class="statement">
-    <!-- Single line header without labels -->
-    <div class="statement-header">
-        {doc.date} - {doc.time_start} - {doc.time_end} - {doc.speaker_name} - {doc.segment_id}
-    </div>
+    <span>{displayIsoDate(doc.date)}</span>
+    <span>{doc.segment_id}.</span>
+    <span>{formatTimeForDisplay(doc.start)} - {formatTimeForDisplay(doc.end)}</span><br>
+    <span>{doc.speaker_name}:</span>
+    <button class="option-button" on:click={() => navigateToVideoPlayer(doc, query)}>
+        Play Segment
+    </button> 
+    <button class="option-button" on:click={() => toggleFullStatement(doc.id)}>
+        {#if $expandedStatements[doc.id]}
+            Show Less
+        {:else}
+            Show More
+        {/if}
+    </button>     
 
     {#if $expandedStatements[doc.id]}
-        <!-- Full statement with highlighted version -->
         <p>
             {@html replaceWithHighlightedVersion(
                 doc.statement,
@@ -70,21 +80,6 @@
             )}
         </p>
     {:else}
-        <!-- Short version of the statement -->
         <p>{@html getFirstNonEmptyStatement(highlighting[doc.id].statement)}</p>
     {/if}
-
-    <!-- Toggle button to show full statement -->
-    <button class="option-button" on:click={() => toggleFullStatement(doc.id)}>
-        {#if $expandedStatements[doc.id]}
-            Show Less
-        {:else}
-            Show More
-        {/if}
-    </button>
-
-    <!-- Button to navigate to video player -->
-    <button class="option-button" on:click={() => navigateToVideoPlayer(doc, query)}>
-        Go to Video Player
-    </button>
 </div>
