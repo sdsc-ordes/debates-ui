@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import { onTimeUpdate, formatTime } from "./videoUtils";
+  import { onTimeUpdate, formatTime, jumpToTime } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
   import { mapSubtitles, mapSpeakers, mapSegments } from ".//mapMongoDbToPage";
   import type { Subtitle } from "./subtitle.interface";
@@ -123,10 +123,12 @@
     <h2>Segments</h2>
     {#each segments as segment, index}
       <div class="segment-item">
-        <p><strong>Segment {index + 1}</strong></p>
-        <p>Start Time: {formatTime(segment.start)}</p>
-        <p>End Time: {formatTime(segment.end)}</p>
-        <p>Content: {segment.content}</p>
+        Segment {index + 1}
+        <span>Start Time: {formatTime(segment.start)}</span>
+        <span>End Time: {formatTime(segment.end)}</span>
+        <button class="option-button" on:click={() => jumpToTime(video, segment.start)}>
+          Play Segment
+        </button>
       </div>
     {/each}
   </div>
@@ -168,7 +170,6 @@
   max-width: 800px;
   margin-top: 1rem;
   padding: 1rem;
-  background-color: #f8f8f8;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -182,9 +183,6 @@
   max-width: 800px;
   margin-top: 2rem;
   padding: 1rem;
-  background-color: #f8f8f8;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .segment-item {
@@ -209,4 +207,13 @@
   resize: vertical;
 }
 
+.option-button {
+    font-size: 0.8rem;
+    color: #ff3e00;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 20px;
+    padding: 0;
+}
 </style>
