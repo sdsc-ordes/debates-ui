@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import { onTimeUpdate, jumpToTime } from "./videoUtils";
+  import { onTimeUpdate, jumpToTime, getMatchingSegment, getMatchingSpeakerIndex } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
   import { mapSubtitles, mapSpeakers, mapSegments } from ".//mapMongoDbToPage";
   import type { Subtitle } from "./subtitle.interface";
@@ -19,6 +19,7 @@
   let { videoSrc, trackSrc } = getMediaSources(videoId);
   let isVideoPaused = writable(true);
   let currentSubtitleIndex = -1;
+  let currentSpeakerIndex = -1;
   let segments: Segment[] = [];
 
   onMount(async () => {
@@ -35,10 +36,21 @@
   });
 
   function handleTimeUpdate() {
-    const subs = $subtitles;
-    const updatedIndex = onTimeUpdate(video.currentTime, subs);
-    currentSubtitleIndex = updatedIndex - 1;
+  const updatedIndex = onTimeUpdate(video.currentTime, $subtitles);
+  currentSubtitleIndex = updatedIndex - 1;
+  if (currentSubtitleIndex < 0) {
+    currentSpeakerIndex = -1;
+    return;
   }
+  try {
+    const currentSegment = getMatchingSegment($subtitles[currentSubtitleIndex].segment_nr, segments);
+    console.log(currentSegment);
+    currentSpeakerIndex = getMatchingSpeakerIndex(currentSegment.speaker_id, $speakers);
+    console.log(currentSpeakerIndex);
+  } catch (error) {
+    console.error('Error during time update:', error);
+  }
+}
 
   function updateSubtitle(index: number, updatedText: string) {
     subtitles.update((subs) => {

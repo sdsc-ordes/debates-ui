@@ -1,4 +1,6 @@
 import type { Subtitle } from "./subtitle.interface";
+import type { Speaker } from "./speaker.interface";
+import type { Segment } from "./segment.interface";
 
 export function onTimeUpdate(currentTime: number, subtitles: Subtitle[]): number {
     const currentSubtitle = subtitles.find(sub => currentTime >= sub.start && currentTime <= sub.end);
@@ -6,6 +8,22 @@ export function onTimeUpdate(currentTime: number, subtitles: Subtitle[]): number
         return currentSubtitle.index;
     }
     return -1;
+}
+
+export function getMatchingSegment(segmentNr: number, segments: Segment[]): Segment {
+    const segment = segments.find(seg => seg.segment_nr === segmentNr);
+    if (!segment) {
+        throw new Error(`Segment with ID ${segmentNr} not found.`);
+    }
+    return segment;
+}
+
+export function getMatchingSpeakerIndex(speakerId: string, speakers: Speaker[]): number {
+    const index = speakers.findIndex(speak => speak.speaker_id === speakerId);
+    if (index === -1) {
+        throw new Error(`Speaker with ID ${speakerId} not found.`);
+    }
+    return index;
 }
 
 export function jumpToTime(video: HTMLVideoElement, time: number) {
