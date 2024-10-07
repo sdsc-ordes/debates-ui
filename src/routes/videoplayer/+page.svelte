@@ -3,8 +3,14 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import { onTimeUpdate, jumpToTime, getMatchingSegment, getSegmentContentDisplay,
-    getMatchingSpeakerIndex, getSpeakerDisplay } from "./videoUtils";
+  import {
+    onTimeUpdate,
+    jumpToTime,
+    getMatchingSegment,
+    getSegmentContentDisplay,
+    getMatchingSpeakerIndex,
+    getSpeakerDisplay,
+  } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
   import { mapSubtitles, mapSpeakers, mapSegments } from ".//mapMongoDbToPage";
   import type { Subtitle } from "./subtitle.interface";
@@ -38,19 +44,25 @@
   });
 
   function handleTimeUpdate() {
-  const updatedIndex = onTimeUpdate(video.currentTime, $subtitles);
-  currentSubtitleIndex = updatedIndex - 1;
-  if (currentSubtitleIndex < 0) {
-    currentSpeakerIndex = -1;
-    return;
+    const updatedIndex = onTimeUpdate(video.currentTime, $subtitles);
+    currentSubtitleIndex = updatedIndex - 1;
+    if (currentSubtitleIndex < 0) {
+      currentSpeakerIndex = -1;
+      return;
+    }
+    try {
+      const currentSegment = getMatchingSegment(
+        $subtitles[currentSubtitleIndex].segment_nr,
+        segments,
+      );
+      currentSpeakerIndex = getMatchingSpeakerIndex(
+        currentSegment.speaker_id,
+        $speakers,
+      );
+    } catch (error) {
+      console.error("Error during time update:", error);
+    }
   }
-  try {
-    const currentSegment = getMatchingSegment($subtitles[currentSubtitleIndex].segment_nr, segments);
-    currentSpeakerIndex = getMatchingSpeakerIndex(currentSegment.speaker_id, $speakers);
-  } catch (error) {
-    console.error('Error during time update:', error);
-  }
-}
 
   function updateSubtitle(index: number, updatedText: string) {
     subtitles.update((subs) => {
@@ -99,12 +111,21 @@
     <div class="subtitle-container {currentSubtitleIndex >= 0 ? 'show' : ''}">
       {#if currentSpeaker}
         <div class="speaker">
-          <label for="speaker-id">Speaker ({currentSpeaker.speaker_id})<br>Name:</label>
+          <label for="speaker-id">({currentSpeaker.speaker_id}) Name:</label>
           <input
             id="speaker-name"
             placeholder="name"
             type="text"
             bind:value={currentSpeaker.name}
+            class="editable-input"
+            disabled={!$isVideoPaused}
+          />
+          <label for="speaker-country">Country (the speaker represents):</label>
+          <input
+            id="speaker-country"
+            placeholder="country"
+            type="text"
+            bind:value={currentSpeaker.country}
             class="editable-input"
             disabled={!$isVideoPaused}
           />
@@ -133,77 +154,80 @@
         {index + 1}.
         <span>{getSpeakerDisplay(segment.speaker_id, $speakers)}</span>
         <span>{segment.time_start} - {segment.time_end}</span>
-        <button class="option-button" on:click={() => jumpToTime(video, segment.start)}>
+        <button
+          class="option-button"
+          on:click={() => jumpToTime(video, segment.start)}
+        >
           Play Segment
         </button>
         <button class="option-button" on:click={() => toggleStatement(index)}>
           {#if segment.show_full_content}Hide Statement{:else}Show Statement{/if}
-        </button>         
+        </button>
         <p>
           {getSegmentContentDisplay(segment, $subtitles)}
-        </p>       
+        </p>
       </div>
     {/each}
   </div>
 </div>
 
 <style>
-.video-subtitle-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
+  .video-subtitle-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
 
-.video {
-  width: 600px;
-  border: 1px solid #ddd;
-}
+  .video {
+    width: 600px;
+    border: 1px solid #ddd;
+  }
 
-.subtitle-container {
-  width: 400px;
-  min-height: 100px;
-  padding: 10px;
-  font-size: 18px;
-  white-space: pre-wrap;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  visibility: hidden;
-}
+  .subtitle-container {
+    width: 400px;
+    min-height: 100px;
+    padding: 10px;
+    font-size: 18px;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    visibility: hidden;
+  }
 
-.subtitle-container.show {
-  visibility: visible;
-}
+  .subtitle-container.show {
+    visibility: visible;
+  }
 
-.segment-item {
-  margin-bottom: 1rem;
-}
+  .segment-item {
+    margin-bottom: 1rem;
+  }
 
-.editable-input {
-  width: 100%;
-  padding: 8px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
+  .editable-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 
-.editable-textarea {
-  width: 100%;
-  height: 200px;
-  padding: 8px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-}
+  .editable-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
 
-#label-speaker-name {
-  display: block;
-}
+  #label-speaker-name {
+    display: block;
+  }
 
-.option-button {
+  .option-button {
     font-size: 0.8rem;
     color: #ff3e00;
     background: none;
@@ -211,5 +235,5 @@
     cursor: pointer;
     margin-right: 20px;
     padding: 0;
-}
+  }
 </style>

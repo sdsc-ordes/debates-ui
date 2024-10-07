@@ -29,11 +29,14 @@ export function getMatchingSpeakerIndex(speakerId: string, speakers: Speaker[]):
 export function getSpeakerDisplay(speakerId: string, speakers: Speaker[]): String {
     const speakerIndex = getMatchingSpeakerIndex(speakerId, speakers)
     const speaker = speakers[speakerIndex]
+    let speakerDisplay = speaker.speaker_id
     if (speaker.name) {
-        return speaker.name;
-    } else {
-        return speaker.speaker_id;
+        speakerDisplay = speaker.name;
     }
+    if (speaker.country) {
+        speakerDisplay = `${speakerDisplay} (${speaker.country})`;
+    }
+    return speakerDisplay;  
 }
 
 export function getSegmentContentDisplay(segment: Segment, subtitles: Subtitle[]): string {
