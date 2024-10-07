@@ -136,12 +136,12 @@
         <button class="option-button" on:click={() => jumpToTime(video, segment.start)}>
           Play Segment
         </button>
-        <p>
-          {getSegmentContentDisplay(segment, $subtitles)}
-        </p>
         <button class="option-button" on:click={() => toggleStatement(index)}>
           {#if segment.show_full_content}Hide Statement{:else}Show Statement{/if}
-        </button>        
+        </button>         
+        <p>
+          {getSegmentContentDisplay(segment, $subtitles)}
+        </p>       
       </div>
     {/each}
   </div>
