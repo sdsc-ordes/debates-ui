@@ -26,6 +26,16 @@ export function getMatchingSpeakerIndex(speakerId: string, speakers: Speaker[]):
     return index;
 }
 
+export function getSpeakerDisplay(speakerId: string, speakers: Speaker[]): String {
+    const speakerIndex = getMatchingSpeakerIndex(speakerId, speakers)
+    const speaker = speakers[speakerIndex]
+    if (speaker.name) {
+        return speaker.name;
+    } else {
+        return speaker.speaker_id;
+    }
+}
+
 export function jumpToTime(video: HTMLVideoElement, time: number) {
     video.currentTime = time;
     video.play(); // Optionally start playing after jump

@@ -3,7 +3,8 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { writable } from "svelte/store";
-  import { onTimeUpdate, jumpToTime, getMatchingSegment, getMatchingSpeakerIndex } from "./videoUtils";
+  import { onTimeUpdate, jumpToTime, getMatchingSegment, 
+    getMatchingSpeakerIndex, getSpeakerDisplay } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
   import { mapSubtitles, mapSpeakers, mapSegments } from ".//mapMongoDbToPage";
   import type { Subtitle } from "./subtitle.interface";
@@ -125,8 +126,7 @@
     {#each segments as segment, index}
       <div class="segment-item">
         {index + 1}.
-        <span>{$speakers[getMatchingSpeakerIndex(segment.speaker_id, $speakers)].speaker_id}</span>
-        <span>{$speakers[getMatchingSpeakerIndex(segment.speaker_id, $speakers)].name}</span>
+        <span>{getSpeakerDisplay(segment.speaker_id, $speakers)}</span>
         <span>{segment.time_start} - {segment.time_end}</span>
         <button class="option-button" on:click={() => jumpToTime(video, segment.start)}>
           Play Segment
