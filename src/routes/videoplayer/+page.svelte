@@ -12,6 +12,7 @@
   //import "./page.css";
 
   export let data: PageData;
+  let startTime = $page.url.searchParams.get("start") || 0;
   let video: HTMLVideoElement;
   let subtitles: Writable<Subtitle[]> = writable([]);
   let speakers: Writable<Speaker[]> = writable([]);
@@ -30,6 +31,9 @@
       segments = mapSegments(videoData.segments);
       video.addEventListener("play", () => isVideoPaused.set(false));
       video.addEventListener("pause", () => isVideoPaused.set(true));
+    }
+    if (startTime) {
+      jumpToTime(video, Number(startTime));
     }
   });
 
