@@ -1,4 +1,4 @@
-import { start_mongo } from "./lib/db/mongo";
+import { start_mongo } from "./lib/mongo/mongo";
 
 start_mongo()
   .then((): void => {

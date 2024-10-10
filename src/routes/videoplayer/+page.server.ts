@@ -1,4 +1,4 @@
-import db from "$lib/db/mongo";
+import db from "$lib/mongo/mongo";
 import type { PageServerLoad } from "./$types";
 const videoCollection = import.meta.env.VITE_MONGO_VIDEO_COLLECTION;
 
