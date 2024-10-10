@@ -1,4 +1,4 @@
-import { formatTimeForDisplay } from "$lib/displayUtils";
+import { formatTimeForDisplay } from "$lib/utils/displayUtils";
 import type { Subtitle, SubtitleDB } from './subtitle.interface';
 import type { Speaker, SpeakerDB } from './speaker.interface';
 import type { Segment, SegmentDB } from './segment.interface';

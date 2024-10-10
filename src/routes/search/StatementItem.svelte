@@ -3,7 +3,7 @@
     import {
         getFirstNonEmptyStatement,
     } from "./statement-utils";
-    import { formatTimeForDisplay, displayIsoDate } from "$lib/displayUtils";
+    import { formatTimeForDisplay, displayIsoDate } from "$lib/utils/displayUtils";
 
     export let doc;
     export let query;
