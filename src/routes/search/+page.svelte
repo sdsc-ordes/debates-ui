@@ -3,8 +3,8 @@
   import StatementItem from "./StatementItem.svelte";
   import FacetCounts from "./FacetCounts.svelte";
   import "./page.css";
-  import SolrForm from "$lib/SearchForm.svelte";
-  import { fetchSolrData } from "$lib/solrSearch";
+  import SolrForm from "$lib/components/SearchForm.svelte";
+  import { fetchSolrData } from "$lib/solr/solrSearch";
 
   const solrUrl = import.meta.env.VITE_SOLR_URL;
   let searchResults = writable(null);
