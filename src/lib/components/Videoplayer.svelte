@@ -1,17 +1,21 @@
 <script lang="ts">
-    export let videoSrc: string;
-    export let trackSrc: string;
-  
+    import { getMediaSources } from "$lib/s3/s3";
+    import type { TimeUpdateParameters } from "$lib/interfaces/subtitle.interface";
+
+    export let videoId: string;
+
     let video: HTMLVideoElement;
-    export let parameters: number;
-    export let updateParameters: { index: number; content: string };
+    let { videoSrc, trackSrc } = getMediaSources(videoId);
+
+    export let timeUpdateParameters: TimeUpdateParameters;
   
     function handleTimeUpdate() {
-      parameters = video.currentTime;
-      updateParameters = {
-        index: 123 + parameters,
-        content: "hello",
-      };
+      timeUpdateParameters = {
+        currentTime: video.currentTime,
+        currentSubtitleIndex: 3,
+        currentSegmentIndex: 0,
+        currentSpeakerIndex: 6,
+      }
     }
   </script>
   

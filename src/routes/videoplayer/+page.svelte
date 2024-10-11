@@ -12,7 +12,7 @@
     getSpeakerDisplay,
   } from "./videoUtils";
   import { getMediaSources } from "./mediaUtils";
-  import { mapSubtitles, mapSpeakers, mapSegments } from ".//mapMongoDbToPage";
+  import { mapSubtitles, mapSpeakers, mapSegments } from "$lib/mongo/mapMongoDbToPage";
   import type { Subtitle } from "$lib/interfaces/subtitle.interface";
   import type { Segment } from "$lib/interfaces/segment.interfaces/segment.interface";
   //import "./page.css";

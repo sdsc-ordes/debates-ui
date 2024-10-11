@@ -1,7 +1,7 @@
 import { formatTimeForDisplay } from "$lib/utils/displayUtils";
-import type { Subtitle, SubtitleDB } from '../../lib/interfaces/subtitle.interface';
-import type { Speaker, SpeakerDB } from '../../lib/interfaces/speaker.interface';
-import type { Segment, SegmentDB } from '../../lib/interfaces/segment.interface';
+import type { Subtitle, SubtitleDB } from '$lib/interfaces/subtitle.interface';
+import type { Speaker, SpeakerDB } from '$lib/interfaces/speaker.interface';
+import type { Segment, SegmentDB } from '$lib/interfaces/segment.interface';
 
 export function mapSubtitles(subtitles: SubtitleDB[]): Subtitle[] {
     return subtitles.map((subtitle: SubtitleDB): Subtitle => ({

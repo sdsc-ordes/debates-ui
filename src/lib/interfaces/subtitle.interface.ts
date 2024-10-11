@@ -15,3 +15,10 @@ export interface SubtitleDB {
     content: string,
     segment_nr: number,
 }
+
+export interface TimeUpdateParameters {
+    currentTime: number;
+    currentSubtitleIndex: number,
+    currentSegmentIndex: number,
+    currentSpeakerIndex: number,
+}

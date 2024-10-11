@@ -1,28 +1,31 @@
-<script lang="ts">
-  import VideoPlayer from "$lib/components/Videoplayer.svelte";
+<script lang="ts"> 
+  import { onMount } from "svelte";
   import { page } from "$app/stores";
   import type { PageData } from "./$types";  
-  import { onMount } from "svelte";
-  import { getMediaSources } from "$lib/s3/s3";
+
+  import VideoPlayer from "$lib/components/VideoPlayer.svelte";
+  import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
+  import { mapSubtitles } from "$lib/mongo/mapMongoDbToPage";
+  import type { Subtitle, TimeUpdateParameters } from "$lib/interfaces/subtitle.interface";
+
   export let data: PageData;
 
-  let videoId = $page.url.searchParams.get("video_id");
-  let { videoSrc, trackSrc } = getMediaSources(videoId);
+  let subtitles: Subtitle[];
 
-  let parameters: number;
-  interface updates {
-    index: number;
-    content: string;
-  }
-  let updateParameters: updates = {
-    index: 1,
-    content: "init",
+  let videoId = "first-video";
+  let startTime = $page.url.searchParams.get("start") || 0;
+
+  let timeUpdateParameters: TimeUpdateParameters = {
+    currentTime: startTime,
+    currentSubtitleIndex: 3,
+    currentSegmentIndex: 0,
+    currentSpeakerIndex: 6,
   };
 
   onMount(() => {
     const videoData = data?.video?.[0];
     if (videoData) {
-      console.log(videoData);
+      subtitles= mapSubtitles(videoData.subtitles);
     }
   });  
 </script>
@@ -33,15 +36,16 @@
 </svelte:head>
 
 <div class="parameters">
-  {parameters}
-  {updateParameters.index}
-  {updateParameters.content}
+  {timeUpdateParameters.currentTime}
+  {timeUpdateParameters.currentSubtitleIndex}
 </div>
 
 <!-- Use the VideoPlayer component -->
 <VideoPlayer
-  {videoSrc}
-  {trackSrc}
-  bind:parameters
-  bind:updateParameters
+  {videoId}
+  bind:timeUpdateParameters
+/>
+
+<SegmentDisplay 
+  {subtitles}
 />
