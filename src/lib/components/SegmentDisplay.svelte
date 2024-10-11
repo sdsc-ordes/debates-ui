@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Subtitle, TimeUpdateParameters } from "$lib/interfaces/subtitle.interface";
+    import type { Subtitle, TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
     export let subtitles: Subtitle[] = [];
     export let timeUpdateParameters: TimeUpdateParameters;
 </script>

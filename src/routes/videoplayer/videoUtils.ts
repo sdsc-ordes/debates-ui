@@ -1,4 +1,4 @@
-import type { Subtitle } from "../../lib/interfaces/subtitle.interface";
+import type { Subtitle } from "../../lib/interfaces/videoplayer.interface";
 import type { Speaker } from "../../lib/interfaces/speaker.interface";
 import type { Segment } from "../../lib/interfaces/segment.interface";
 

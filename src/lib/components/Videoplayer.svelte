@@ -1,12 +1,14 @@
 <script lang="ts">
     import { getMediaSources } from "$lib/s3/s3";
     import { onVideoTimeUpdate } from "$lib/utils/videoTimeUpdate";
-    import type { TimeUpdateParameters } from "$lib/interfaces/subtitle.interface";
-    import type { Subtitle } from "$lib/interfaces/subtitle.interface";
+    import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
+    import type { Subtitle, Segment, Speaker } from "$lib/interfaces/videoplayer.interface";
 
     export let videoId: string;
     export let timeUpdateParameters: TimeUpdateParameters;
     export let subtitles: Subtitle[] = [];
+    export let segments: Segment[] = [];
+    export let speakers: Speaker[] = [];
 
     let video: HTMLVideoElement;
     let { videoSrc, trackSrc } = getMediaSources(videoId);
@@ -15,6 +17,8 @@
       timeUpdateParameters = onVideoTimeUpdate(
         video.currentTime,
         subtitles,
+        segments,
+        speakers,
         timeUpdateParameters.currentSubtitleIndex,
       );
     }

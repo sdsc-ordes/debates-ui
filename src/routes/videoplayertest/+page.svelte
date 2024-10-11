@@ -6,14 +6,15 @@
   import VideoPlayer from "$lib/components/VideoPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
-  import { mapSpeakers, mapSubtitles } from "$lib/mongo/mapMongoDbToPage";
-  import type { Subtitle, TimeUpdateParameters } from "$lib/interfaces/subtitle.interface";
-  import type { Speaker } from "$lib/interfaces/speaker.interface";
+  import { mapSegments, mapSpeakers, mapSubtitles } from "$lib/mongo/mapMongoDbToPage";
+  import type { Subtitle, TimeUpdateParameters, 
+    Speaker, Segment } from "$lib/interfaces/videoplayer.interface";
 
   export let data: PageData;
 
   let subtitles: Subtitle[];
   let speakers: Speaker[];
+  let segments: Segment[];
 
   let videoId = "first-video";
   let startTime = $page.url.searchParams.get("start") || 0;
@@ -28,6 +29,7 @@
     const videoData = data?.video?.[0];
     if (videoData) {
       subtitles = mapSubtitles(videoData.subtitles);
+      segments = mapSegments(videoData.segments);
       speakers = mapSpeakers(videoData.speakers);
       console.log(speakers);
     }
@@ -43,6 +45,8 @@
 <VideoPlayer
   {videoId}
   {subtitles}
+  {segments}
+  {speakers}
   bind:timeUpdateParameters
 />
 <SpeakerDisplay
