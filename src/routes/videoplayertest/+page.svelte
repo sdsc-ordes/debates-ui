@@ -1,7 +1,10 @@
 <script lang="ts">
   import VideoPlayer from "$lib/components/Videoplayer.svelte";
   import { page } from "$app/stores";
+  import type { PageData } from "./$types";  
+  import { onMount } from "svelte";
   import { getMediaSources } from "$lib/s3/s3";
+  export let data: PageData;
 
   let videoId = $page.url.searchParams.get("video_id");
   let { videoSrc, trackSrc } = getMediaSources(videoId);
@@ -15,6 +18,13 @@
     index: 1,
     content: "init",
   };
+
+  onMount(() => {
+    const videoData = data?.video?.[0];
+    if (videoData) {
+      console.log(videoData);
+    }
+  });  
 </script>
 
 <svelte:head>

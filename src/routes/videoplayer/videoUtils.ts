@@ -1,6 +1,6 @@
-import type { Subtitle } from "./subtitle.interface";
-import type { Speaker } from "./speaker.interface";
-import type { Segment } from "./segment.interface";
+import type { Subtitle } from "../../lib/interfaces/subtitle.interface";
+import type { Speaker } from "../../lib/interfaces/speaker.interface";
+import type { Segment } from "../../lib/interfaces/segment.interface";
 
 export function onTimeUpdate(currentTime: number, subtitles: Subtitle[]): number {
     const currentSubtitle = subtitles.find(sub => currentTime >= sub.start && currentTime <= sub.end);
