@@ -8,7 +8,24 @@
 <p>
     {#each speakers as speaker, index}  
         {#if index === timeUpdateParameters.currentSpeakerIndex}
-        { speaker.speaker_id } { speaker.name } { speaker.country } 
+        <div class="speaker">
+            <label for="speaker-id">({speaker.speaker_id}) Name:</label>
+            <input
+              id="speaker-name"
+              placeholder="name"
+              type="text"
+              bind:value={speaker.name}
+              class="editable-input"
+            />
+            <label for="speaker-country">Country (the speaker represents):</label>
+            <input
+              id="speaker-country"
+              placeholder="country"
+              type="text"
+              bind:value={speaker.country}
+              class="editable-input"
+            />
+          </div>        
         {/if}
     {/each}
 </p>

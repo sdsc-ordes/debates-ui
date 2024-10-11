@@ -38,6 +38,7 @@
 
   .play-button {
     background-color: rgba(0, 0, 0, 0.7);
+    padding:2px;
     color: white;
     border: none;
     font-size: 16px;
