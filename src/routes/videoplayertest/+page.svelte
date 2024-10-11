@@ -11,7 +11,6 @@
   export let data: PageData;
 
   let subtitles: Subtitle[];
-  let activeSubtitleIndex: number = -1;
 
   let videoId = "first-video";
   let startTime = $page.url.searchParams.get("start") || 0;
@@ -34,11 +33,6 @@
   <title>Test Page</title>
   <meta name="description" content="Testpage" />
 </svelte:head>
-
-<div class="parameters">
-  {timeUpdateParameters.currentTime}
-  {timeUpdateParameters.currentSubtitleIndex}
-</div>
 
 <!-- Use the VideoPlayer component -->
 <VideoPlayer

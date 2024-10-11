@@ -4,9 +4,6 @@
     export let timeUpdateParameters: TimeUpdateParameters;
 </script>
 
-<p>subtitle: {timeUpdateParameters.currentSubtitleIndex}</p>
-<p>segment: {timeUpdateParameters.currentSegmentIndex}</p>
-
 <p>
     {#each subtitles as subtitle, index}  
       {#if subtitle.segment_nr === timeUpdateParameters.currentSegmentIndex}
@@ -20,8 +17,5 @@
 <style>
     .highlighted {
         color:red;
-    }
-    .display {
-        display:none;
-    }    
+    }  
 </style>
