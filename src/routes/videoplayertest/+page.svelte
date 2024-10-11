@@ -53,7 +53,7 @@
 
 <div class="video-layout">
 
-  <SegmentList {video} {segments} {timeUpdateParameters} />
+  <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
   <VideoPlayer
     {videoId}

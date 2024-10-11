@@ -1,18 +1,26 @@
 <script lang="ts">
   import type {
     Segment,
+    Speaker,
     TimeUpdateParameters,
   } from "$lib/interfaces/videoplayer.interface";
   import { formatTimeForDisplay } from "$lib/utils/displayUtils";
   import { jumpToTime } from "$lib/utils/videoStartUtils";
   export let segments: Segment[] = [];
+  export let speakers: Speaker[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
   export let video: HTMLVideoElement;
+  console.log(speakers)
 </script>
-
+<ul>
+{#each speakers as speaker, speaker_index}
+  <li>{speaker.name} {speaker.speaker_id} {speaker.country}</li>
+{/each}
+</ul>
 <ul>
   {#each segments as segment, index}
     <li>
+      { speakers[timeUpdateParameters.currentSpeakerIndex] }
       <button
         class="play-button"
         on:click={() => jumpToTime(video, segment.start)}
