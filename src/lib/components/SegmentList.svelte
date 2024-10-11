@@ -1,27 +1,50 @@
 <script lang="ts">
-    import type { Segment, TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
-    import { jumpToTime } from "$lib/utils/videoStartUtils";
-    export let segments: Segment[] = [];
-    export let timeUpdateParameters: TimeUpdateParameters;
-    export let video: HTMLVideoElement;    
+  import type {
+    Segment,
+    TimeUpdateParameters,
+  } from "$lib/interfaces/videoplayer.interface";
+  import { formatTimeForDisplay } from "$lib/utils/displayUtils";
+  import { jumpToTime } from "$lib/utils/videoStartUtils";
+  export let segments: Segment[] = [];
+  export let timeUpdateParameters: TimeUpdateParameters;
+  export let video: HTMLVideoElement;
 </script>
 
 <ul>
-    {#each segments as segment, index}  
-      <li>
-        { index + 1 }. { segment.speaker_id } 
-        <button
-          class="option-button"
-          on:click={() => jumpToTime(video, segment.start)}
-        >
-          Play Segment
-        </button>          
-      </li>  
-    {/each}
+  {#each segments as segment, index}
+    <li>
+      <button
+        class="play-button"
+        on:click={() => jumpToTime(video, segment.start)}
+      >
+        {formatTimeForDisplay(segment.start)} - {formatTimeForDisplay(
+          segment.end,
+        )}
+      </button>      
+      <span
+        class={segment.segment_nr === timeUpdateParameters.currentSegmentIndex ? "highlighted"
+          : ""}
+      >
+        {index + 1}. {segment.speaker_id}
+      </span>
+    </li>
+  {/each}
 </ul>
 
 <style>
-    .highlighted {
-        color:red;
-    }  
+  .highlighted {
+    color: red;
+  }
+
+  .play-button {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .play-button:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+  }  
 </style>

@@ -1,15 +1,23 @@
-<script lang="ts"> 
+<script lang="ts">
   import { onMount } from "svelte";
   import { page } from "$app/stores";
-  import type { PageData } from "./$types";  
+  import type { PageData } from "./$types";
 
   import VideoPlayer from "$lib/components/VideoPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
-  import { mapSegments, mapSpeakers, mapSubtitles } from "$lib/mongo/mapMongoDbToPage";
-  import type { Subtitle, TimeUpdateParameters, 
-    Speaker, Segment } from "$lib/interfaces/videoplayer.interface";
+  import {
+    mapSegments,
+    mapSpeakers,
+    mapSubtitles,
+  } from "$lib/mongo/mapMongoDbToPage";
+  import type {
+    Subtitle,
+    TimeUpdateParameters,
+    Speaker,
+    Segment,
+  } from "$lib/interfaces/videoplayer.interface";
 
   export let data: PageData;
 
@@ -35,7 +43,7 @@
       speakers = mapSpeakers(videoData.speakers);
       console.log(speakers);
     }
-  });  
+  });
 </script>
 
 <svelte:head>
@@ -43,29 +51,29 @@
   <meta name="description" content="Testpage" />
 </svelte:head>
 
-<!-- Use the VideoPlayer component -->
-<VideoPlayer
-  {videoId}
-  {startTime}
-  {subtitles}
-  {segments}
-  {speakers}
-  bind:video
-  bind:timeUpdateParameters
-/>
+<div class="video-layout">
 
-<SegmentList
-  {video} 
-  {segments}
-  {timeUpdateParameters}
-/>
+  <SegmentList {video} {segments} {timeUpdateParameters} />
 
-<SpeakerDisplay
-  {speakers}
-  {timeUpdateParameters}
-/>
+  <VideoPlayer
+    {videoId}
+    {startTime}
+    {subtitles}
+    {segments}
+    {speakers}
+    bind:video
+    bind:timeUpdateParameters
+  />
 
-<SegmentDisplay 
-  {subtitles}
-  {timeUpdateParameters}
-/>
+</div>
+
+<SpeakerDisplay {speakers} {timeUpdateParameters} />
+
+<SegmentDisplay {subtitles} {timeUpdateParameters} />
+
+<style>
+  .video-layout {
+    display: flex;
+    gap: 20px;
+  }
+</style>
