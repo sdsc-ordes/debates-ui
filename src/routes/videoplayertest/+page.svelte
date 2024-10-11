@@ -17,7 +17,7 @@
   let segments: Segment[];
 
   let videoId = "first-video";
-  let startTime = $page.url.searchParams.get("start") || 0;
+  let startTime: number = Number($page.url.searchParams.get("start") || 0);
 
   let timeUpdateParameters: TimeUpdateParameters = {
     currentSubtitleIndex: -1,
@@ -50,10 +50,12 @@
   {speakers}
   bind:timeUpdateParameters
 />
+
 <SpeakerDisplay
   {speakers}
   {timeUpdateParameters}
 />
+
 <SegmentDisplay 
   {subtitles}
   {timeUpdateParameters}

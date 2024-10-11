@@ -6,7 +6,7 @@
     import type { Subtitle, Segment, Speaker } from "$lib/interfaces/videoplayer.interface";
 
     export let videoId: string;
-    export let startTime: string;
+    export let startTime: number;
     export let timeUpdateParameters: TimeUpdateParameters;
     export let subtitles: Subtitle[] = [];
     export let segments: Segment[] = [];
