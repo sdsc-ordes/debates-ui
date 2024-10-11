@@ -8,7 +8,7 @@
     {#each subtitles as subtitle, index}  
       {#if subtitle.segment_nr === timeUpdateParameters.currentSegmentIndex}
       <span class={index === timeUpdateParameters.currentSubtitleIndex - 1 ? 'highlighted' : ''}>
-        {subtitle.segment_nr}{subtitle.content}
+        {subtitle.content}
       </span>    
       {/if}  
     {/each}
