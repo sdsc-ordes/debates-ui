@@ -43,9 +43,11 @@
 <!-- Use the VideoPlayer component -->
 <VideoPlayer
   {videoId}
+  {subtitles}
   bind:timeUpdateParameters
 />
 
 <SegmentDisplay 
   {subtitles}
+  {timeUpdateParameters}
 />

@@ -1,21 +1,18 @@
 <script lang="ts">
     import { getMediaSources } from "$lib/s3/s3";
+    import { onVideoTimeUpdate } from "$lib/utils/videoTimeUpdate";
     import type { TimeUpdateParameters } from "$lib/interfaces/subtitle.interface";
+    import type { Subtitle } from "$lib/interfaces/subtitle.interface";
 
     export let videoId: string;
+    export let timeUpdateParameters: TimeUpdateParameters;
+    export let subtitles: Subtitle[] = [];
 
     let video: HTMLVideoElement;
     let { videoSrc, trackSrc } = getMediaSources(videoId);
 
-    export let timeUpdateParameters: TimeUpdateParameters;
-  
     function handleTimeUpdate() {
-      timeUpdateParameters = {
-        currentTime: video.currentTime,
-        currentSubtitleIndex: 3,
-        currentSegmentIndex: 0,
-        currentSpeakerIndex: 6,
-      }
+      timeUpdateParameters = onVideoTimeUpdate(video.currentTime, subtitles);
     }
   </script>
   
