@@ -19,7 +19,7 @@ export function onVideoTimeUpdate(
         const previousSubtitle = subtitles[activeSubtitleIndex];
         console.log("case previous subtitle index positive, but subtitle not found", previousSubtitle);
         return {
-            currentSubtitleIndex: previousSubtitle.index,
+            currentSubtitleIndex: previousSubtitle.index - 1,
             currentSegmentIndex: previousSubtitle.segment_nr,
             currentSpeakerIndex: 6,
         }
