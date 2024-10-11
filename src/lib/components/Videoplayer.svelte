@@ -1,10 +1,12 @@
 <script lang="ts">
     import { getMediaSources } from "$lib/s3/s3";
+    import { onMount } from "svelte";
     import { onVideoTimeUpdate } from "$lib/utils/videoTimeUpdate";
     import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
     import type { Subtitle, Segment, Speaker } from "$lib/interfaces/videoplayer.interface";
 
     export let videoId: string;
+    export let startTime: string;
     export let timeUpdateParameters: TimeUpdateParameters;
     export let subtitles: Subtitle[] = [];
     export let segments: Segment[] = [];
@@ -22,6 +24,17 @@
         timeUpdateParameters.currentSubtitleIndex,
       );
     }
+
+    export function jumpToTime(video: HTMLVideoElement, time: number) {
+        video.currentTime = time;
+        video.play(); // Optionally start playing after jump
+    }
+
+    onMount(async () => {
+      if (startTime) {
+        jumpToTime(video, Number(startTime));
+      }
+    });      
   </script>
   
   <div class="video-container">

@@ -44,6 +44,7 @@
 <!-- Use the VideoPlayer component -->
 <VideoPlayer
   {videoId}
+  {startTime}
   {subtitles}
   {segments}
   {speakers}
