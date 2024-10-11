@@ -5,6 +5,7 @@
 
   import VideoPlayer from "$lib/components/VideoPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
+  import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
   import { mapSegments, mapSpeakers, mapSubtitles } from "$lib/mongo/mapMongoDbToPage";
   import type { Subtitle, TimeUpdateParameters, 
@@ -18,6 +19,7 @@
 
   let videoId = "first-video";
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
+  let video: HTMLVideoElement;
 
   let timeUpdateParameters: TimeUpdateParameters = {
     currentSubtitleIndex: -1,
@@ -48,7 +50,14 @@
   {subtitles}
   {segments}
   {speakers}
+  bind:video
   bind:timeUpdateParameters
+/>
+
+<SegmentList
+  {video} 
+  {segments}
+  {timeUpdateParameters}
 />
 
 <SpeakerDisplay

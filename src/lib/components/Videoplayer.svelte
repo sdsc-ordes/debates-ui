@@ -2,6 +2,7 @@
     import { getMediaSources } from "$lib/s3/s3";
     import { onMount } from "svelte";
     import { onVideoTimeUpdate } from "$lib/utils/videoTimeUpdate";
+    import { jumpToTime } from "$lib/utils/videoStartUtils";
     import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
     import type { Subtitle, Segment, Speaker } from "$lib/interfaces/videoplayer.interface";
 
@@ -11,8 +12,7 @@
     export let subtitles: Subtitle[] = [];
     export let segments: Segment[] = [];
     export let speakers: Speaker[] = [];
-
-    let video: HTMLVideoElement;
+    export let video: HTMLVideoElement;
     let { videoSrc, trackSrc } = getMediaSources(videoId);
 
     function handleTimeUpdate() {
@@ -23,16 +23,11 @@
         speakers,
         timeUpdateParameters.currentSubtitleIndex,
       );
-    }
-
-    export function jumpToTime(video: HTMLVideoElement, time: number) {
-        video.currentTime = time;
-        video.play(); // Optionally start playing after jump
-    }
+    }  
 
     onMount(async () => {
       if (startTime) {
-        jumpToTime(video, Number(startTime));
+        jumpToTime(video, startTime);
       }
     });      
   </script>
