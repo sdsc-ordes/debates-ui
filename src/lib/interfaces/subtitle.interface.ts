@@ -17,7 +17,6 @@ export interface SubtitleDB {
 }
 
 export interface TimeUpdateParameters {
-    currentTime: number;
     currentSubtitleIndex: number,
     currentSegmentIndex: number,
     currentSpeakerIndex: number,

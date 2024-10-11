@@ -10,7 +10,7 @@
 <p>
     {#each subtitles as subtitle, index}  
       {#if subtitle.segment_nr === timeUpdateParameters.currentSegmentIndex}
-      <span class={index === timeUpdateParameters.currentSubtitleIndex ? 'highlighted' : ''}>
+      <span class={index === timeUpdateParameters.currentSubtitleIndex - 1 ? 'highlighted' : ''}>
         {subtitle.segment_nr}{subtitle.content}
       </span>    
       {/if}  

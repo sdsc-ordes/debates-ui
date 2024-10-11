@@ -11,15 +11,15 @@
   export let data: PageData;
 
   let subtitles: Subtitle[];
+  let activeSubtitleIndex: number = -1;
 
   let videoId = "first-video";
   let startTime = $page.url.searchParams.get("start") || 0;
 
   let timeUpdateParameters: TimeUpdateParameters = {
-    currentTime: startTime,
-    currentSubtitleIndex: 3,
-    currentSegmentIndex: 0,
-    currentSpeakerIndex: 6,
+    currentSubtitleIndex: -1,
+    currentSegmentIndex: -1,
+    currentSpeakerIndex: -1,
   };
 
   onMount(() => {

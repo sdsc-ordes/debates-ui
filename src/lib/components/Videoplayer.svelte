@@ -12,7 +12,14 @@
     let { videoSrc, trackSrc } = getMediaSources(videoId);
 
     function handleTimeUpdate() {
-      timeUpdateParameters = onVideoTimeUpdate(video.currentTime, subtitles);
+      console.log(video.currentTime);
+      console.log("before update", timeUpdateParameters);
+      timeUpdateParameters = onVideoTimeUpdate(
+        video.currentTime,
+        subtitles,
+        timeUpdateParameters.currentSubtitleIndex,
+      );
+      console.log("after update", timeUpdateParameters);
     }
   </script>
   
