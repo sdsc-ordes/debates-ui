@@ -6,38 +6,33 @@
   } from "$lib/interfaces/videoplayer.interface";
   import { formatTimeForDisplay } from "$lib/utils/displayUtils";
   import { jumpToTime } from "$lib/utils/videoStartUtils";
+  import { displaySpeaker } from "$lib/utils/displayUtils";
+  
   export let segments: Segment[] = [];
   export let speakers: Speaker[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
   export let video: HTMLVideoElement;
-  console.log(speakers)
 </script>
-<ul>
-{#each speakers as speaker, speaker_index}
-  <li>{speaker.name} {speaker.speaker_id} {speaker.country}</li>
-{/each}
-</ul>
+
 <ul>
   {#each segments as segment, index}
     <li>
-      { speakers[timeUpdateParameters.currentSpeakerIndex] }
       <button
         class="play-button"
         on:click={() => jumpToTime(video, segment.start)}
       >
-        {formatTimeForDisplay(segment.start)} - {formatTimeForDisplay(
-          segment.end,
-        )}
+        {formatTimeForDisplay(segment.start)} - {formatTimeForDisplay(segment.end)}
       </button>      
       <span
-        class={segment.segment_nr === timeUpdateParameters.currentSegmentIndex ? "highlighted"
-          : ""}
+        class={segment.segment_nr === timeUpdateParameters.currentSegmentIndex ? "highlighted" : ""}
       >
-        {index + 1}. {segment.speaker_id}
+        {index + 1}. 
+        { displaySpeaker(segment.speaker_id, speakers) } 
       </span>
     </li>
   {/each}
 </ul>
+
 
 <style>
   .highlighted {

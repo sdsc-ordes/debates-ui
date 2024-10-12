@@ -53,7 +53,12 @@
 
 <div class="video-layout">
 
-  <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
+  <SegmentList 
+    {video} 
+    {segments} 
+    {speakers} 
+    {timeUpdateParameters} 
+  />
 
   <VideoPlayer
     {videoId}
@@ -67,9 +72,15 @@
 
 </div>
 
-<SpeakerDisplay {speakers} {timeUpdateParameters} />
+<SpeakerDisplay 
+ bind:speakers
+ {timeUpdateParameters} 
+/>
 
-<SegmentDisplay {subtitles} {timeUpdateParameters} />
+<SegmentDisplay 
+  {subtitles} 
+  {timeUpdateParameters} 
+/>
 
 <style>
   .video-layout {
