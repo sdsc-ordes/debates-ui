@@ -35,6 +35,10 @@
     currentSpeakerIndex: -1,
   };
 
+  function saveCorrections(): void {
+    alert("This function will save the corrected video metadata to the database. It is not yet implemented.")
+  }
+
   onMount(() => {
     const videoData = data?.video?.[0];
     if (videoData) {
@@ -43,7 +47,7 @@
       speakers = mapSpeakers(videoData.speakers);
       console.log(speakers);
     }
-  });
+  }); 
 </script>
 
 <svelte:head>
@@ -65,7 +69,9 @@
   />
 </div>
 
-<button class="save-button"> Save all corrections </button>
+<button class="save-button" on:click={() => saveCorrections()}> 
+    Save all corrections 
+</button>
 
 <SpeakerDisplay bind:speakers {timeUpdateParameters} />
 
