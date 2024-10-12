@@ -52,13 +52,7 @@
 </svelte:head>
 
 <div class="video-layout">
-
-  <SegmentList 
-    {video} 
-    {segments} 
-    {speakers} 
-    {timeUpdateParameters} 
-  />
+  <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
   <VideoPlayer
     {videoId}
@@ -69,18 +63,11 @@
     bind:video
     bind:timeUpdateParameters
   />
-
 </div>
 
-<SpeakerDisplay 
- bind:speakers
- {timeUpdateParameters} 
-/>
+<SpeakerDisplay bind:speakers {timeUpdateParameters} />
 
-<SegmentDisplay 
-  {subtitles} 
-  {timeUpdateParameters} 
-/>
+<SegmentDisplay {subtitles} {timeUpdateParameters} />
 
 <style>
   .video-layout {
