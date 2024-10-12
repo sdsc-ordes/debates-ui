@@ -43,10 +43,5 @@
   .play-button {
     padding: 0.2rem;
     font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
   }
 </style>

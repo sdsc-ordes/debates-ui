@@ -65,6 +65,8 @@
   />
 </div>
 
+<button class="save-button"> Save all corrections </button>
+
 <SpeakerDisplay bind:speakers {timeUpdateParameters} />
 
 <SegmentDisplay {subtitles} {timeUpdateParameters} />
@@ -73,5 +75,18 @@
   .video-layout {
     display: flex;
     gap: 20px;
+  }
+
+  .save-button {
+    padding: 0.5rem 1rem;
+    width: 300px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff3e00;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
   }
 </style>
