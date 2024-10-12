@@ -8,14 +8,6 @@ export interface Subtitle {
     segment_nr: number,
 }
 
-export interface SubtitleDB {
-    index: number
-    start: number,
-    end: number,
-    content: string,
-    segment_nr: number,
-}
-
 export interface TimeUpdateParameters {
     currentSubtitleIndex: number,
     currentSegmentIndex: number,
@@ -23,12 +15,6 @@ export interface TimeUpdateParameters {
 }
 
 export interface Speaker {
-    speaker_id: string,
-    name: string,
-    country: string,
-}
-
-export interface SpeakerDB {
     speaker_id: string,
     name: string,
     country: string,
@@ -44,13 +30,4 @@ export interface Segment {
     last_index: number,
     segment_nr: number,
     show_full_content: boolean;
-}
-
-export interface SegmentDB {
-    speaker_id: string,
-    start: number,
-    end: number,
-    first_index: number,
-    last_index: number,
-    segment_nr: number,
 }
