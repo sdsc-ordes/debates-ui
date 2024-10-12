@@ -1,3 +1,5 @@
+import type { Speaker } from "$lib/interfaces/videoplayer.interface";
+
 export function formatTimeForDisplay(seconds: number): string {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -12,10 +14,28 @@ export function formatTimeForDisplay(seconds: number): string {
     return `${minsStr}:${secsStr}`;
 }
 
-export function displayIsoDate(isoDate) {
+export function displayIsoDate(isoDate: string) {
     const date = new Date(isoDate);
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based, so add 1
     const day = date.getDate().toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
-  }
+}
+
+export function displaySpeaker(speakerId: string, speakers: Speaker[]): string {
+    const speaker = speakers.find(speak => speak.speaker_id === speakerId);
+    if (!speaker) {
+        throw new Error(`Speaker with ID ${speakerId} not found.`);
+    }
+    const speakerForDisplay = getSpeakerDisplay(speaker);
+    console.log("get speaker display", speakerForDisplay)
+    return speakerForDisplay;
+}
+
+function getSpeakerDisplay(speaker: Speaker): string {
+    let displayName = speaker.name ? speaker.name : speaker.speaker_id;
+    if (speaker.country) {
+      displayName += ` (${speaker.country})`;
+    }
+    return displayName;
+}
