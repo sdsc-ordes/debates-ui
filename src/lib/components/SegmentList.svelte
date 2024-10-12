@@ -14,7 +14,7 @@
   export let video: HTMLVideoElement;
 </script>
 
-<ul>
+<ol>
   {#each segments as segment, index}
     <li>
       <button
@@ -26,29 +26,15 @@
       <span
         class={segment.segment_nr === timeUpdateParameters.currentSegmentIndex ? "highlighted" : ""}
       >
-        {index + 1}. 
         { displaySpeaker(segment.speaker_id, speakers) } 
       </span>
     </li>
   {/each}
-</ul>
+</ol>
 
 
 <style>
   .highlighted {
     color: red;
-  }
-
-  .play-button {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding:2px;
-    color: white;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  .play-button:hover {
-    background-color: rgba(0, 0, 0, 0.9);
-  }  
+  } 
 </style>
