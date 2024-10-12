@@ -2,7 +2,7 @@
     import { writable } from "svelte/store";
     import {
         getFirstNonEmptyStatement,
-    } from "./statement-utils";
+    } from "../utils/statement-utils";
     import { formatTimeForDisplay, displayIsoDate } from "$lib/utils/displayUtils";
 
     export let doc;
