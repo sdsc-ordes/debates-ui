@@ -32,4 +32,4 @@ COPY --from=build /app/node_modules ./node_modules
 EXPOSE 3000
 
 # Start the server
-CMD ["node", "build"]
+CMD ["npm", "run", "dev"]
