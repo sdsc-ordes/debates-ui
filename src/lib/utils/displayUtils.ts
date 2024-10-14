@@ -28,7 +28,6 @@ export function displaySpeaker(speakerId: string, speakers: Speaker[]): string {
         throw new Error(`Speaker with ID ${speakerId} not found.`);
     }
     const speakerForDisplay = getSpeakerDisplay(speaker);
-    console.log("get speaker display", speakerForDisplay)
     return speakerForDisplay;
 }
 

@@ -4,18 +4,13 @@
 </svelte:head>
 
 <section>
-	<h1>
-		To the UNHCR Political Debates PoC
-	</h1>
+	<h1>To the UNHCR Political Debates PoC</h1>
 
-	<h2>
-		Searching in video transcripts
-	</h2>
+	<h2>Searching in video transcripts</h2>
 	<ul>
 		<li>Currently there is only one video available</li>
 		<li>But the goal will be to add many more ...</li>
-	</ul>	
-
+	</ul>
 </section>
 
 <style>

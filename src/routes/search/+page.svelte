@@ -1,7 +1,7 @@
 <script lang="ts">
   import { writable } from "svelte/store";
-  import StatementItem from "./StatementItem.svelte";
-  import FacetCounts from "./FacetCounts.svelte";
+  import StatementItem from "$lib/components/StatementItem.svelte";
+  import FacetCounts from "$lib/components/FacetCounts.svelte";
   import "./page.css";
   import SolrForm from "$lib/components/SearchForm.svelte";
   import { fetchSolrData } from "$lib/solr/solrSearch";

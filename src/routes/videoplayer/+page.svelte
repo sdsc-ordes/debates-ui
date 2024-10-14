@@ -35,6 +35,10 @@
     currentSpeakerIndex: -1,
   };
 
+  function saveCorrections(): void {
+    alert("This function will save the corrected video metadata to the database. It is not yet implemented.")
+  }
+
   onMount(() => {
     const videoData = data?.video?.[0];
     if (videoData) {
@@ -43,7 +47,7 @@
       speakers = mapSpeakers(videoData.speakers);
       console.log(speakers);
     }
-  });
+  }); 
 </script>
 
 <svelte:head>
@@ -52,13 +56,7 @@
 </svelte:head>
 
 <div class="video-layout">
-
-  <SegmentList 
-    {video} 
-    {segments} 
-    {speakers} 
-    {timeUpdateParameters} 
-  />
+  <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
   <VideoPlayer
     {videoId}
@@ -69,22 +67,32 @@
     bind:video
     bind:timeUpdateParameters
   />
-
 </div>
 
-<SpeakerDisplay 
- bind:speakers
- {timeUpdateParameters} 
-/>
+<button class="save-button" on:click={() => saveCorrections()}> 
+    Save all corrections 
+</button>
 
-<SegmentDisplay 
-  {subtitles} 
-  {timeUpdateParameters} 
-/>
+<SpeakerDisplay bind:speakers {timeUpdateParameters} />
+
+<SegmentDisplay {subtitles} {timeUpdateParameters} />
 
 <style>
   .video-layout {
     display: flex;
     gap: 20px;
+  }
+
+  .save-button {
+    padding: 0.5rem 1rem;
+    width: 300px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff3e00;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
   }
 </style>

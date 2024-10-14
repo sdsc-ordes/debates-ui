@@ -1,20 +1,22 @@
-<script>import Header from './Header.svelte';
-import '../app.css';</script>
+<script>
+	import Header from "./Header.svelte";
+	import "../app.css";
+</script>
 
 <div class="app">
-	<Header></Header>
+	<Header />
 
 	<main>
-		<slot></slot>
+		<slot />
 	</main>
 
 	<footer>
-		<p>powered by  <a href="https://kit.svelte.dev">kit.svelte.dev</a> and 
-		   <a href="https://solr.apache.org/">Apache Solr</a>
+		<p>
+			powered by <a href="https://kit.svelte.dev">kit.svelte.dev</a> and
+			<a href="https://solr.apache.org/">Apache Solr</a>
 		</p>
 	</footer>
 </div>
-
 
 <style>
 	.app {

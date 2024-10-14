@@ -24,7 +24,7 @@
         border-radius: 4px 0 0 4px;
     }
 
-    #search-button {
+    .search-button {
         padding: 0.5rem 1rem;
         font-size: 1rem;
         font-weight: bold;
@@ -50,6 +50,6 @@
 
 <form on:submit|preventDefault={handleSubmit}>
     <input id="query-input" type="text" bind:value={queryTerm} placeholder="Enter search term" />
-    <button id="search-button" type="submit">Search</button>
+    <button class="search-button" type="submit">Search</button>
     <button class="option-button" type="button" on:click={handleReset}>Reset</button>
 </form>
