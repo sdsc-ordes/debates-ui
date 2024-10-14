@@ -12,17 +12,16 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string, sort: Bo
         facet: "true",
         rows: 100,
     };
-    
+
     const facetFields = ["speaker_name"];
     const searchParams = new URLSearchParams(params);
-    
-    // Add each facet field individually
+
     facetFields.forEach(field => searchParams.append("facet.field", field));
     searchParams.append("hl.snippets", "10")
     if (sort) {
        searchParams.append("sort", "time_start asc")
     }
-    
+
     const apiUrl = `${solrUrl}?${searchParams.toString()}`;
     console.log(apiUrl);
 
