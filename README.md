@@ -1,27 +1,28 @@
-# debates ui
+# political debates ui: frontend
 
 ## About
 
-This is the user interface for a PoC to search in video transcripts and to play videos
-with the transcript  on the side
+This is the frontend for https://github.com/sdsc-ordes/political-debates-ui.
+The frontend is made in SvelteKit. It has two pages:
+- A search page to search in video transcripts on a Solr Instance
+- A videoplayer page where a video can be played along with transcript and speaker information that can be edited. The metadata of the video is retrieved form a mongo db. It is planned but not yet implemented to store the updated metadata as a new version back to the mongodb.
 
-## Technology 
 
-- The frontend uses SvelteKit.  
+## Technology
 
-## Dependencies
+- The frontend uses SvelteKit.
 
-- The transcript is expected in SRT
-- The frontend needs a Solr instance up and running
-- Since Solr implements CORS, it needs also a proxy to connect to Solr
+Dependencies:
+- The transcript and video are expected in SRT: currently there is just one video with transcript provided and the video and SRT file are stored in `static/input/video.mp4` and  `static/input/subtitles.srt`. These two files are just part of the videoplayer itself. #TODO: move these files to an S3 instance.
+- The frontend needs access to a Solr instance up with the search metadata for the videos, see setup section
+- It also needs a mongodb instance to get the editable metadata from.
 
 ## Setup
 
-Because of the complicated setup, it is recommended to use a docker compose that is provided in the main repository:
-https://github.com/sdsc-ordes/political-debates-ui
+Because of the complicated setup, it is recommended to use a docker compose that is provided in the main repository: https://github.com/sdsc-ordes/political-debates-ui, see setup instructions there.
+There is a `env.dist` file provided to show the environment variables that it needs. In case the dependencies are all accessible it can be setup on its own with the following commands:
 
-Once the docker-compose is up and running, the frontend can also setup and developed on its own:
-
-- clone the repo
-- npm install
-- pnpm dev
+```
+npm install
+pnpm dev
+```
