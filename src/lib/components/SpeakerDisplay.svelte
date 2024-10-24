@@ -6,7 +6,7 @@
 </script>
 
 <p>
-    {#each speakers as speaker, index}  
+    {#each speakers as speaker, index}
         {#if index === timeUpdateParameters.currentSpeakerIndex}
         <div class="speaker">
             <label for="speaker-id">({speaker.speaker_id}) Name:</label>
@@ -25,7 +25,7 @@
               bind:value={speaker.country}
               class="editable-input"
             />
-          </div>        
+          </div>
         {/if}
     {/each}
 </p>
