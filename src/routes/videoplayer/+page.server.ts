@@ -1,7 +1,8 @@
 import { start_mongo, getDb } from "$lib/mongo/mongo"; // Using your existing MongoDB setup
 import type { PageServerLoad } from "./$types";
+import { PUBLIC_MONGO_VIDEO_COLLECTION } from "$env/static/public";
 
-const videoCollection = import.meta.env.VITE_MONGO_VIDEO_COLLECTION;
+const videoCollection = PUBLIC_MONGO_VIDEO_COLLECTION;
 
 export const load: PageServerLoad = async () => {
   try {

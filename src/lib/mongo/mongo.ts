@@ -1,7 +1,10 @@
 import { MongoClient, Db } from 'mongodb';
+import {
+    SECRET_MONGO_URL, SECRET_MONGO_DB
+} from "$env/static/private";
 
-const mongoUrl = import.meta.env.VITE_MONGO_URL;
-const debatesDB = import.meta.env.VITE_MONGO_DB;
+const mongoUrl = SECRET_MONGO_URL;
+const debatesDB = SECRET_MONGO_DB;
 
 console.log("MongoDB URL:", mongoUrl);
 console.log("Debates DB:", debatesDB);

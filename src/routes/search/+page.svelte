@@ -5,8 +5,10 @@
   import "./page.css";
   import SolrForm from "$lib/components/SearchForm.svelte";
   import { fetchSolrData } from "$lib/solr/solrSearch";
+  import { PUBLIC_SOLR_URL } from "$env/static/public";
 
-  const solrUrl = import.meta.env.VITE_SOLR_URL;
+  const solrUrl = PUBLIC_SOLR_URL;
+
   let searchResults = writable(null);
 
   async function handleSearch(queryTerm: string) {
