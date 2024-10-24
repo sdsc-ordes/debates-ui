@@ -32,7 +32,7 @@
 
 {#if $searchResults}
   <div class="container">
-    <FacetCounts facetCounts={$searchResults.facet_counts} />    
+    <FacetCounts facetCounts={$searchResults.facet_counts} />
 
     <!-- Statements -->
     <div class="statements">

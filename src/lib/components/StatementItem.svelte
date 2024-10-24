@@ -58,19 +58,19 @@
 
 <div class="statement">
     <span>{displayIsoDate(doc.date)}</span>
-    <span>{doc.segment_id}.</span>
+    <span>{doc.segment_nr}.</span>
     <span>{formatTimeForDisplay(doc.start)} - {formatTimeForDisplay(doc.end)}</span><br>
-    <span>{doc.speaker_name}:</span>
+    <span>{doc.speaker_id}:</span>
     <button class="option-button" on:click={() => navigateToVideoPlayer(doc, query)}>
         Play Segment
-    </button> 
+    </button>
     <button class="option-button" on:click={() => toggleFullStatement(doc.id)}>
         {#if $expandedStatements[doc.id]}
             Show Less
         {:else}
             Show More
         {/if}
-    </button>     
+    </button>
 
     {#if $expandedStatements[doc.id]}
         <p>

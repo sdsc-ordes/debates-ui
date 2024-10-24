@@ -13,7 +13,7 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string, sort: Bo
         rows: 100,
     };
 
-    const facetFields = ["speaker_name"];
+    const facetFields = ["speaker_id"];
     const searchParams = new URLSearchParams(params);
 
     facetFields.forEach(field => searchParams.append("facet.field", field));
