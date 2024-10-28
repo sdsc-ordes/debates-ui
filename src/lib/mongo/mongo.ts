@@ -6,16 +6,13 @@ import {
 const mongoUrl = SECRET_MONGO_URL;
 const debatesDB = SECRET_MONGO_DB;
 
-console.log("MongoDB URL:", mongoUrl);
-console.log("Debates DB:", debatesDB);
-
 let client: MongoClient | null = null;
 let db: Db | null = null;
 
 export async function start_mongo(): Promise<Db> {
     if (db) {
         console.log("Reusing existing MongoDB connection");
-        return db;  // Return existing connection
+        return db;
     }
 
     console.log("Starting MongoDB connection");

@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import type { PageData } from "./$types";
+  import "./page.css";
 
   import VideoPlayer from "$lib/components/VideoPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
@@ -76,23 +77,3 @@
 <SpeakerDisplay bind:speakers {timeUpdateParameters} />
 
 <SegmentDisplay {subtitles} {timeUpdateParameters} />
-
-<style>
-  .video-layout {
-    display: flex;
-    gap: 20px;
-  }
-
-  .save-button {
-    padding: 0.5rem 1rem;
-    width: 300px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #fff;
-    background-color: #ff3e00;
-    border: none;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-</style>
