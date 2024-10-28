@@ -8,8 +8,6 @@ export const load: PageServerLoad = async () => {
   try {
     await start_mongo();
     const db = getDb();
-    console.log(db);
-    console.log("Collection Name:", videoCollection);
     const data = await db.collection(videoCollection).find({}).toArray();
     console.log(data);
     const serializedData = data.map((video) => ({
