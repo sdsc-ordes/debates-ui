@@ -15,7 +15,7 @@ export async function start_mongo(): Promise<Db> {
         return db;
     }
 
-    console.log("Starting MongoDB connection");
+    console.log(`Starting MongoDB connection at ${mongoUrl}`);
     try {
         client = new MongoClient(mongoUrl);
         await client.connect();
