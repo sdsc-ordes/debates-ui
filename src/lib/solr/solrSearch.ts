@@ -13,7 +13,7 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string, sort: Bo
         rows: 100,
     };
 
-    const facetFields = ["speaker_id"];
+    const facetFields = ["debate_schedule"];
     const searchParams = new URLSearchParams(params);
 
     facetFields.forEach(field => searchParams.append("facet.field", field));
@@ -23,7 +23,7 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string, sort: Bo
     }
 
     const apiUrl = `${solrUrl}?${searchParams.toString()}`;
-    console.log(apiUrl);
+    console.log("apiUrl", apiUrl);
 
     try {
         const response = await fetch(apiUrl, {
@@ -36,7 +36,6 @@ export async function fetchSolrData(solrUrl: string, queryTerm: string, sort: Bo
         if (!response.ok) {
             throw new Error(`Error fetching JSON: ${response.statusText}`);
         }
-
         return await response.json();
     } catch (error) {
         console.error(`Error fetching Solr data: ${error.message}`);
