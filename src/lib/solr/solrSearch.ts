@@ -1,4 +1,7 @@
-export async function fetchSolrData(solrUrl: string, queryTerm: string, sort: Boolean) {
+import { PUBLIC_SOLR_URL } from "$env/static/public";
+const solrUrl = PUBLIC_SOLR_URL;
+
+export async function fetchSolrData(queryTerm: string, sort: Boolean) {
     if (!queryTerm.trim()) {
         console.error("Search term is required");
         return null;
