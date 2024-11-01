@@ -1,27 +1,27 @@
 <script lang="ts">
   import { writable } from "svelte/store";
-  import StatementItem from "$lib/components/StatementItem.svelte";
-  import FacetCounts from "$lib/components/FacetCounts.svelte";
-  import "./page.css";
   import SolrForm from "$lib/components/SearchForm.svelte";
+  import SearchResultContainer from "$lib/components/SearchResultContainer.svelte";
+  import type { StatementDisplay } from '$lib/interfaces/searchpage.interface';
+  import type { StatementSolr } from '$lib/interfaces/solr.interface';
   import { fetchSolrData } from "$lib/solr/solrSearch";
   import { PUBLIC_SOLR_URL } from "$env/static/public";
 
   const solrUrl = PUBLIC_SOLR_URL;
-
-  let searchResults = writable(null);
+  let searchResult: StatementSolr[];
 
   async function handleSearch(queryTerm: string) {
     const data = await fetchSolrData(solrUrl, queryTerm, false);
+    console.log(data);
     if (data) {
-      searchResults.set(data);
+      searchResult = data;
     } else {
       console.warn("No data found or an error occurred.");
     }
   }
 
   function handleReset() {
-    searchResults.set(null);
+    searchResult = [];
   }
 </script>
 
@@ -32,23 +32,6 @@
 
 <SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
 
-{#if $searchResults}
-  <div class="container">
-    <FacetCounts facetCounts={$searchResults.facet_counts} />
-
-    <!-- Statements -->
-    <div class="statements">
-      {#if $searchResults && $searchResults.response && $searchResults.response.docs}
-        {#each $searchResults.response.docs as doc}
-          <StatementItem
-            {doc}
-            query={$searchResults.responseHeader.params.q}
-            highlighting={$searchResults.highlighting}
-          />
-        {/each}
-      {:else}
-        <p>No statements available.</p>
-      {/if}
-    </div>
-  </div>
+{#if searchResult}
+  <SearchResultContainer {searchResult} />
 {/if}
