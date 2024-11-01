@@ -14,7 +14,7 @@ export function formatTimeForDisplay(seconds: number): string {
     return `${minsStr}:${secsStr}`;
 }
 
-export function displayIsoDate(isoDate: string) {
+export function displayIsoDate(isoDate: string): string {
     const date = new Date(isoDate);
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based, so add 1
     const day = date.getDate().toString().padStart(2, '0');
