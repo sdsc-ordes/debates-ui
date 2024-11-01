@@ -21,7 +21,7 @@
     };
 
     const navigateToVideoPlayer = () => {
-        window.location.href = `/videoplayer?start=${encodeURIComponent(doc.start)}&q=${encodeURIComponent(query)}`;
+        window.location.href = `/${encodeURIComponent(doc.s3_prefix)}?start=${encodeURIComponent(doc.start)}`;
     };
 
     function replaceWithHighlightedVersion(
