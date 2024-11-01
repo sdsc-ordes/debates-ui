@@ -57,10 +57,14 @@
 </script>
 
 <div class="statement">
-    <span>{displayIsoDate(doc.date)}</span>
-    <span>{doc.segment_nr}.</span>
+    <hr/>
+    <span>{displayIsoDate(doc.debate_schedule)}</span>
+    <span>{doc.debate_type}</span>
+    <span>{doc.debate_session}</span>
     <span>{formatTimeForDisplay(doc.start)} - {formatTimeForDisplay(doc.end)}</span><br>
-    <span>{doc.speaker_id}:</span>
+    {#if doc.speaker_name} <span>{doc.speaker_name}:</span>{/if}
+    {#if doc.speaker_role} <span>role: {doc.speaker_role}:</span>{/if}
+    {#if doc.speaker_country} <span>represents: {doc.speaker_country}:</span>{/if}
     <button class="option-button" on:click={() => navigateToVideoPlayer(doc, query)}>
         Play Segment
     </button>
@@ -71,7 +75,6 @@
             Show More
         {/if}
     </button>
-
     {#if $expandedStatements[doc.id]}
         <p>
             {@html replaceWithHighlightedVersion(
