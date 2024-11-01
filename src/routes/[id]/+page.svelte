@@ -17,7 +17,8 @@
     Subtitle,
     TimeUpdateParameters,
     Speaker,
-    Segment,
+    Segment, 
+    VideoData,
   } from "$lib/interfaces/videoplayer.interface";
 
   export let data: PageData;
@@ -37,18 +38,20 @@
   };
 
   function saveCorrections(): void {
-    alert("This function will save the corrected video metadata to the database. It is not yet implemented.")
+    alert(
+      "This function will save the corrected video metadata to the database. It is not yet implemented.",
+    );
   }
 
   onMount(() => {
     const videoData = data?.video?.[0];
+    console.log(videoData);
     if (videoData) {
       subtitles = mapSubtitles(videoData.subtitles);
       segments = mapSegments(videoData.segments);
       speakers = mapSpeakers(videoData.speakers);
-      console.log(speakers);
     }
-  }); 
+  });
 </script>
 
 <svelte:head>
@@ -70,8 +73,8 @@
   />
 </div>
 
-<button class="save-button" on:click={() => saveCorrections()}> 
-    Save all corrections 
+<button class="save-button" on:click={() => saveCorrections()}>
+  Save all corrections
 </button>
 
 <SpeakerDisplay bind:speakers {timeUpdateParameters} />
