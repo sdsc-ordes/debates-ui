@@ -10,15 +10,14 @@ export const load: PageServerLoad = async ({ params }) => {
         const db = getDb();
 
         // s3Prefix identifies the video
-        const s3Prefix = params.id;
+        const query = params.id ? { s3_prefix: params.id } : {};
 
         // Get newest metadata of the debate
         const videoData = await db.collection(videoCollection)
-            .find({ s3_prefix: s3Prefix }) // Filter by the query
+            .find(query) // Filter by the query
             .sort({ created_at: -1 }) // Sort by created_at in descending order
             .limit(1) // Limit to 1 document
             .toArray();
-        console.log(videoData);
 
         // Serialize MongoDB ObjectIds
         const serializedData = videoData.map((video) => ({
