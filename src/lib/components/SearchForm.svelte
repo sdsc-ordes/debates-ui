@@ -1,19 +1,30 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
+    import type { SolrQuery } from "$lib/interfaces/solr.interface";
 
+    export let solrQuery: SolrQuery;
     const dispatch = createEventDispatcher();
-    let queryTerm = "";
 
-    function handleSubmit(e: Event) {
-        e.preventDefault();
-        dispatch("submit", queryTerm);
+    function submitForm() {
+        dispatch("submit");
     }
 
-    function handleReset() {
-        queryTerm = "";
+    function resetForm() {
+        solrQuery.queryTerm = "";
         dispatch("reset");
     }
 </script>
+
+<form on:submit|preventDefault={submitForm}>
+    <input
+        id="#query-input"
+        type="text"
+        bind:value={solrQuery.queryTerm}
+        placeholder="Enter search term"
+    />
+    <button class="search-button" type="submit">Search</button>
+    <button class="option-button" type="button" on:click={resetForm}>Reset</button>
+</form>
 
 <style>
     #query-input {
@@ -47,9 +58,3 @@
         margin-left: 2rem;
     }
 </style>
-
-<form on:submit|preventDefault={handleSubmit}>
-    <input id="query-input" type="text" bind:value={queryTerm} placeholder="Enter search term" />
-    <button class="search-button" type="submit">Search</button>
-    <button class="option-button" type="button" on:click={handleReset}>Reset</button>
-</form>
