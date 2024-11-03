@@ -1,28 +1,32 @@
+
 <script lang="ts">
-  import { writable } from "svelte/store";
-  import SolrForm from "$lib/components/SearchForm.svelte";
+  import SearchForm from "$lib/components/SearchForm.svelte";
   import SearchResultContainer from "$lib/components/SearchResultContainer.svelte";
-  import type { StatementDisplay } from '$lib/interfaces/searchpage.interface';
-  import type { StatementSolr } from '$lib/interfaces/solr.interface';
-  import { fetchSolrData } from "$lib/solr/solrSearch";
-  import { PUBLIC_SOLR_URL } from "$env/static/public";
+  import type { SolrQuery, SolrResponse } from '$lib/interfaces/solr.interface';
+  import { fetchSolrData, createDefaultSolrQuery } from "$lib/solr/solrSearch";
+  import { onMount } from "svelte";
 
-  const solrUrl = PUBLIC_SOLR_URL;
-  let searchResult: StatementSolr[];
+  let solrQuery: SolrQuery = createDefaultSolrQuery();
 
-  async function handleSearch(queryTerm: string) {
-    const data = await fetchSolrData(solrUrl, queryTerm, false);
-    console.log(data);
+  let searchResult: SolrResponse;
+
+  async function handleSearch() {
+    const data = await fetchSolrData(solrQuery);
     if (data) {
       searchResult = data;
+      console.log(data);
     } else {
       console.warn("No data found or an error occurred.");
     }
   }
 
   function handleReset() {
-    searchResult = [];
+    solrQuery = createDefaultSolrQuery()
+    handleSearch();
   }
+  onMount(() => {
+    handleReset();
+  });
 </script>
 
 <svelte:head>
@@ -30,8 +34,9 @@
   <meta name="description" content="Political Debates Search" />
 </svelte:head>
 
-<SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
+<SearchForm {solrQuery} on:submit={handleSearch} on:reset={handleReset} />
 
 {#if searchResult}
-  <SearchResultContainer {searchResult} />
+  <SearchResultContainer {searchResult} {solrQuery} onSearch={handleSearch} />
 {/if}
+
