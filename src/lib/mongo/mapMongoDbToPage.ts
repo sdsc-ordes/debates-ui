@@ -1,6 +1,6 @@
 import { formatTimeForDisplay } from "$lib/utils/displayUtils";
-import type { Subtitle, Speaker, Segment } from '$lib/interfaces/videoplayer.interface';
-import type { SubtitleDB, SpeakerDB, SegmentDB } from '$lib/interfaces/mongodb.interface';
+import type { Subtitle, Segment } from '$lib/interfaces/videoplayer.interface';
+import type { SubtitleDB, SegmentDB } from '$lib/interfaces/mongodb.interface';
 
 export function mapSubtitles(subtitles: SubtitleDB[]): Subtitle[] {
     return subtitles.map((subtitle: SubtitleDB): Subtitle => ({
