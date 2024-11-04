@@ -8,6 +8,10 @@
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
+  import { getMediaSources } from "$lib/s3/s3";
+  let videoId: string = "first-video";
+  let { videoSrc, trackSrc } = getMediaSources(videoId);
+
   import {
     mapSegments,
     mapSpeakers,
@@ -17,8 +21,7 @@
     Subtitle,
     TimeUpdateParameters,
     Speaker,
-    Segment, 
-    VideoData,
+    Segment,
   } from "$lib/interfaces/videoplayer.interface";
 
   export let data: PageData;
@@ -27,7 +30,6 @@
   let speakers: Speaker[];
   let segments: Segment[];
 
-  let videoId = "first-video";
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
   let video: HTMLVideoElement;
 
@@ -63,7 +65,8 @@
   <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
   <VideoPlayer
-    {videoId}
+    {videoSrc}
+    {trackSrc}
     {startTime}
     {subtitles}
     {segments}
