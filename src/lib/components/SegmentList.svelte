@@ -12,8 +12,9 @@
   export let speakers: Speaker[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
   export let video: HTMLVideoElement;
+  let currentIndex = timeUpdateParameters.currentSegmentIndex;
 </script>
-
+<div class="scrollable-container">
 <ol>
   {#each segments as segment, index}
     <li>
@@ -35,6 +36,7 @@
     </li>
   {/each}
 </ol>
+</div>
 
 <style>
   .highlighted {
@@ -44,4 +46,10 @@
     padding: 0.2rem;
     font-size: 1rem;
   }
+  .scrollable-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+  }  
 </style>
