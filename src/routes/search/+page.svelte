@@ -1,28 +1,32 @@
+
 <script lang="ts">
-  import { writable } from "svelte/store";
-  import StatementItem from "$lib/components/StatementItem.svelte";
-  import FacetCounts from "$lib/components/FacetCounts.svelte";
-  import "./page.css";
-  import SolrForm from "$lib/components/SearchForm.svelte";
-  import { fetchSolrData } from "$lib/solr/solrSearch";
-  import { PUBLIC_SOLR_URL } from "$env/static/public";
+  import SearchForm from "$lib/components/SearchForm.svelte";
+  import SearchResultContainer from "$lib/components/SearchResultContainer.svelte";
+  import type { SolrQuery, SolrResponse } from '$lib/interfaces/solr.interface';
+  import { fetchSolrData, createDefaultSolrQuery } from "$lib/solr/solrSearch";
+  import { onMount } from "svelte";
 
-  const solrUrl = PUBLIC_SOLR_URL;
+  let solrQuery: SolrQuery = createDefaultSolrQuery();
 
-  let searchResults = writable(null);
+  let searchResult: SolrResponse;
 
-  async function handleSearch(queryTerm: string) {
-    const data = await fetchSolrData(solrUrl, queryTerm, false);
+  async function handleSearch() {
+    const data = await fetchSolrData(solrQuery);
     if (data) {
-      searchResults.set(data);
+      searchResult = data;
+      console.log(data);
     } else {
       console.warn("No data found or an error occurred.");
     }
   }
 
   function handleReset() {
-    searchResults.set(null);
+    solrQuery = createDefaultSolrQuery()
+    handleSearch();
   }
+  onMount(() => {
+    handleReset();
+  });
 </script>
 
 <svelte:head>
@@ -30,25 +34,9 @@
   <meta name="description" content="Political Debates Search" />
 </svelte:head>
 
-<SolrForm on:submit={(e) => handleSearch(e.detail)} on:reset={handleReset} />
+<SearchForm {solrQuery} on:submit={handleSearch} on:reset={handleReset} />
 
-{#if $searchResults}
-  <div class="container">
-    <FacetCounts facetCounts={$searchResults.facet_counts} />
-
-    <!-- Statements -->
-    <div class="statements">
-      {#if $searchResults && $searchResults.response && $searchResults.response.docs}
-        {#each $searchResults.response.docs as doc}
-          <StatementItem
-            {doc}
-            query={$searchResults.responseHeader.params.q}
-            highlighting={$searchResults.highlighting}
-          />
-        {/each}
-      {:else}
-        <p>No statements available.</p>
-      {/if}
-    </div>
-  </div>
+{#if searchResult}
+  <SearchResultContainer {searchResult} {solrQuery} onSearch={handleSearch} />
 {/if}
+

@@ -1,85 +1,81 @@
 <script lang="ts">
-    import { writable } from "svelte/store";
-    import {
-        getFirstNonEmptyStatement,
-    } from "../utils/statement-utils";
+    import { getFirstNonEmptyStatement } from "../utils/statement-utils";
     import { formatTimeForDisplay, displayIsoDate } from "$lib/utils/displayUtils";
 
     export let doc;
     export let query;
     export let highlighting;
+    console.log(doc.statement)
 
-    let expandedStatements = writable({});
+    // Replacing writable store with a simple object
+    let expandedStatements: Record<string, boolean> = {};
 
-    const toggleFullStatement = (docId: any) => {
-        expandedStatements.update((state) => {
-            return {
-                ...state,
-                [docId]: !state[docId],
-            };
-        });
+    const toggleFullStatement = (docId: string) => {
+        // Directly modify the expandedStatements object
+        expandedStatements[docId] = !expandedStatements[docId];
     };
 
     const navigateToVideoPlayer = () => {
-        window.location.href = `/videoplayer?start=${encodeURIComponent(doc.start)}&q=${encodeURIComponent(query)}`;
+        window.location.href = `/${encodeURIComponent(doc.s3_prefix)}?start=${encodeURIComponent(doc.start)}`;
     };
 
     function replaceWithHighlightedVersion(
         statements: string[],
-        highlighting: string[],
+        highlighting?: string[],
     ) {
-        const updatedStatements = [...statements];
+        if (!highlighting || highlighting.length === 0) return statements;
 
-        highlighting.forEach((highlighted) => {
-            if (highlighted === "") return;
+        return statements.map((statement) => {
+            for (const highlighted of highlighting) {
+                if (highlighted === "") continue;
 
-            // Remove <em> tags to get the unhighlighted part
-            const regex = /<\/?em>/g;
-            const unhighlighted = highlighted.replace(regex, "");
-
-            // Find and replace only the matching parts of each statement
-            updatedStatements.forEach((statement, index) => {
-                if (statement.includes(unhighlighted.trim())) {
-                    const highlightedRegex = new RegExp(
-                        unhighlighted.trim(),
-                        "g",
-                    );
-                    updatedStatements[index] = statement.replace(
-                        highlightedRegex,
-                        (match) => highlighted,
-                    );
-                }
-            });
+                const unhighlighted = highlighted.replace(/<\/?em>/g, "");
+                const highlightedRegex = new RegExp(unhighlighted.trim(), "g");
+                statement = statement.replace(highlightedRegex, () => highlighted);
+            }
+            return statement;
         });
-
-        return updatedStatements;
     }
 </script>
 
 <div class="statement">
-    <span>{displayIsoDate(doc.date)}</span>
-    <span>{doc.segment_nr}.</span>
+    <hr/>
+    <span>{displayIsoDate(doc.debate_schedule)}</span>
+    <span>{doc.debate_type}</span>
+    <span>{doc.debate_session}</span>
     <span>{formatTimeForDisplay(doc.start)} - {formatTimeForDisplay(doc.end)}</span><br>
-    <span>{doc.speaker_id}:</span>
-    <button class="option-button" on:click={() => navigateToVideoPlayer(doc, query)}>
+    {#if doc.speaker_name} <span>{doc.speaker_name}:</span>{/if}
+    {#if doc.speaker_role} <span>role: {doc.speaker_role}</span>{/if}
+    {#if doc.speaker_country} <span>represents: {doc.speaker_country}</span>{/if}
+    <button class="option-button" on:click={navigateToVideoPlayer}>
         Play Segment
     </button>
     <button class="option-button" on:click={() => toggleFullStatement(doc.id)}>
-        {#if $expandedStatements[doc.id]}
+        {#if expandedStatements[doc.id]}
             Show Less
         {:else}
             Show More
         {/if}
     </button>
-
-    {#if $expandedStatements[doc.id]}
+    {#if expandedStatements[doc.id]}
         <p>
+        {#if highlighting}
             {@html replaceWithHighlightedVersion(
                 doc.statement,
-                highlighting[doc.id].statement,
-            )}
+                highlighting?.[doc.id]?.statement
+            ).join(" ")}
+        {:else}
+            { doc.statement.join(" ") }
+        {/if}
         </p>
     {:else}
-        <p>{@html getFirstNonEmptyStatement(highlighting[doc.id].statement)}</p>
+        <p>
+        {#if highlighting}
+            {@html getFirstNonEmptyStatement(highlighting?.[doc.id]?.statement)}
+        {:else}
+            { getFirstNonEmptyStatement(doc.statement) }
+        {/if}
+        </p>
     {/if}
 </div>
+
