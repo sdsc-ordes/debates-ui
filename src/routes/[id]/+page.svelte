@@ -10,7 +10,7 @@
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
   import { getMediaSources } from "$lib/s3/s3";
   let videoId: string = "first-video";
-  let { videoSrc, trackSrc } = getMediaSources(videoId);
+  let mediaSources: MediaSources = getMediaSources(videoId);
 
   import {
     mapSegments,
@@ -22,6 +22,7 @@
     TimeUpdateParameters,
     Speaker,
     Segment,
+    MediaSources,
   } from "$lib/interfaces/videoplayer.interface";
 
   export let data: PageData;
@@ -65,8 +66,7 @@
   <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
   <VideoPlayer
-    {videoSrc}
-    {trackSrc}
+    {mediaSources}
     {startTime}
     {subtitles}
     {segments}

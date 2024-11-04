@@ -7,6 +7,7 @@
     Subtitle,
     Segment,
     Speaker,
+    MediaSources,
   } from "$lib/interfaces/videoplayer.interface";
   export let startTime: number;
   export let timeUpdateParameters: TimeUpdateParameters;
@@ -14,8 +15,7 @@
   export let segments: Segment[] = [];
   export let speakers: Speaker[] = [];
   export let video: HTMLVideoElement;
-  export let videoSrc: string;
-  export let trackSrc: string;
+  export let mediaSources: MediaSources;
 
   function handleTimeUpdate() {
     timeUpdateParameters = onVideoTimeUpdate(
@@ -42,9 +42,9 @@
     controls
     autoplay
   >
-    <source src={videoSrc} type="video/mp4" />
+    <source src={mediaSources.videoSrc} type="video/mp4" />
     <track
-      src={trackSrc}
+      src={mediaSources.trackSrc}
       kind="captions"
       srclang="en"
       label="english_captions"
