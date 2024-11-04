@@ -17,8 +17,7 @@
     Subtitle,
     TimeUpdateParameters,
     Speaker,
-    Segment, 
-    VideoData,
+    Segment,
   } from "$lib/interfaces/videoplayer.interface";
 
   export let data: PageData;
@@ -27,9 +26,10 @@
   let speakers: Speaker[];
   let segments: Segment[];
 
-  let videoId = "first-video";
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
   let video: HTMLVideoElement;
+  let videoSrc: string;
+  let trackSrc: string;
 
   let timeUpdateParameters: TimeUpdateParameters = {
     currentSubtitleIndex: -1,
@@ -45,6 +45,11 @@
 
   onMount(() => {
     const videoData = data?.video?.[0];
+    const mediaData = data?.mediaSources;
+    if (mediaData) {
+      trackSrc = mediaData.trackSrc;
+      videoSrc = mediaData.videoSrc;
+    }
     console.log(videoData);
     if (videoData) {
       subtitles = mapSubtitles(videoData.subtitles);
@@ -63,7 +68,8 @@
   <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
   <VideoPlayer
-    {videoId}
+    {trackSrc}
+    {videoSrc}
     {startTime}
     {subtitles}
     {segments}
