@@ -25,7 +25,7 @@ export interface Segment {
     start: number,
     end: number,
     time_start: string,
-    time_end: string,    
+    time_end: string,
     first_index: number,
     last_index: number,
     segment_nr: number,

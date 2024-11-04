@@ -1,6 +1,7 @@
-import type { 
-    Subtitle, Segment, TimeUpdateParameters, 
-    Speaker
+import {
+    type Subtitle, type Segment, type TimeUpdateParameters,
+    type Speaker,
+    type VideoData,
 } from "$lib/interfaces/videoplayer.interface";
 
 export function onVideoTimeUpdate(
@@ -9,21 +10,23 @@ export function onVideoTimeUpdate(
     segments: Segment[],
     speakers: Speaker[],
     activeSubtitleIndex: number,
+    videoData: VideoData,
 ): TimeUpdateParameters {
-    const currentSubtitle = subtitles.find(sub => currentTime >= sub.start && currentTime <= sub.end);
+    const videoSubtitles = videoData.subtitles;
+    const currentSubtitle = videoSubtitles.find(sub => currentTime >= sub.start && currentTime <= sub.end);
     if (currentSubtitle) {
         const currentSubtitleIndex = currentSubtitle.index
         const currentSegmentNr = currentSubtitle.segment_nr
         const currentSegment = getMatchingSegment(currentSegmentNr, segments);
         const currentSpeakerIndex = getMatchingSpeakerIndex(
-            currentSegment.speaker_id, speakers);        
+            currentSegment.speaker_id, speakers);
         return {
             currentSubtitleIndex: currentSubtitleIndex,
             currentSegmentIndex: currentSegmentNr,
             currentSpeakerIndex: currentSpeakerIndex,
         }
     } else if (activeSubtitleIndex >= 0) {
-        const previousSubtitle = subtitles[activeSubtitleIndex];
+        const previousSubtitle = videoSubtitles[activeSubtitleIndex];
         const currentSegment = getMatchingSegment(
             previousSubtitle.segment_nr, segments);
         const currentSpeakerIndex = getMatchingSpeakerIndex(

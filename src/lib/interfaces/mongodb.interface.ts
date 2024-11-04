@@ -21,7 +21,7 @@ export interface SegmentDB {
     segment_nr: number,
 }
 
-export interface DebateData {
+export interface VideoData {
     s3_prefix: string;
     version_id: string;
     created_at: string;

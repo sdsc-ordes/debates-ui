@@ -19,11 +19,12 @@ export const load: PageServerLoad = async ({ params }) => {
             .limit(1) // Limit to 1 document
             .toArray();
 
-        // Serialize MongoDB ObjectIds
-        const serializedData = videoData.map((video) => ({
-            ...video,
-            _id: video._id.toString(),
-        }));
+        const serializedData: DebateData[] = videoData.map((video) => {
+            const { _id, ...rest } = video; // Destructure to exclude _id
+            return {
+                ...rest,
+            };
+        });
 
         return {
             video: serializedData,

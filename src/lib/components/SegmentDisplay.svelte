@@ -3,8 +3,11 @@
     Subtitle,
     TimeUpdateParameters,
   } from "$lib/interfaces/videoplayer.interface";
+  import type { VideoData } from "$lib/interfaces/mongodb.interface";
   export let subtitles: Subtitle[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
+  export let videoData: VideoData;
+  console.log(videoData, videoData);
   let editSubtitles: boolean = false;
   function updateSubtitle(index: number, updatedText: string) {
     subtitles[index].content = updatedText;

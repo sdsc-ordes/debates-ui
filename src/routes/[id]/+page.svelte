@@ -17,6 +17,7 @@
     mapSpeakers,
     mapSubtitles,
   } from "$lib/mongo/mapMongoDbToPage";
+  import type { VideoData} from "$lib/interfaces/mongodb.interface";
   import type {
     Subtitle,
     TimeUpdateParameters,
@@ -29,6 +30,7 @@
   let subtitles: Subtitle[];
   let speakers: Speaker[];
   let segments: Segment[];
+  let videoData: VideoData;
 
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
   let video: HTMLVideoElement;
@@ -46,7 +48,7 @@
   }
 
   onMount(() => {
-    const videoData = data?.video?.[0];
+    videoData = data?.video?.[0];
     console.log(videoData);
     if (videoData) {
       subtitles = mapSubtitles(videoData.subtitles);
@@ -71,6 +73,7 @@
     {subtitles}
     {segments}
     {speakers}
+    {videoData}
     bind:video
     bind:timeUpdateParameters
   />
@@ -82,4 +85,4 @@
 
 <SpeakerDisplay bind:speakers {timeUpdateParameters} />
 
-<SegmentDisplay {subtitles} {timeUpdateParameters} />
+<SegmentDisplay {subtitles} {videoData} {timeUpdateParameters} />

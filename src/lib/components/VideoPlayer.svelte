@@ -8,12 +8,14 @@
     Segment,
     Speaker,
   } from "$lib/interfaces/videoplayer.interface";
+  import type { VideoData } from "$lib/interfaces/mongodb.interface";
   export let startTime: number;
   export let timeUpdateParameters: TimeUpdateParameters;
   export let subtitles: Subtitle[] = [];
   export let segments: Segment[] = [];
   export let speakers: Speaker[] = [];
   export let video: HTMLVideoElement;
+  export let videoData: VideoData;
   export let videoSrc: string;
   export let trackSrc: string;
 
@@ -23,6 +25,7 @@
       subtitles,
       segments,
       speakers,
+      videoData,
       timeUpdateParameters.currentSubtitleIndex,
     );
   }
