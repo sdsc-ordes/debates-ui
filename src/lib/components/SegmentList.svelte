@@ -31,7 +31,7 @@
           ? "highlighted"
           : ""}
       >
-        {displaySpeaker(segment.speaker_id, speakers)}
+        {@html displaySpeaker(segment.speaker_id, speakers) }
       </span>
     </li>
   {/each}

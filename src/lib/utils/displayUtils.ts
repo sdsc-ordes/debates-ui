@@ -1,4 +1,4 @@
-import type { Speaker } from "$lib/interfaces/videoplayer.interface";
+import type { Speaker } from "$lib/interfaces/mongodb.interface";
 
 export function formatTimeForDisplay(seconds: number): string {
     const hrs = Math.floor(seconds / 3600);
@@ -33,8 +33,17 @@ export function displaySpeaker(speakerId: string, speakers: Speaker[]): string {
 
 function getSpeakerDisplay(speaker: Speaker): string {
     let displayName = speaker.name ? speaker.name : speaker.speaker_id;
-    if (speaker.country) {
-      displayName += ` (${speaker.country})`;
+    if (speaker.country || speaker.role) {
+        displayName += "<ul>"
+        if (speaker.country) {
+            displayName += `<li>represents: ${speaker.country}</li>`;
+        }
+        if (speaker.role) {
+            displayName += `<li>role: ${speaker.role}</li>`;
+        }
+        displayName += "</ul>"
     }
+
+
     return displayName;
 }
