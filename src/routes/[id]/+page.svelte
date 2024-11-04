@@ -8,6 +8,7 @@
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
+  import type { MediaSources } from '$lib/interfaces/videoplayer.interface'
   import {
     mapSegments,
     mapSpeakers,
@@ -26,6 +27,8 @@
   let subtitles: Subtitle[];
   let speakers: Speaker[];
   let segments: Segment[];
+  let mediaSources: MediaSources;
+  let trackSrc: string;
 
   let videoId = "first-video";
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
@@ -45,7 +48,8 @@
 
   onMount(() => {
     const videoData = data?.video?.[0];
-    console.log(videoData);
+    const mediaSources = data?.mediaSources; // Access mediaSources here
+    console.log(mediaSources);
     if (videoData) {
       subtitles = mapSubtitles(videoData.subtitles);
       segments = mapSegments(videoData.segments);
@@ -59,24 +63,4 @@
   <meta name="description" content="Testpage" />
 </svelte:head>
 
-<div class="video-layout">
-  <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
-  <VideoPlayer
-    {videoId}
-    {startTime}
-    {subtitles}
-    {segments}
-    {speakers}
-    bind:video
-    bind:timeUpdateParameters
-  />
-</div>
-
-<button class="save-button" on:click={() => saveCorrections()}>
-  Save all corrections
-</button>
-
-<SpeakerDisplay bind:speakers {timeUpdateParameters} />
-
-<SegmentDisplay {subtitles} {timeUpdateParameters} />

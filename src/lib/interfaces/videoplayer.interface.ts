@@ -25,9 +25,14 @@ export interface Segment {
     start: number,
     end: number,
     time_start: string,
-    time_end: string,    
+    time_end: string,
     first_index: number,
     last_index: number,
     segment_nr: number,
-    show_full_content: boolean;
+    show_full_content: boolean,
+}
+
+export interface MediaSources {
+    videoSrc: string,
+    trackSrc: string,
 }
