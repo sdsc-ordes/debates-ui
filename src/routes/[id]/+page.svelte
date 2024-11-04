@@ -18,10 +18,12 @@
   import type {
     Subtitle,
     TimeUpdateParameters,
-    Speaker,
     Segment,
     MediaSources,
   } from "$lib/interfaces/videoplayer.interface";
+  import type {
+    Speaker,
+  } from "$lib/interfaces/mongodb.interface";
 
   export let data: PageData;
 
@@ -53,7 +55,7 @@
       mediaSources = getMediaSources(videoData.s3_prefix)
       subtitles = mapSubtitles(videoData.subtitles);
       segments = mapSegments(videoData.segments);
-      speakers = mapSpeakers(videoData.speakers);
+      speakers = videoData.speakers;
     }
   });
 </script>
