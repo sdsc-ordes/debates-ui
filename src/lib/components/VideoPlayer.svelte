@@ -52,7 +52,6 @@
     Your browser does not support the video tag.
   </video>
 </div>
-
 <style>
   .video {
     width: 600px;
