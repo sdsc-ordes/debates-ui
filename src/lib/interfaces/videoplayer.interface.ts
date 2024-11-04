@@ -14,12 +14,6 @@ export interface TimeUpdateParameters {
     currentSpeakerIndex: number,
 }
 
-export interface Speaker {
-    speaker_id: string,
-    name: string,
-    country: string,
-}
-
 export interface Segment {
     speaker_id: string,
     start: number,

@@ -6,12 +6,6 @@ export interface SubtitleDB {
     segment_nr: number,
 }
 
-export interface SpeakerDB {
-    speaker_id: string,
-    name: string,
-    country: string,
-}
-
 export interface SegmentDB {
     speaker_id: string,
     start: number,

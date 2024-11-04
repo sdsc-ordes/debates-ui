@@ -12,7 +12,6 @@
 
   import {
     mapSegments,
-    mapSpeakers,
     mapSubtitles,
   } from "$lib/mongo/mapMongoDbToPage";
   import type {

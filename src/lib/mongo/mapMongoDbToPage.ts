@@ -14,14 +14,6 @@ export function mapSubtitles(subtitles: SubtitleDB[]): Subtitle[] {
     }));
 }
 
-export function mapSpeakers(speakers: SpeakerDB[]): Speaker[] {
-    return speakers.map((speaker: SpeakerDB): Speaker => ({
-        speaker_id: speaker.speaker_id,
-        name: speaker.name,
-        country: speaker.country,
-    }));
-}
-
 export function mapSegments(segments: SegmentDB[]): Segment[] {
     return segments.map((segment: SegmentDB): Segment => ({
         speaker_id: segment.speaker_id,
