@@ -9,8 +9,6 @@
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
   import { getMediaSources } from "$lib/s3/s3";
-  let videoId: string = "first-video";
-  let mediaSources: MediaSources = getMediaSources(videoId);
 
   import {
     mapSegments,
@@ -33,6 +31,8 @@
 
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
   let video: HTMLVideoElement;
+  let s3Prefix: string = $page.url.pathname.split("/").pop();
+  let mediaSources:MediaSources = getMediaSources(s3Prefix);
 
   let timeUpdateParameters: TimeUpdateParameters = {
     currentSubtitleIndex: -1,
@@ -50,6 +50,7 @@
     const videoData = data?.video?.[0];
     console.log(videoData);
     if (videoData) {
+      mediaSources = getMediaSources(videoData.s3_prefix)
       subtitles = mapSubtitles(videoData.subtitles);
       segments = mapSegments(videoData.segments);
       speakers = mapSpeakers(videoData.speakers);
@@ -66,12 +67,12 @@
   <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
   <VideoPlayer
-    {mediaSources}
     {startTime}
     {subtitles}
     {segments}
     {speakers}
     bind:video
+    bind:mediaSources
     bind:timeUpdateParameters
   />
 </div>
