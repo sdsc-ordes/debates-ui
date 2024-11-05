@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
-    import type { Speaker } from "$lib/interfaces/speaker.interface";
+    import type { Speaker } from "$lib/interfaces/mongodb.interface";
     export let speakers: Speaker[] = [];
     export let timeUpdateParameters: TimeUpdateParameters;
 </script>

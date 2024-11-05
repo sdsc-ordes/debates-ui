@@ -1,9 +1,11 @@
 <script lang="ts">
   import type {
-    Segment,
-    Speaker,
     TimeUpdateParameters,
   } from "$lib/interfaces/videoplayer.interface";
+  import type {
+    Segment,
+    Speaker,
+  } from "$lib/interfaces/mongodb.interface";
   import { formatTimeForDisplay } from "$lib/utils/displayUtils";
   import { jumpToTime } from "$lib/utils/videoStartUtils";
   import { displaySpeaker } from "$lib/utils/displayUtils";
