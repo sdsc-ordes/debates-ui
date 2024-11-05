@@ -3,7 +3,7 @@
   import { page } from "$app/stores";
   import type { PageData } from "./$types";
   import "./page.css";
-
+  import { Notifications, acts } from "@tadashi/svelte-notification";
   import VideoPlayer from "$lib/components/VideoPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
@@ -57,10 +57,14 @@
     const result = await response.json();
     if (result.success) {
       console.log("Document inserted successfully! ID:", result.id);
+      acts.add({mode: 'success', message: '✓ Metadata for the video has been saved!'})
     } else {
+      acts.add({mode: 'danger', message: '✓ Metadata for the video could not be saved! An error occurred'},)
       console.error("Error inserting document:", result.error);
     }
   }
+
+
 
   onMount(() => {
     videoData = data?.video?.[0];
@@ -78,6 +82,11 @@
 <svelte:head>
   <title>Test Page</title>
   <meta name="description" content="Testpage" />
+  <style>
+    :root {
+        --tadashi_svelte_notifications_width: 300px;
+    }
+  </style>
 </svelte:head>
 
 <div class="video-layout">
@@ -101,3 +110,13 @@
 <SpeakerDisplay bind:speakers {timeUpdateParameters} />
 
 <SegmentDisplay {subtitles} {timeUpdateParameters} />
+
+<Notifications />
+
+<style>
+  button {
+      display: block;
+      margin: 0.3rem;
+      min-width: 150px;
+  }
+</style>
