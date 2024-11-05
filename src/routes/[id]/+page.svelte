@@ -8,20 +8,17 @@
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
+  import { getCreatedAtDate, generateUUID } from "$lib/utils/mongoUpdateUtils";
   import { getMediaSources } from "$lib/s3/s3";
-
-  import {
-    mapSegments,
-    mapSubtitles,
-  } from "$lib/mongo/mapMongoDbToPage";
   import type {
-    Subtitle,
     TimeUpdateParameters,
-    Segment,
     MediaSources,
   } from "$lib/interfaces/videoplayer.interface";
   import type {
     Speaker,
+    Segment,
+    Subtitle,
+    VideoData,
   } from "$lib/interfaces/mongodb.interface";
 
   export let data: PageData;
@@ -29,11 +26,12 @@
   let subtitles: Subtitle[];
   let speakers: Speaker[];
   let segments: Segment[];
+  let videoData: VideoData;
 
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
   let video: HTMLVideoElement;
   let s3Prefix: string = $page.url.pathname.split("/").pop();
-  let mediaSources:MediaSources = getMediaSources(s3Prefix);
+  let mediaSources: MediaSources = getMediaSources(s3Prefix);
 
   let timeUpdateParameters: TimeUpdateParameters = {
     currentSubtitleIndex: -1,
@@ -42,19 +40,37 @@
   };
 
   function saveCorrections(): void {
-    alert(
-      "This function will save the corrected video metadata to the database. It is not yet implemented.",
-    );
+    const createdAt = getCreatedAtDate();
+    console.log(createdAt);
+    let videoDataUpdate: VideoData = videoData;
+    videoDataUpdate.created_at = getCreatedAtDate();
+    videoDataUpdate.version_id = generateUUID();
+    saveVideoData(videoDataUpdate);
+  }
+
+  async function saveVideoData(videoData) {
+    const response = await fetch(`/${s3Prefix}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(videoData),
+    });
+    const result = await response.json();
+    if (result.success) {
+      console.log("Document inserted successfully! ID:", result.id);
+    } else {
+      console.error("Error inserting document:", result.error);
+    }
   }
 
   onMount(() => {
-    const videoData = data?.video?.[0];
+    videoData = data?.video?.[0];
     console.log(videoData);
     if (videoData) {
-      mediaSources = getMediaSources(videoData.s3_prefix)
-      subtitles = mapSubtitles(videoData.subtitles);
-      segments = mapSegments(videoData.segments);
+      mediaSources = getMediaSources(videoData.s3_prefix);
+      subtitles = videoData.subtitles;
+      segments = videoData.segments;
       speakers = videoData.speakers;
+      console.log(videoData.debate);
     }
   });
 </script>
