@@ -1,8 +1,10 @@
 <script lang="ts">
   import type {
-    Subtitle,
     TimeUpdateParameters,
   } from "$lib/interfaces/videoplayer.interface";
+  import type {
+    Subtitle,
+  } from "$lib/interfaces/mongodb.interface";
   export let subtitles: Subtitle[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
   let editSubtitles: boolean = false;

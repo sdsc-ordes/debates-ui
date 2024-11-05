@@ -1,7 +1,9 @@
-import type { 
-    Subtitle, Segment, TimeUpdateParameters, 
-    Speaker
+import type {
+    TimeUpdateParameters,
 } from "$lib/interfaces/videoplayer.interface";
+import type {
+    Subtitle, Segment, Speaker
+} from "$lib/interfaces/mongodb.interface";
 
 export function onVideoTimeUpdate(
     currentTime: number,
@@ -16,7 +18,7 @@ export function onVideoTimeUpdate(
         const currentSegmentNr = currentSubtitle.segment_nr
         const currentSegment = getMatchingSegment(currentSegmentNr, segments);
         const currentSpeakerIndex = getMatchingSpeakerIndex(
-            currentSegment.speaker_id, speakers);        
+            currentSegment.speaker_id, speakers);
         return {
             currentSubtitleIndex: currentSubtitleIndex,
             currentSegmentIndex: currentSegmentNr,

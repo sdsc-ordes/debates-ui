@@ -2,13 +2,12 @@
   import { onMount } from "svelte";
   import { onVideoTimeUpdate } from "$lib/utils/videoTimeUpdate";
   import { jumpToTime } from "$lib/utils/videoStartUtils";
-  import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
+  import type { TimeUpdateParameters, MediaSources } from "$lib/interfaces/videoplayer.interface";
   import type {
     Subtitle,
     Segment,
     Speaker,
-    MediaSources,
-  } from "$lib/interfaces/videoplayer.interface";
+  } from "$lib/interfaces/mongodb.interface";
   export let startTime: number;
   export let timeUpdateParameters: TimeUpdateParameters;
   export let subtitles: Subtitle[] = [];

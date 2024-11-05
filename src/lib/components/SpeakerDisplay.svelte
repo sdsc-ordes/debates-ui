@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
-    import type { Speaker } from "$lib/interfaces/speaker.interface";
+    import type { Speaker } from "$lib/interfaces/mongodb.interface";
     export let speakers: Speaker[] = [];
     export let timeUpdateParameters: TimeUpdateParameters;
 </script>
@@ -17,12 +17,20 @@
               bind:value={speaker.name}
               class="editable-input"
             />
-            <label for="speaker-country">Country (the speaker represents):</label>
+            <label for="speaker-country">Country the speaker represents in the debate:</label>
             <input
               id="speaker-country"
               placeholder="country"
               type="text"
               bind:value={speaker.country}
+              class="editable-input"
+            />
+            <label for="speaker-role">Role of the Speaker in the debate:</label>
+            <input
+              id="speaker-role"
+              placeholder="role"
+              type="text"
+              bind:value={speaker.role}
               class="editable-input"
             />
           </div>

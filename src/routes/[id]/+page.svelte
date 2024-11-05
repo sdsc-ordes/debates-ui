@@ -3,36 +3,35 @@
   import { page } from "$app/stores";
   import type { PageData } from "./$types";
   import "./page.css";
-
+  import { Notifications, acts } from "@tadashi/svelte-notification";
   import VideoPlayer from "$lib/components/VideoPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
+  import { getCreatedAtDate, generateUUID } from "$lib/utils/mongoUpdateUtils";
   import { getMediaSources } from "$lib/s3/s3";
-
-  import {
-    mapSegments,
-    mapSpeakers,
-    mapSubtitles,
-  } from "$lib/mongo/mapMongoDbToPage";
   import type {
-    Subtitle,
     TimeUpdateParameters,
-    Speaker,
-    Segment,
     MediaSources,
   } from "$lib/interfaces/videoplayer.interface";
+  import type {
+    Speaker,
+    Segment,
+    Subtitle,
+    VideoData,
+  } from "$lib/interfaces/mongodb.interface";
 
   export let data: PageData;
 
   let subtitles: Subtitle[];
   let speakers: Speaker[];
   let segments: Segment[];
+  let videoData: VideoData;
 
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
   let video: HTMLVideoElement;
   let s3Prefix: string = $page.url.pathname.split("/").pop();
-  let mediaSources:MediaSources = getMediaSources(s3Prefix);
+  let mediaSources: MediaSources = getMediaSources(s3Prefix);
 
   let timeUpdateParameters: TimeUpdateParameters = {
     currentSubtitleIndex: -1,
@@ -41,19 +40,41 @@
   };
 
   function saveCorrections(): void {
-    alert(
-      "This function will save the corrected video metadata to the database. It is not yet implemented.",
-    );
+    const createdAt = getCreatedAtDate();
+    console.log(createdAt);
+    let videoDataUpdate: VideoData = videoData;
+    videoDataUpdate.created_at = getCreatedAtDate();
+    videoDataUpdate.version_id = generateUUID();
+    saveVideoData(videoDataUpdate);
   }
 
+  async function saveVideoData(videoData) {
+    const response = await fetch(`/${s3Prefix}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(videoData),
+    });
+    const result = await response.json();
+    if (result.success) {
+      console.log("Document inserted successfully! ID:", result.id);
+      acts.add({mode: 'success', message: '✓ Metadata for the video has been saved!'})
+    } else {
+      acts.add({mode: 'danger', message: '✓ Metadata for the video could not be saved! An error occurred'},)
+      console.error("Error inserting document:", result.error);
+    }
+  }
+
+
+
   onMount(() => {
-    const videoData = data?.video?.[0];
+    videoData = data?.video?.[0];
     console.log(videoData);
     if (videoData) {
-      mediaSources = getMediaSources(videoData.s3_prefix)
-      subtitles = mapSubtitles(videoData.subtitles);
-      segments = mapSegments(videoData.segments);
-      speakers = mapSpeakers(videoData.speakers);
+      mediaSources = getMediaSources(videoData.s3_prefix);
+      subtitles = videoData.subtitles;
+      segments = videoData.segments;
+      speakers = videoData.speakers;
+      console.log(videoData.debate);
     }
   });
 </script>
@@ -61,6 +82,11 @@
 <svelte:head>
   <title>Test Page</title>
   <meta name="description" content="Testpage" />
+  <style>
+    :root {
+        --tadashi_svelte_notifications_width: 300px;
+    }
+  </style>
 </svelte:head>
 
 <div class="video-layout">
@@ -84,3 +110,13 @@
 <SpeakerDisplay bind:speakers {timeUpdateParameters} />
 
 <SegmentDisplay {subtitles} {timeUpdateParameters} />
+
+<Notifications />
+
+<style>
+  button {
+      display: block;
+      margin: 0.3rem;
+      min-width: 150px;
+  }
+</style>

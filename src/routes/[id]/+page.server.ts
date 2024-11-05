@@ -1,6 +1,9 @@
 import { start_mongo, getDb } from "$lib/mongo/mongo";
 import type { PageServerLoad } from "./$types"; // Ensure this is the correct path to your types
 import { PUBLIC_MONGO_VIDEO_COLLECTION } from "$env/static/public";
+import type {
+    VideoData
+  } from "$lib/interfaces/mongodb.interface";
 
 const videoCollection = PUBLIC_MONGO_VIDEO_COLLECTION;
 
@@ -20,10 +23,13 @@ export const load: PageServerLoad = async ({ params }) => {
             .toArray();
 
         // Serialize MongoDB ObjectIds
-        const serializedData = videoData.map((video) => ({
-            ...video,
-            _id: video._id.toString(),
-        }));
+        const serializedData: VideoData = videoData.map((video) => {
+            const { _id, ...rest } = video; // Destructure to exclude _id
+            return {
+                ...rest,
+            };
+        });
+
 
         return {
             video: serializedData,
@@ -36,4 +42,3 @@ export const load: PageServerLoad = async ({ params }) => {
         };
     }
 };
-

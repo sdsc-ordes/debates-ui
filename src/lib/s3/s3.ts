@@ -1,8 +1,3 @@
-import {
-  PUBLIC_VIDEO_INPUT, PUBLIC_SUBTITLES_INPUT
-} from "$env/static/public";
-const videoInput = PUBLIC_VIDEO_INPUT;
-const subtitlesInput = PUBLIC_SUBTITLES_INPUT;
 import type { MediaSources } from "$lib/interfaces/videoplayer.interface";
 
 export function getMediaSources(s3Prefix: string): MediaSources {
