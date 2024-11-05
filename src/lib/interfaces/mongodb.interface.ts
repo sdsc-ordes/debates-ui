@@ -1,20 +1,3 @@
-export interface SubtitleDB {
-    index: number
-    start: number,
-    end: number,
-    content: string,
-    segment_nr: number,
-}
-
-export interface SegmentDB {
-    speaker_id: string,
-    start: number,
-    end: number,
-    first_index: number,
-    last_index: number,
-    segment_nr: number,
-}
-
 export interface VideoData {
     s3_prefix: string;
     version_id: string;
