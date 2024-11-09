@@ -4,8 +4,10 @@ import { PUBLIC_MONGO_VIDEO_COLLECTION } from "$env/static/public";
 import type {
     VideoData
 } from "$lib/interfaces/mongodb.interface";
+import type {
+    MediaSources,
+  } from "$lib/interfaces/videoplayer.interface";
 import { fetchMedia } from "$lib/utils/fetchMedia";
-import { mediaSources } from "$lib/components/VideoPlayer.svelte";
 
 const videoCollection = PUBLIC_MONGO_VIDEO_COLLECTION;
 
