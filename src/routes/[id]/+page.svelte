@@ -26,7 +26,6 @@
   let subtitles: Subtitle[] = videoData.subtitles;
   let segments: Segment[] = videoData.segments;
   let speakers: Speaker[] = videoData.speakers;
-  console.log(videoData.debate);
 
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
   let video: HTMLVideoElement;
@@ -38,8 +37,6 @@
   };
 
   function saveCorrections(): void {
-    const createdAt = getCreatedAtDate();
-    console.log(createdAt);
     let videoDataUpdate: VideoData = videoData;
     videoDataUpdate.created_at = getCreatedAtDate();
     videoDataUpdate.version_id = generateUUID();

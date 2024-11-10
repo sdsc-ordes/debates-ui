@@ -10,7 +10,6 @@ export async function fetchMedia(s3Prefix: string): MediaSources {
         // Request payload for signed URLs
         const payload = JSON.stringify({ prefix: s3Prefix, expiration: 3600 });
         console.log("payload", payload)
-
         console.log(apiUrl);
         // Fetch signed URL from FastAPI backend
         const response = await fetch(apiUrl, {

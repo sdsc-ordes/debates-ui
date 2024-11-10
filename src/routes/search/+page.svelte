@@ -14,7 +14,6 @@
     const data = await fetchSolrData(solrQuery);
     if (data) {
       searchResult = data;
-      console.log(data);
     } else {
       console.warn("No data found or an error occurred.");
     }
