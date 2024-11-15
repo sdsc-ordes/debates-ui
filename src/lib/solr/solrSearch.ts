@@ -3,7 +3,6 @@ import type { SolrQuery } from "$lib/interfaces/solr.interface";
 const solrUrl = PUBLIC_SOLR_URL;
 
 export async function fetchSolrData(solrQuery: SolrQuery) {
-    console.log("NEW SEARCH")
     const params = {
         indent: "true",
         df: "statement",
@@ -12,7 +11,6 @@ export async function fetchSolrData(solrQuery: SolrQuery) {
         facet: "true",
         rows: 100,
     };
-    console.log("sorlQuery", solrQuery);
     const facetFields = ["debate_schedule"];
     let searchParams = new URLSearchParams(params);
 

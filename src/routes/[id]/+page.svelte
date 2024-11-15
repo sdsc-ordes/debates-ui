@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { page } from "$app/stores";
   import type { PageData } from "./$types";
   import "./page.css";
@@ -9,7 +8,6 @@
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
   import { getCreatedAtDate, generateUUID } from "$lib/utils/mongoUpdateUtils";
-  import { getMediaSources } from "$lib/s3/s3";
   import type {
     TimeUpdateParameters,
     MediaSources,
@@ -20,18 +18,17 @@
     Subtitle,
     VideoData,
   } from "$lib/interfaces/mongodb.interface";
-
+  import { fetchMedia } from "$lib/utils/fetchMedia";
+  let s3Prefix: string = $page.url.pathname.split("/").pop();
   export let data: PageData;
-
-  let subtitles: Subtitle[];
-  let speakers: Speaker[];
-  let segments: Segment[];
-  let videoData: VideoData;
+  let videoData: VideoData = data?.video?.[0];
+  let mediaSources: MediaSources = data?.mediaSources;
+  let subtitles: Subtitle[] = videoData.subtitles;
+  let segments: Segment[] = videoData.segments;
+  let speakers: Speaker[] = videoData.speakers;
 
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
   let video: HTMLVideoElement;
-  let s3Prefix: string = $page.url.pathname.split("/").pop();
-  let mediaSources: MediaSources = getMediaSources(s3Prefix);
 
   let timeUpdateParameters: TimeUpdateParameters = {
     currentSubtitleIndex: -1,
@@ -40,8 +37,6 @@
   };
 
   function saveCorrections(): void {
-    const createdAt = getCreatedAtDate();
-    console.log(createdAt);
     let videoDataUpdate: VideoData = videoData;
     videoDataUpdate.created_at = getCreatedAtDate();
     videoDataUpdate.version_id = generateUUID();
@@ -63,20 +58,6 @@
       console.error("Error inserting document:", result.error);
     }
   }
-
-
-
-  onMount(() => {
-    videoData = data?.video?.[0];
-    console.log(videoData);
-    if (videoData) {
-      mediaSources = getMediaSources(videoData.s3_prefix);
-      subtitles = videoData.subtitles;
-      segments = videoData.segments;
-      speakers = videoData.speakers;
-      console.log(videoData.debate);
-    }
-  });
 </script>
 
 <svelte:head>

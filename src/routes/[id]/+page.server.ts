@@ -3,7 +3,11 @@ import type { PageServerLoad } from "./$types"; // Ensure this is the correct pa
 import { PUBLIC_MONGO_VIDEO_COLLECTION } from "$env/static/public";
 import type {
     VideoData
-  } from "$lib/interfaces/mongodb.interface";
+} from "$lib/interfaces/mongodb.interface";
+import type {
+    MediaSources,
+  } from "$lib/interfaces/videoplayer.interface";
+import { fetchMedia } from "$lib/utils/fetchMedia";
 
 const videoCollection = PUBLIC_MONGO_VIDEO_COLLECTION;
 
@@ -11,6 +15,7 @@ export const load: PageServerLoad = async ({ params }) => {
     try {
         await start_mongo();
         const db = getDb();
+        const s3Prefix: string = params.id;
 
         // s3Prefix identifies the video
         const query = params.id ? { s3_prefix: params.id } : {};
@@ -22,6 +27,8 @@ export const load: PageServerLoad = async ({ params }) => {
             .limit(1) // Limit to 1 document
             .toArray();
 
+        const mediaSources: MediaSources = await fetchMedia(s3Prefix);
+
         // Serialize MongoDB ObjectIds
         const serializedData: VideoData = videoData.map((video) => {
             const { _id, ...rest } = video; // Destructure to exclude _id
@@ -30,9 +37,9 @@ export const load: PageServerLoad = async ({ params }) => {
             };
         });
 
-
         return {
             video: serializedData,
+            mediaSources
         };
     } catch (error) {
         console.error("Error loading collections:", error);

@@ -4,8 +4,6 @@
   export let searchResult;
   export let solrQuery: SolrQuery;
   export let onSearch: (solrQuery: SolrQuery) => void; // Function to trigger search
-  let facetCounts = searchResult.facet_counts;
-  console.log(facetCounts);
 
   const displayFunctions: { [key: string]: (label: string) => string } = {
     debate_schedule: (label) => displayIsoDate(label)

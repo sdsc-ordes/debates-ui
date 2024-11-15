@@ -5,7 +5,6 @@
     export let doc;
     export let query;
     export let highlighting;
-    console.log(doc.statement)
 
     // Replacing writable store with a simple object
     let expandedStatements: Record<string, boolean> = {};
