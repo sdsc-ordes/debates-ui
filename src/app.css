@@ -70,22 +70,6 @@ body {
 	background-color: var(--primary-dark-color);
   }
 
-  /* Layout Grid */
-.container {
-	display: grid;
-	grid-template-columns: repeat(12, 1fr);
-	gap: 20px;
-	max-width: calc(100% - 240px); /* 120px margin on each side */
-	margin: 0 auto;
-	padding: 0 120px;
-  }
-  
-  .layout-grid {
-	display: grid;
-	grid-template-columns: repeat(12, 1fr);
-	gap: 20px; /* Gutter between columns */
-  }
-
 h1,
 h2,
 p {
