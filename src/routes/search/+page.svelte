@@ -33,9 +33,15 @@
   <meta name="description" content="Political Debates Search" />
 </svelte:head>
 
-<SearchForm {solrQuery} on:submit={handleSearch} on:reset={handleReset} />
-
-{#if searchResult}
-  <SearchResultContainer {searchResult} {solrQuery} onSearch={handleSearch} />
-{/if}
-
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <SearchForm {solrQuery} on:submit={handleSearch} on:reset={handleReset} />
+    </div>
+    {#if searchResult}
+      <div class="col-md-8">
+        <SearchResultContainer {searchResult} {solrQuery} onSearch={handleSearch} />
+      </div>
+    {/if}
+  </div>
+</div>

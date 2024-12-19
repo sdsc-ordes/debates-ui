@@ -1,6 +1,7 @@
 <script>
 	import Header from "./Header.svelte";
 	import "../app.css";
+	import 'bootstrap/dist/css/bootstrap.min.css';
 </script>
 
 <div class="app">
@@ -19,6 +20,7 @@
 </div>
 
 <style>
+	
 	.app {
 		display: flex;
 		flex-direction: column;
