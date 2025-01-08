@@ -8,6 +8,7 @@
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
   import { getCreatedAtDate, generateUUID } from "$lib/utils/mongoUpdateUtils";
+  import { canEdit } from '$lib/stores/auth';
   import type {
     TimeUpdateParameters,
     MediaSources,
@@ -18,7 +19,7 @@
     Subtitle,
     VideoData,
   } from "$lib/interfaces/mongodb.interface";
-  import { fetchMedia } from "$lib/utils/fetchMedia";
+
   let s3Prefix: string = $page.url.pathname.split("/").pop();
   export let data: PageData;
   let videoData: VideoData = data?.video?.[0];
@@ -71,6 +72,7 @@
 </svelte:head>
 
 <div class="video-layout">
+
   <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
 
   <VideoPlayer
@@ -83,10 +85,11 @@
     bind:timeUpdateParameters
   />
 </div>
-
-<button class="save-button" on:click={() => saveCorrections()}>
-  Save all corrections
-</button>
+{#if $canEdit}
+  <button class="save-button" on:click={() => saveCorrections()}>
+    Save all corrections
+  </button>
+{/if}
 
 <SpeakerDisplay bind:speakers {timeUpdateParameters} />
 
