@@ -50,12 +50,21 @@
         on:click={() => navigateToVideoPlayer(doc.id)}
         role="button"
         tabindex="0"
-        on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && navigateToVideoPlayer(doc.id)}
+        on:keydown={(e) =>
+            (e.key === "Enter" || e.key === " ") &&
+            navigateToVideoPlayer(doc.id)}
     >
         <div class="card-body">
             <h5 class="card-title">{doc.debate_type} {doc.debate_session}</h5>
             <p class="card-text truncated">
-                {doc.statement.join(" ")}
+                {#if highlighting}
+                    {@html replaceWithHighlightedVersion(
+                        doc.statement,
+                        highlighting?.[doc.id]?.statement,
+                    ).join(" ")}
+                {:else}
+                    {doc.statement.join(" ")}
+                {/if}
             </p>
             <div class="datetime-container">
                 <div class="date-time-item">
@@ -92,7 +101,7 @@
             Show More
         {/if}
     </button> -->
-    {#if expandedStatements[doc.id]}
+    <!-- {#if expandedStatements[doc.id]}
         <p>
             {#if highlighting}
                 {@html replaceWithHighlightedVersion(
@@ -113,7 +122,7 @@
                 {getFirstNonEmptyStatement(doc.statement)}
             {/if}
         </p>
-    {/if}
+    {/if} -->
 </div>
 
 <style>
@@ -124,12 +133,12 @@
     }
 
     .card-text.truncated {
-    display: -webkit-box; /* Use a flexbox-like display model */
-    -webkit-line-clamp: 3; /* Number of lines to show */
-    -webkit-box-orient: vertical; /* Orient box vertically */
-    overflow: hidden; /* Hide overflowing content */
-    text-overflow: ellipsis; /* Show ellipsis for truncated content */
-  }
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
     .card:hover {
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
