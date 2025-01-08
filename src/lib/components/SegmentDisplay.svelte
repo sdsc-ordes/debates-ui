@@ -5,6 +5,7 @@
   import type {
     Subtitle,
   } from "$lib/interfaces/mongodb.interface";
+  import { canEdit } from '$lib/stores/auth';
   export let subtitles: Subtitle[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
   let editSubtitles: boolean = false;
@@ -15,11 +16,11 @@
     editSubtitles = !editSubtitles;
   }
 </script>
-
-<button on:click={toggleEditSubtitles}>
-  {editSubtitles ? "Disable Subtitle Editing" : "Enable Subtitle Editing"}
-</button>
-
+{#if $canEdit}
+  <button on:click={toggleEditSubtitles}>
+    {editSubtitles ? "Disable Subtitle Editing" : "Enable Subtitle Editing"}
+  </button>
+{/if}
 <p>
   {#each subtitles as subtitle, index}
     {#if subtitle.segment_nr === timeUpdateParameters.currentSegmentIndex}
