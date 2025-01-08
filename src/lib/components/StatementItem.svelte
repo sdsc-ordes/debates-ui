@@ -1,6 +1,7 @@
 <script lang="ts">
     import { getFirstNonEmptyStatement } from "../utils/statement-utils";
     import { formatTimeForDisplay, displayIsoDate } from "$lib/utils/displayUtils";
+    import { goto } from '$app/navigation';
 
     export let doc;
     export let query;
@@ -15,7 +16,7 @@
     };
 
     const navigateToVideoPlayer = () => {
-        window.location.href = `/${encodeURIComponent(doc.s3_prefix)}?start=${encodeURIComponent(doc.start)}`;
+        goto(`/${encodeURIComponent(doc.s3_prefix)}?start=${encodeURIComponent(doc.start)}`);
     };
 
     function replaceWithHighlightedVersion(
