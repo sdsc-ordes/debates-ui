@@ -14,7 +14,6 @@
   export let speakers: Speaker[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
   export let video: HTMLVideoElement;
-  let currentIndex = timeUpdateParameters.currentSegmentIndex;
 </script>
 <div class="scrollable-container">
 <ol>
@@ -53,5 +52,5 @@
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 0.5rem;
-  }  
+  }
 </style>
