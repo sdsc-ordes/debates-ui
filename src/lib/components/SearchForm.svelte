@@ -3,6 +3,7 @@
     import type { SolrQuery } from "$lib/interfaces/solr.interface";
 
     export let solrQuery: SolrQuery;
+
     const dispatch = createEventDispatcher();
 
     function submitForm() {
@@ -11,24 +12,26 @@
 
     function resetForm() {
         solrQuery.queryTerm = "";
-        dispatch("reset");
+        dispatch("reset");`~`
     }
 </script>
 
-<form on:submit|preventDefault={submitForm} class="search-form">
-    <input
-        class="search-input"
-        type="text"
-        bind:value={solrQuery.queryTerm}
-        placeholder="Enter search term"
-    />
-    <button class="option-button" type="button" on:click={resetForm}>
-        <i class="fa fa-xmark"></i>
-    </button>
-    <button class="button-primary" type="submit">
-        <i class="fa fa-search"></i> Search
-    </button>
-</form>
+<div>
+    <form on:submit|preventDefault={submitForm} class="search-form">
+        <input
+            class="search-input"
+            type="text"
+            bind:value={solrQuery.queryTerm}
+            placeholder="Enter search term"
+        />
+        <button class="option-button" type="button" on:click={resetForm}>
+            <i class="fa fa-xmark"></i>
+        </button>
+        <button class="button-primary" type="submit">
+            <i class="fa fa-search"></i> Search
+        </button>
+    </form>
+</div>
 
 <style>
     .search-form {

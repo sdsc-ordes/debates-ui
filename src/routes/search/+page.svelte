@@ -9,6 +9,7 @@
   let solrQuery: SolrQuery = createDefaultSolrQuery();
 
   let searchResult: SolrResponse;
+  
 
   async function handleSearch() {
     const data = await fetchSolrData(solrQuery);
@@ -26,6 +27,8 @@
   onMount(() => {
     handleReset();
   });
+
+
 </script>
 
 <svelte:head>
@@ -36,7 +39,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4">
-      <SearchForm {solrQuery} on:submit={handleSearch} on:reset={handleReset} />
+      <SearchForm {solrQuery} on:submit={handleSearch} on:reset={handleReset}/>
     </div>
     {#if searchResult}
       <div class="col-md-8">
