@@ -45,13 +45,17 @@
 
 <div class="statement">
     <hr />
-    <div class="card">
+    <div
+        class="card"
+        on:click={() => navigateToVideoPlayer(doc.id)}
+        role="button"
+        tabindex="0"
+        on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && navigateToVideoPlayer(doc.id)}
+    >
         <div class="card-body">
             <h5 class="card-title">{doc.debate_type} {doc.debate_session}</h5>
-            <p class="card-text">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This card has even longer content
-                than the first to show that equal height action.
+            <p class="card-text truncated">
+                {doc.statement.join(" ")}
             </p>
             <div class="datetime-container">
                 <div class="date-time-item">
@@ -78,16 +82,16 @@
     <!-- {#if doc.speaker_name} <span>{doc.speaker_name}:</span>{/if}
     {#if doc.speaker_role} <span>role: {doc.speaker_role}</span>{/if}
     {#if doc.speaker_country} <span>represents: {doc.speaker_country}</span>{/if} -->
-    <button class="option-button" on:click={navigateToVideoPlayer}>
+    <!-- <button class="option-button" on:click={navigateToVideoPlayer}>
         Play Segment
-    </button>
-    <button class="option-button" on:click={() => toggleFullStatement(doc.id)}>
+    </button> -->
+    <!-- <button class="option-button" on:click={() => toggleFullStatement(doc.id)}>
         {#if expandedStatements[doc.id]}
             Show Less
         {:else}
             Show More
         {/if}
-    </button>
+    </button> -->
     {#if expandedStatements[doc.id]}
         <p>
             {#if highlighting}
@@ -118,6 +122,14 @@
         gap: 1rem;
         align-items: center;
     }
+
+    .card-text.truncated {
+    display: -webkit-box; /* Use a flexbox-like display model */
+    -webkit-line-clamp: 3; /* Number of lines to show */
+    -webkit-box-orient: vertical; /* Orient box vertically */
+    overflow: hidden; /* Hide overflowing content */
+    text-overflow: ellipsis; /* Show ellipsis for truncated content */
+  }
 
     .card:hover {
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
