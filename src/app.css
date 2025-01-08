@@ -15,14 +15,14 @@
 	font-family: var(--font-body);
 	color: var(--color-text);
 	/* New Variables */
-	--primary-color: #2849A1; 
-    --primary-dark-color: #182C61;
-    --secondary-color: #FF5500; 
-    --background-color: #f8f9fa;
-    --on-primary: #F6F7FD;
-    --text-color: #1E1E1E; 
-    --heading-font: 'Helvetica-Neue', sans-serif;
-    --body-font: 'Helvetica-Neue', sans-serif;
+	--primary-color: #2849A1;
+	--primary-dark-color: #182C61;
+	--secondary-color: #FF5500;
+	--background-color: #f8f9fa;
+	--on-primary: #F6F7FD;
+	--text-color: #1E1E1E;
+	--heading-font: 'Helvetica-Neue', sans-serif;
+	--body-font: 'Helvetica-Neue', sans-serif;
 }
 
 body {
@@ -30,45 +30,62 @@ body {
 	font-size: 16px;
 	line-height: 1.5;
 	color: var(--text-color);
-	background-color: var(--background-color); /* If you want the background */
-  }
+	background-color: var(--background-color);
+	/* If you want the background */
+}
 
-  /* Card Title */
+/* Card Title */
 .card-title {
 	font-family: var(--body-font);
 	font-size: 22px;
 	color: var(--text-color);
 	line-height: 20px;
-  }
-  
-  /* Card Body */
-  .card-body {
+}
+
+/* Card Body */
+.card-body {
 	font-family: var(--body-font);
 	font-size: 12px;
 	color: var(--text-color);
 	line-height: 20px;
-  }
-  
-  .card-subtle {
+}
+
+.card-subtle {
 	font-family: var(--body-font);
 	font-size: 12px;
 	color: var(--text-color);
 	line-height: 16px;
-  }
-  
-  /* Button Styles */
-  .button-primary {
+}
+
+/* Button Styles */
+.button-primary {
 	background-color: var(--primary-color);
 	color: var(--on-primary);
 	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
+	padding: 5px 10px;
+	border-radius: 10px;
 	cursor: pointer;
 	transition: background-color 0.3s;
-  }
-  .button-primary:hover {
+	display: inline-flex;
+	align-items: center;  
+	justify-content: center; 
+}
+
+.button-primary:hover {
 	background-color: var(--primary-dark-color);
-  }
+}
+
+.button-primary i {
+	margin-right: 4px;
+	font-size: 12px;
+	color: inherit;
+	display: inline-block;
+	vertical-align: middle;
+	display: flex;
+    align-items: center;
+	transition: background-color 0.3s;
+
+}
 
 h1,
 h2,
@@ -99,7 +116,7 @@ h2 {
 }
 
 em {
-	color:red;
+	color: red;
 	background-color: yellow;
 }
 
