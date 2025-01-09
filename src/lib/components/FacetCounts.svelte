@@ -44,7 +44,7 @@
   }
 </script>
 
-{#if searchResult.facet_counts}
+{#if searchResult && searchResult.facet_counts}
   <div class="facets">
     {#each getFacetFields(searchResult.facet_counts.facet_fields) as field}
       <h4 class="facet-title">{field.key}</h4>
