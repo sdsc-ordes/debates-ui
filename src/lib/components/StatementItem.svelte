@@ -70,13 +70,13 @@
             <div class="datetime-container">
                 <div class="date-time-item">
                     <i class="fa fa-calendar" aria-hidden="true"></i>
-                    <small class="text-muted"
+                    <small class="card-subtle"
                         >{displayIsoDate(doc.debate_schedule)}</small
                     >
                 </div>
                 <div class="date-time-item">
                     <i class="fa fa-clock" aria-hidden="true"></i>
-                    <small class="text-muted"
+                    <small class="card-subtle"
                         >{formatTimeForDisplay(doc.start)} - {formatTimeForDisplay(
                             doc.end,
                         )}</small
@@ -139,6 +139,10 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-family: var(--body-font);
+        font-size: 12px;
+        color: var(--text-color);
+        line-height: 20px;
     }
 
     .card:hover {
@@ -156,7 +160,10 @@
         color: grey;
     }
 
-    .text-muted {
-        font-size: 0.875rem; /* Adjust font size for muted text */
-    }
+    .card-subtle {
+	font-family: var(--body-font);
+	font-size: 12px;
+	color: grey;
+	line-height: 16px;
+}
 </style>
