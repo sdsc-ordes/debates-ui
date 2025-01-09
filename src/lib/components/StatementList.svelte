@@ -16,3 +16,15 @@
         <StatementsNotAvailable />
     {/if}
 </div>
+
+
+<style>
+    .statements {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+
+
+</style>

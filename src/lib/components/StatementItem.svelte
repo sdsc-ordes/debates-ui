@@ -45,7 +45,7 @@
 </script>
 
 <div class="statement">
-    <hr />
+    <!-- <hr /> -->
     <div
         class="card"
         on:click={() => navigateToVideoPlayer(doc.id)}
