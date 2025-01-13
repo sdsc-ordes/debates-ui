@@ -56,8 +56,8 @@
             navigateToVideoPlayer(doc.id)}
     >
         <div class="card-body">
-            <h5 class="card-title">{doc.debate_type} {doc.debate_session}</h5>
-            <p class="card-text truncated">
+            <div class="card-title-large">{doc.debate_type} {doc.debate_session}</div>
+            <p class="card-body-large truncated">
                 {#if highlighting}
                     {@html replaceWithHighlightedVersion(
                         doc.statement,
@@ -85,45 +85,6 @@
             </div>
         </div>
     </div>
-    <!-- <span>{displayIsoDate(doc.debate_schedule)}</span>
-    <span>{doc.debate_type}</span>
-    <span>{doc.debate_session}</span>
-    <span>{formatTimeForDisplay(doc.start)} - {formatTimeForDisplay(doc.end)}</span><br> -->
-    <!-- {#if doc.speaker_name} <span>{doc.speaker_name}:</span>{/if}
-    {#if doc.speaker_role} <span>role: {doc.speaker_role}</span>{/if}
-    {#if doc.speaker_country} <span>represents: {doc.speaker_country}</span>{/if} -->
-    <!-- <button class="option-button" on:click={navigateToVideoPlayer}>
-        Play Segment
-    </button> -->
-    <!-- <button class="option-button" on:click={() => toggleFullStatement(doc.id)}>
-        {#if expandedStatements[doc.id]}
-            Show Less
-        {:else}
-            Show More
-        {/if}
-    </button> -->
-    <!-- {#if expandedStatements[doc.id]}
-        <p>
-            {#if highlighting}
-                {@html replaceWithHighlightedVersion(
-                    doc.statement,
-                    highlighting?.[doc.id]?.statement,
-                ).join(" ")}
-            {:else}
-                {doc.statement.join(" ")}
-            {/if}
-        </p>
-    {:else}
-        <p>
-            {#if highlighting}
-                {@html getFirstNonEmptyStatement(
-                    highlighting?.[doc.id]?.statement,
-                )}
-            {:else}
-                {getFirstNonEmptyStatement(doc.statement)}
-            {/if}
-        </p>
-    {/if} -->
 </div>
 
 <style>
@@ -133,16 +94,12 @@
         align-items: center;
     }
 
-    .card-text.truncated {
+    .card-body-large.truncated {
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-family: var(--body-font);
-        font-size: 12px;
-        color: var(--text-color);
-        line-height: 20px;
     }
 
     .card:hover {
@@ -160,10 +117,4 @@
         color: grey;
     }
 
-    .card-subtle {
-	font-family: var(--body-font);
-	font-size: 12px;
-	color: grey;
-	line-height: 16px;
-}
 </style>
