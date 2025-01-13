@@ -16,41 +16,53 @@
   export let video: HTMLVideoElement;
 </script>
 <div class="scrollable-container">
-<ol>
-  {#each segments as segment, index}
-    <li>
-      <button
-        class="play-button"
+  <ol>
+    {#each segments as segment, index}
+      <li>
+        <div class="card text-center {segment.segment_nr ===
+            timeUpdateParameters.currentSegmentIndex
+              ? "current"
+              : "other"}"
         on:click={() => jumpToTime(video, segment.start)}
-      >
-        {formatTimeForDisplay(segment.start)} - {formatTimeForDisplay(
-          segment.end,
-        )}
-      </button>
-      <span
-        class={segment.segment_nr === timeUpdateParameters.currentSegmentIndex
-          ? "highlighted"
-          : ""}
-      >
-        {@html displaySpeaker(segment.speaker_id, speakers) }
-      </span>
-    </li>
-  {/each}
-</ol>
+        role="button"
+        tabindex="0"
+        on:keydown={(e) =>
+          (e.key === "Enter" || e.key === " ") &&
+          jumpToTime(video, segment.start)}
+        >
+          <div class="card-body">
+            <h5 class="card-title">{@html displaySpeaker(segment.speaker_id, speakers)}</h5>
+            <div class="date-time-item">
+              <i class="fa fa-clock" aria-hidden="true"></i>
+              <small class="card-subtle"
+                >{formatTimeForDisplay(segment.start)} - {formatTimeForDisplay(
+                  segment.end,
+                )}</small
+              >
+            </div>
+          </div>
+        </div>
+      </li>
+    {/each}
+  </ol>
 </div>
 
 <style>
-  .highlighted {
-    color: red;
+    .fa {
+	font-size: 1rem;
+	color: var(--on-primary);
+}
+.card-subtle {
+	color: var(--on-primary);
+}
+  .current {
+    color: var(--on-primary);
+    background-color: var(--primary-dark-color);
   }
-  .play-button {
-    padding: 0.2rem;
-    font-size: 1rem;
-  }
+
   .scrollable-container {
     max-height: 300px;
     overflow-y: auto;
-    border: 1px solid #ccc;
     padding: 0.5rem;
   }
 </style>
