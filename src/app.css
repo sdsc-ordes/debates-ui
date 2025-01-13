@@ -14,21 +14,90 @@
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
 	color: var(--color-text);
+	/* New Variables */
+	--primary-color: #2849A1;
+	--primary-dark-color: #182C61;
+	--secondary-color: #FF5500;
+	--background-color: #f8f9fa;
+	--on-primary: #F6F7FD;
+	--text-color: #1E1E1E;
+	--heading-font: 'Helvetica-Neue', sans-serif;
+	--body-font: 'Helvetica-Neue', sans-serif;
 }
 
 body {
-	min-height: 100vh;
-	margin: 0;
-	background-attachment: fixed;
-	background-color: var(--color-bg-1);
-	background-size: 100vw 100vh;
-	background-image: radial-gradient(
-			50% 50% at 50% 50%,
-			rgba(255, 255, 255, 0.75) 0%,
-			rgba(255, 255, 255, 0) 100%
-		),
-		linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%);
+	font-family: var(--body-font);
+	font-size: 16px;
+	line-height: 1.5;
+	color: var(--text-color);
+	background-color: var(--background-color);
 }
+
+/* Card Styles */
+.card-title-large {
+	font-family: var(--body-font);
+	font-size: 22px;
+	color: var(--text-color);
+	line-height: 1.5;
+}
+
+.card-body-large {
+	font-family: var(--body-font);
+	font-size: 12px;
+	color: var(--text-color);
+	line-height: 1.5;
+}
+
+.card-subtle {
+	font-family: var(--body-font);
+	font-size: 12px;
+	color: grey;
+	line-height: 16px;
+}
+
+/* Highlighted Text */
+em {
+	color: var(--secondary-color);
+} 
+
+/* Button Styles */
+.button-primary {
+	background-color: var(--primary-color);
+	color: var(--on-primary);
+	border: none;
+	padding: 5px 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	display: inline-flex;
+	align-items: center;  
+	justify-content: center; 
+}
+
+.button-primary:hover {
+	background-color: var(--primary-dark-color);
+}
+
+.button-primary i {
+	margin-right: 4px;
+	font-size: 12px;
+	color: inherit;
+	display: inline-block;
+	vertical-align: middle;
+	display: flex;
+    align-items: center;
+	transition: background-color 0.3s;
+
+}
+
+.option-button {
+	color: gray;
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-align: left;
+}
+
 
 h1,
 h2,
@@ -56,11 +125,6 @@ h1 {
 
 h2 {
 	font-size: 1.5rem;
-}
-
-em {
-	color:red;
-	background-color: yellow;
 }
 
 pre {

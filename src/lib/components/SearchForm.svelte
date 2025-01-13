@@ -3,6 +3,7 @@
     import type { SolrQuery } from "$lib/interfaces/solr.interface";
 
     export let solrQuery: SolrQuery;
+
     const dispatch = createEventDispatcher();
 
     function submitForm() {
@@ -11,50 +12,61 @@
 
     function resetForm() {
         solrQuery.queryTerm = "";
-        dispatch("reset");
+        dispatch("reset");`~`
     }
 </script>
 
-<form on:submit|preventDefault={submitForm}>
-    <input
-        id="#query-input"
-        type="text"
-        bind:value={solrQuery.queryTerm}
-        placeholder="Enter search term"
-    />
-    <button class="search-button" type="submit">Search</button>
-    <button class="option-button" type="button" on:click={resetForm}>Reset</button>
-</form>
+<div>
+    <form on:submit|preventDefault={submitForm} class="search-form">
+        <input
+            class="search-input"
+            type="text"
+            bind:value={solrQuery.queryTerm}
+            placeholder="Enter search term"
+        />
+        <button class="option-button" type="button" on:click={resetForm}>
+            <i class="fa fa-xmark"></i>
+        </button>
+        <button class="button-primary" type="submit">
+            <i class="fa fa-search"></i> Search
+        </button>
+    </form>
+</div>
 
 <style>
-    #query-input {
-        flex: 1;
-        padding: 0.5rem;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px 0 0 4px;
+    .search-form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
+        max-width: 40rem;
+        margin: 0 auto;
+        padding: 10px;
+        padding-right: 20px;
+        border-radius: 50px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        /* background-color: var(--background-color); */
     }
-
-    .search-button {
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        background-color: #ff3e00;
+    .search-input {
+        flex: 1;
+        padding: 10px 15px;
         border: none;
-        border-radius: 0 4px 4px 0;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        border-radius: 50px;
+        font-size: 12px;
+        color: var(--text-color);
+        outline: none;
+        transition: border-color 0.3s ease;
     }
 
     .option-button {
-        margin-top: 0.5rem;
-        font-size: 0.9rem;
-        color: #ff3e00;
+        /* margin-top: 0.5rem;
+        font-size: 0.9rem; */
+        color: gray;
         background: none;
         border: none;
         cursor: pointer;
         text-align: left;
-        margin-left: 2rem;
+        /* margin-left: 2rem; */
     }
 </style>

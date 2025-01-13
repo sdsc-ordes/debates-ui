@@ -1,9 +1,13 @@
 <script>
 	import Header from "./Header.svelte";
 	import "../app.css";
+	import 'bootstrap-icons/font/bootstrap-icons.css';
+	import 'bootstrap/dist/css/bootstrap.min.css';
 </script>
 
 <div class="app">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
 	<Header />
 
 	<main>
@@ -19,6 +23,7 @@
 </div>
 
 <style>
+	
 	.app {
 		display: flex;
 		flex-direction: column;
@@ -31,7 +36,7 @@
 		flex-direction: column;
 		padding: 1rem;
 		width: 100%;
-		max-width: 64rem;
+		max-width: 80rem;
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
@@ -53,4 +58,5 @@
 			padding: 12px 0;
 		}
 	}
+
 </style>
