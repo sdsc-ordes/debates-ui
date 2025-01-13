@@ -6,7 +6,7 @@
   export let onSearch: (solrQuery: SolrQuery) => void; // Function to trigger search
 
   const displayFunctions: { [key: string]: (label: string) => string } = {
-    debate_schedule: (label) => displayIsoDate(label)
+    debate_schedule: (label) => displayIsoDate(label),
   };
 
   // Default display function if no specific function is found for a facet field
@@ -45,25 +45,36 @@
 </script>
 
 {#if searchResult && searchResult.facet_counts}
-  <div class="facets">
+  <div class="filters">
     {#each getFacetFields(searchResult.facet_counts.facet_fields) as field}
       <h4 class="facet-title">{field.key}</h4>
-      {#each field.facets as facet}
-        {#if facet.count}
-          <button
-            class="facet-item {isActive(field.key, facet.label)
-              ? 'active'
-              : ''}"
-            on:click={() => handleFacetClick(field.key, facet.label)}
-          >
-            {getDisplayFunction(field.key)(facet.label)}
-          </button>
-          <button class="facet-item" on:click={() => handleFacetClick("", "")}>
-            <span>x</span>
-          </button>
-          : <span>{facet.count}</span>
-        {/if}
-      {/each}
+      <div class="facets">
+        {#each field.facets as facet}
+          {#if facet.count}
+            <div class="facet-row">
+              <button
+                class="facet-item {isActive(field.key, facet.label)
+                  ? 'active'
+                  : ''}"
+                on:click={() => handleFacetClick(field.key, facet.label)}
+              >
+                {getDisplayFunction(field.key)(facet.label)}
+              </button>
+              {#if isActive(field.key, facet.label)}
+                <button
+                  class="option-button"
+                  type="button"
+                  on:click={() => handleFacetClick("", "")}
+                >
+                  <i class="fa fa-xmark"></i>
+                </button>
+              {:else}
+                <small class="card-subtle">{facet.count}</small>
+              {/if}
+            </div>
+          {/if}
+        {/each}
+      </div>
     {/each}
   </div>
 {:else}
@@ -71,34 +82,48 @@
 {/if}
 
 <style>
-  .facets {
+  .filters {
     margin-top: 1rem;
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: 12px;
+  }
+
+  .facets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 1rem;
+  }
+
+  .facet-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .facet-title {
-    font-size: 0.8rem;
+    font-family: var(--body-font);
+    font-size: 16px;
     margin-top: 1rem;
     margin-bottom: 0.5rem;
-    text-transform: capitalize;
-    color: grey;
+    text-transform: lowercase;
+    color: var(--primary-color);
   }
 
   .facet-item {
-    font-size: 1rem;
-    margin-left: 0.7rem;
-    color: grey;
+    color: var(--primary-color);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .facet-item span {
-    font-weight: bold;
-    margin-left: 0.5rem;
-  }
-
-  button.active {
-    font-weight: bold;
-    text-decoration: underline;
-    background: lightblue;
+  .facet-item.active {
+    background-color: var(--primary-color);
+    color: var(--on-primary);
   }
 </style>
