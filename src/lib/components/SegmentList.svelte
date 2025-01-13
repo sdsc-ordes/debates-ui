@@ -32,7 +32,10 @@
         >
           <div class="card-body">
             <h5 class="card-title">{@html displaySpeaker(segment.speaker_id, speakers)}</h5>
-            <div class="date-time-item">
+            <div class="date-time-item {segment.segment_nr ===
+            timeUpdateParameters.currentSegmentIndex
+              ? "current"
+              : "other"}">
               <i class="fa fa-clock" aria-hidden="true"></i>
               <small class="card-subtle"
                 >{formatTimeForDisplay(segment.start)} - {formatTimeForDisplay(
@@ -48,18 +51,34 @@
 </div>
 
 <style>
-    .fa {
+
+.card {
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.card.other {
+  width: 90%;
+}
+
+/* Styles for the current card */
+.card.current {
+  color: var(--on-primary);
+  background-color: var(--primary-dark-color);
+  width: 100%; 
+  transform: scale(1.05); 
+}
+
+.fa{
 	font-size: 1rem;
 	color: var(--on-primary);
 }
 .card-subtle {
 	color: var(--on-primary);
 }
-  .current {
-    color: var(--on-primary);
-    background-color: var(--primary-dark-color);
-  }
-
   .scrollable-container {
     max-height: 300px;
     overflow-y: auto;
