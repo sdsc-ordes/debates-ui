@@ -60,6 +60,7 @@
               >
                 {getDisplayFunction(field.key)(facet.label)}
               </button>
+              <small class="card-subtle">{facet.count}</small>
               {#if isActive(field.key, facet.label)}
                 <button
                   class="option-button"
@@ -68,8 +69,6 @@
                 >
                   <i class="fa fa-xmark"></i>
                 </button>
-              {:else}
-                <small class="card-subtle">{facet.count}</small>
               {/if}
             </div>
           {/if}
