@@ -48,6 +48,13 @@ body {
 	line-height: 1.5;
 }
 
+.card-title-small {
+	font-family: var(--body-font);
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+
 .card-subtle {
 	font-family: var(--body-font);
 	font-size: 12px;
