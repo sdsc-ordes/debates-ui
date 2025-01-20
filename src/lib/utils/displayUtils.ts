@@ -33,13 +33,10 @@ export function displaySpeaker(speakerId: string, speakers: Speaker[]): string {
 
 function getSpeakerDisplay(speaker: Speaker): string {
     let displayName = speaker.name ? speaker.name : speaker.speaker_id;
-    if (speaker.country || speaker.role) {
+    if (speaker.role_tag) {
         displayName += "<ul>"
-        if (speaker.country) {
-            displayName += `<li>represents: ${speaker.country}</li>`;
-        }
-        if (speaker.role) {
-            displayName += `<li>role: ${speaker.role}</li>`;
+        if (speaker.role_tag) {
+            displayName += `<li>${speaker.role_tag}</li>`;
         }
         displayName += "</ul>"
     }

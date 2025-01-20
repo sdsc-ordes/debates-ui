@@ -5,34 +5,42 @@
   import { Notifications, acts } from "@tadashi/svelte-notification";
   import VideoPlayer from "$lib/components/VideoPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
+  import DebateHeader from "$lib/components/DebateHeader.svelte";
+  import FileDownload from "$lib/components/FileDownload.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
   import { getCreatedAtDate, generateUUID } from "$lib/utils/mongoUpdateUtils";
   import { canEdit } from "$lib/stores/auth";
   import type {
     TimeUpdateParameters,
-    MediaSources,
   } from "$lib/interfaces/videoplayer.interface";
   import type {
     Speaker,
     Segment,
     Subtitle,
-    VideoData,
-  } from "$lib/interfaces/mongodb.interface";
+    Debate,
+    SignedUrls,
+  } from "$lib/interfaces/backend.interface";
 
-  let s3Prefix: string = $page.url.pathname.split("/").pop();
   export let data: PageData;
-  let videoData: VideoData = data?.video?.[0];
-  let mediaSources: MediaSources = data?.mediaSources;
-  let subtitles: Subtitle[] = videoData.subtitles;
-  let segments: Segment[] = videoData.segments;
-  let speakers: Speaker[] = videoData.speakers;
+  let signedUrls: SignedUrls = data?.signedUrls;
+  let debate: Debate = data?.debate;
+  console.log(debate);
+  let subtitles: Subtitle[] = data?.subtitles;
+  let subtitles_en: Subtitle[] = data?.subtitles_en;
+  let segments: Segment[] = data?.segments;
+  console.log(debate);
+  let speakers: Speaker[] = data?.speakers;
+  const mediaUrl = signedUrls.signedMediaUrl;
+  const media = data.media;
+  const downloadUrls = signedUrls.signedUrls;
 
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
-  let video: HTMLVideoElement;
+  let mediaElement: HTMLVideoElement;
 
   let timeUpdateParameters: TimeUpdateParameters = {
     currentSubtitleIndex: -1,
+    currentSubtitleIndexEn: -1,
     currentSegmentIndex: -1,
     currentSpeakerIndex: -1,
   };
@@ -52,7 +60,6 @@
     });
     const result = await response.json();
     if (result.success) {
-      console.log("Document inserted successfully! ID:", result.id);
       acts.add({
         mode: "success",
         message: "✓ Metadata for the video has been saved!",
@@ -69,8 +76,8 @@
 </script>
 
 <svelte:head>
-  <title>Test Page</title>
-  <meta name="description" content="Testpage" />
+  <title>VideoPlayer Page</title>
+  <meta name="description" content="Videoplayer" />
   <style>
     :root {
       --tadashi_svelte_notifications_width: 300px;
@@ -78,9 +85,11 @@
   </style>
 </svelte:head>
 
+<DebateHeader { debate } />
+
 <div class="video-layout">
   <div class="col-md-3">
-    <SegmentList {video} {segments} {speakers} {timeUpdateParameters} />
+    <SegmentList {mediaElement} {segments} {speakers} {timeUpdateParameters} />
   </div>
   <div class="col-md-3">
     <SpeakerDisplay bind:speakers {timeUpdateParameters} />
@@ -92,19 +101,29 @@
   </div>
 
   <div class="col-md-6">
+
     <VideoPlayer
       {startTime}
       {subtitles}
-      {segments}
+      {subtitles_en}
       {speakers}
-      bind:video
-      bind:mediaSources
+      {mediaUrl}
+      {media}
+      bind:mediaElement
       bind:timeUpdateParameters
     />
   </div>
 </div>
 
-<SegmentDisplay {subtitles} {timeUpdateParameters} />
+<FileDownload {downloadUrls} />
+
+{#if $canEdit}
+  <button class="save-button" on:click={() => saveCorrections()}>
+    Save all corrections
+  </button>
+{/if}
+
+<SegmentDisplay {subtitles} {subtitles_en} {timeUpdateParameters} {mediaElement} />
 
 <Notifications />
 
@@ -112,6 +131,5 @@
   button {
     display: block;
     margin: 0.3rem;
-    min-width: 150px;
   }
 </style>

@@ -1,45 +1,30 @@
-import { start_mongo, getDb } from "$lib/mongo/mongo";
-import type { PageServerLoad } from "./$types"; // Ensure this is the correct path to your types
-import { PUBLIC_MONGO_VIDEO_COLLECTION } from "$env/static/public";
-import type {
-    VideoData
-} from "$lib/interfaces/mongodb.interface";
-import type {
-    MediaSources,
-  } from "$lib/interfaces/videoplayer.interface";
-import { fetchMedia } from "$lib/utils/fetchMedia";
-
-const videoCollection = PUBLIC_MONGO_VIDEO_COLLECTION;
+import type { PageServerLoad } from "./$types";
+import type { SignedUrls, ResponseMetadata } from "$lib/interfaces/backend.interface";
+import { fetchMedia } from "$lib/api/fetchMedia";
+import { fetchMetadata } from "$lib/api/fetchMetadata";
 
 export const load: PageServerLoad = async ({ params }) => {
     try {
-        await start_mongo();
-        const db = getDb();
         const s3Prefix: string = params.id;
-
-        // s3Prefix identifies the video
-        const query = params.id ? { s3_prefix: params.id } : {};
-
-        // Get newest metadata of the debate
-        const videoData = await db.collection(videoCollection)
-            .find(query) // Filter by the query
-            .sort({ created_at: -1 }) // Sort by created_at in descending order
-            .limit(1) // Limit to 1 document
-            .toArray();
-
-        const mediaSources: MediaSources = await fetchMedia(s3Prefix);
-
-        // Serialize MongoDB ObjectIds
-        const serializedData: VideoData = videoData.map((video) => {
-            const { _id, ...rest } = video; // Destructure to exclude _id
-            return {
-                ...rest,
-            };
-        });
-
+        const metadata: Promise<ResponseMetadata> = await fetchMetadata(s3Prefix);
+        const objectKeys: string[] = metadata.debate.s3_keys.map(item => item.key);
+        const mediaKey = metadata.debate.media.key;
+        const signedUrls: SignedUrls = await fetchMedia(
+            s3Prefix,
+            objectKeys,
+            mediaKey,
+        );
+        console.log(signedUrls);
+        console.log(metadata);
         return {
-            video: serializedData,
-            mediaSources
+            prefix: s3Prefix,
+            media: metadata.debate.media,
+            debate: metadata.debate,
+            speakers: metadata.speakers.speakers,
+            segments: metadata.segments.segments,
+            subtitles: metadata.subtitles.subtitles,
+            subtitles_en: metadata.subtitles_en.subtitles,
+            signedUrls: signedUrls,
         };
     } catch (error) {
         console.error("Error loading collections:", error);

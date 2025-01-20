@@ -1,15 +1,28 @@
 <script lang="ts">
-  import StatementList from "$lib/components/StatementList.svelte";
-  import type { SolrQuery, SolrResponse } from "$lib/interfaces/solr.interface";
+  import SearchResultItem from "$lib/components/SearchResultItem.svelte";
+  import type { SolrDocument, SolrHighlighting } from "$lib/interfaces/solr.interface";
 
-  export let searchResult: SolrResponse;
-  export let solrQuery: SolrQuery;
+  export let docs: SolrDocument[];
+  export let highlighting: SolrHighlighting;
+
 </script>
 
 <div class="container">
-  <StatementList
-    docs={searchResult.response?.docs}
-    query={searchResult.responseHeader.params.q}
-    highlighting={searchResult.highlighting}
-  />
+  <div class="statements">
+    {#if docs && docs.length > 0}
+      {#each docs as doc}
+        <SearchResultItem {doc} {highlighting} />
+      {/each}
+    {:else}
+      <p>No statements available.</p>
+    {/if}
+  </div>
 </div>
+
+<style>
+  .statements {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+  }
+</style>

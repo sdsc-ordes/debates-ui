@@ -1,6 +1,11 @@
 <script lang="ts">
-  import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
-  import type { Segment, Speaker } from "$lib/interfaces/mongodb.interface";
+  import type {
+    TimeUpdateParameters,
+  } from "$lib/interfaces/videoplayer.interface";
+  import type {
+    Segment,
+    Speaker,
+  } from "$lib/interfaces/backend.interface";
   import { formatTimeForDisplay } from "$lib/utils/displayUtils";
   import { jumpToTime } from "$lib/utils/videoStartUtils";
   import { displaySpeaker } from "$lib/utils/displayUtils";
@@ -8,7 +13,7 @@
   export let segments: Segment[] = [];
   export let speakers: Speaker[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
-  export let video: HTMLVideoElement;
+  export let mediaElement: HTMLVideoElement;
 </script>
 
 <div class="scrollable-container">
@@ -20,12 +25,12 @@
           timeUpdateParameters.currentSegmentIndex
             ? 'current'
             : 'other'}"
-          on:click={() => jumpToTime(video, segment.start)}
+          on:click={() => jumpToTime(mediaElement, segment.start)}
           role="button"
           tabindex="0"
           on:keydown={(e) =>
             (e.key === "Enter" || e.key === " ") &&
-            jumpToTime(video, segment.start)}
+            jumpToTime(mediaElement, segment.start)}
         >
           <div class="card-body">
             <div class="card-title-small" style="color=inherit;">
@@ -73,21 +78,19 @@
     margin-bottom: 1rem;
   }
   .card-body {
-    display: flex; 
-    flex-direction:row; 
+    display: flex;
+    flex-direction:row;
     align-items: center;
     justify-content: center;
     gap: 1rem;
   }
 
-  
-  
   /* Styles for the current speaker card */
   .card.current {
     color: var(--on-primary);
     background-color: var(--primary-dark-color);
   }
-  
+
   .fa {
     font-size: 1rem;
     color: var(--primary-dark-color);

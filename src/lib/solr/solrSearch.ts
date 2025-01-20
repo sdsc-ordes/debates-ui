@@ -11,7 +11,7 @@ export async function fetchSolrData(solrQuery: SolrQuery) {
         facet: "true",
         rows: 100,
     };
-    const facetFields = ["debate_schedule"];
+    const facetFields = ["debate_schedule", "statement_type", "debate_session"];
     let searchParams = new URLSearchParams(params);
 
     facetFields.forEach(field => searchParams.append("facet.field", field));
@@ -21,8 +21,7 @@ export async function fetchSolrData(solrQuery: SolrQuery) {
         searchParams.append("fq", `${solrQuery.facetField}: "${solrQuery.facetValue}"`,)
     }
     const apiUrl = `${solrUrl}?${searchParams.toString()}`;
-
-    console.log("apiUrl", apiUrl);
+    console.log(apiUrl);
     try {
         const response = await fetch(apiUrl, {
             method: "GET",

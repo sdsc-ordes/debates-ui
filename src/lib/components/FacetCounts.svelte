@@ -1,9 +1,10 @@
 <script lang="ts">
-  import type { SolrQuery } from "$lib/interfaces/solr.interface";
+  import type { SolrQuery, SolrFacetCounts } from "$lib/interfaces/solr.interface";
   import { displayIsoDate } from "$lib/utils/displayUtils";
-  export let searchResult;
+
   export let solrQuery: SolrQuery;
-  export let onSearch: (solrQuery: SolrQuery) => void; // Function to trigger search
+  export let facetCounts: SolrFacetCounts;
+  export let onSearch: (solrQuery: SolrQuery) => void;
 
   const displayFunctions: { [key: string]: (label: string) => string } = {
     debate_schedule: (label) => displayIsoDate(label),
@@ -17,7 +18,7 @@
   }
 
   // Helper function to get facet values as key-value pairs
-  const getFacetFields = (facetFields) => {
+  const getFacetFields = (facetFields: Record<string, Array<string | number>>) => {
     let fields = [];
     for (const [key, values] of Object.entries(facetFields)) {
       let facets = [];
@@ -29,12 +30,9 @@
     return fields;
   };
 
-  // Function to handle facet clicks
   function handleFacetClick(facetField: string, facetValue: string) {
-    // Update solrQuery with selected facet
     solrQuery.facetField = facetField;
     solrQuery.facetValue = facetValue;
-    // Trigger search with updated solrQuery
     onSearch(solrQuery);
   }
   function isActive(facetField: string, facetLabel: string): boolean {
@@ -44,10 +42,14 @@
   }
 </script>
 
-{#if searchResult && searchResult.facet_counts}
+{#if facetCounts}
   <div class="filters">
-    {#each getFacetFields(searchResult.facet_counts.facet_fields) as field}
-      <h4 class="facet-title">{field.key}</h4>
+    {#each getFacetFields(facetCounts.facet_fields) as field}
+    <h4 class="facet-title">
+      {field.key
+        .replace(/_/g, " ")
+      }
+    </h4>
       <div class="facets">
         {#each field.facets as facet}
           {#if facet.count}

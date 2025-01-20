@@ -1,59 +1,30 @@
 <script lang="ts">
-    import { getFirstNonEmptyStatement } from "../utils/statement-utils";
     import { goto } from '$app/navigation';
+    import { replaceWithHighlightedVersion } from '$lib/utils/highlightSearchTerms';
+    import type { SolrDocument, SolrHighlighting } from "$lib/interfaces/solr.interface";
     import {
         formatTimeForDisplay,
         displayIsoDate,
     } from "$lib/utils/displayUtils";
 
-    export let doc;
-    export let query;
-    export let highlighting;
-
-    // Replacing writable store with a simple object
-    let expandedStatements: Record<string, boolean> = {};
-
-    const toggleFullStatement = (docId: string) => {
-        // Directly modify the expandedStatements object
-        expandedStatements[docId] = !expandedStatements[docId];
-    };
+    export let highlighting: SolrHighlighting;
+    export let doc: SolrDocument;
 
     const navigateToVideoPlayer = () => {
         goto(`/${encodeURIComponent(doc.s3_prefix)}?start=${encodeURIComponent(doc.start)}`);
     };
-
-    function replaceWithHighlightedVersion(
-        statements: string[],
-        highlighting?: string[],
-    ) {
-        if (!highlighting || highlighting.length === 0) return statements;
-
-        return statements.map((statement) => {
-            for (const highlighted of highlighting) {
-                if (highlighted === "") continue;
-
-                const unhighlighted = highlighted.replace(/<\/?em>/g, "");
-                const highlightedRegex = new RegExp(unhighlighted.trim(), "g");
-                statement = statement.replace(
-                    highlightedRegex,
-                    () => highlighted,
-                );
-            }
-            return statement;
-        });
-    }
 </script>
 
 <div class="statement">
     <!-- <hr /> -->
     <div
         class="card"
-        on:click={() => navigateToVideoPlayer(doc.id)}
+        on:click={() => navigateToVideoPlayer(doc.s3_prefix)}
         role="button"
         tabindex="0"
         on:keydown={(e) =>
             (e.key === "Enter" || e.key === " ") &&
-            navigateToVideoPlayer(doc.id)}
+            navigateToVideoPlayer(doc.s3_prefix)}
     >
         <div class="card-body">
             <div class="card-title-large">{doc.debate_type} {doc.debate_session}</div>
@@ -82,6 +53,11 @@
                         )}</small
                     >
                 </div>
+                <small class="card-subtle">{doc.statement_type}
+                    {#if doc.statement_language}
+                        ({doc.statement_language})
+                    {/if}</small
+                >
             </div>
         </div>
     </div>
