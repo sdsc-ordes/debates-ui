@@ -45,34 +45,6 @@
     currentSpeakerIndex: -1,
   };
 
-  function saveCorrections(): void {
-    let videoDataUpdate: VideoData = videoData;
-    videoDataUpdate.created_at = getCreatedAtDate();
-    videoDataUpdate.version_id = generateUUID();
-    saveVideoData(videoDataUpdate);
-  }
-
-  async function saveVideoData(videoData) {
-    const response = await fetch(`/${s3Prefix}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(videoData),
-    });
-    const result = await response.json();
-    if (result.success) {
-      acts.add({
-        mode: "success",
-        message: "✓ Metadata for the video has been saved!",
-      });
-    } else {
-      acts.add({
-        mode: "danger",
-        message:
-          "✓ Metadata for the video could not be saved! An error occurred",
-      });
-      console.error("Error inserting document:", result.error);
-    }
-  }
 </script>
 
 <svelte:head>
@@ -93,11 +65,6 @@
   </div>
   <div class="col-md-3">
     <SpeakerDisplay bind:speakers {timeUpdateParameters} />
-    {#if $canEdit}
-      <button class="save-button" on:click={() => saveCorrections()}>
-        Save all corrections
-      </button>
-    {/if}
   </div>
 
   <div class="col-md-6">
@@ -116,12 +83,6 @@
 </div>
 
 <FileDownload {downloadUrls} />
-
-{#if $canEdit}
-  <button class="save-button" on:click={() => saveCorrections()}>
-    Save all corrections
-  </button>
-{/if}
 
 <SegmentDisplay {subtitles} {subtitles_en} {timeUpdateParameters} {mediaElement} />
 

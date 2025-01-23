@@ -9,6 +9,9 @@
     function toggleEditSubtitles() {
       editSubtitles = !editSubtitles;
     }
+    function saveSpeakers(): void {
+      editSubtitles = !editSubtitles;
+    }
 </script>
 
 <p>
@@ -23,7 +26,8 @@
       {/if}
       {#if editSubtitles}
         <div class="speaker">
-          <label for="speaker-id">({speaker.speaker_id}) Name:</label>
+          {speaker.speaker_id}<br>
+          <label for="speaker-id"> Name:</label>
           <input
             id="speaker-name"
             placeholder="name"
@@ -31,6 +35,7 @@
             bind:value={speaker.name}
             class="editable-input"
           />
+          <br>
           <label for="speaker-tags">Role Tag:</label>
           <input
             id="speaker-tags"
@@ -40,7 +45,11 @@
             class="editable-input"
           />
         </div>
-        <button class="save-button" aria-label="Save">Save</button>
+        <button class="save-button"
+          on:click={() => saveSpeakers()}
+          aria-label="Save">
+          Save speakers
+        </button>
       {:else}
         {speaker.speaker_id} {speaker.name} {speaker.role_tag}
       {/if}
@@ -75,21 +84,21 @@
   }
 
   .save-button {
-    padding: 8px 16px; /* Adjust padding for a rectangular shape */
-    background-color: #007bff; /* Primary blue color */
-    color: white;
+    padding: 5px 5px; /* Adjust padding for a rectangular shape */
+    background-color: #d0d0d0; /* Primary blue color */
+    color: black;
     border: none;
     border-radius: 4px; /* Small rounding for edges */
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
   }
 
   .save-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #d0d0d0; /* Darker blue on hover */
   }
 
   .save-button:active {
-    background-color: #003f7f; /* Even darker on click */
+    background-color: #d0d0d0; /* Even darker on click */
   }
 
   .save-button:focus {
