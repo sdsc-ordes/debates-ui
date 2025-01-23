@@ -1,16 +1,23 @@
-import type { MediaSources } from "$lib/interfaces/videoplayer.interface";
+import type { S3Key, SignedUrls } from "$lib/interfaces/backend.interface";
 import { PUBLIC_BACKEND_SERVER } from "$env/static/public";
 const backendUrl = PUBLIC_BACKEND_SERVER
 
-export async function fetchMedia(s3Prefix: string): MediaSources {
+export async function fetchMedia(
+    s3Prefix: string,
+    objectKeys: string[],
+    mediaKey: string,
+): Promise<SignedUrls> {
     try {
         // FastAPI endpoint to retrieve signed URLs
-        const apiUrl = `${backendUrl}/get-media-urls`;  // Adjust to match your FastAPI server's address
+        const apiUrl = `${backendUrl}/get-media-urls`;
 
         // Request payload for signed URLs
-        const payload = JSON.stringify({ prefix: s3Prefix, expiration: 3600 });
-        console.log("payload", payload)
-        console.log(apiUrl);
+        const payload = JSON.stringify({
+            prefix: s3Prefix,
+            objectKeys: objectKeys,
+            mediaKey: mediaKey,
+        });
+
         // Fetch signed URL from FastAPI backend
         const response = await fetch(apiUrl, {
             method: 'POST',
@@ -19,19 +26,14 @@ export async function fetchMedia(s3Prefix: string): MediaSources {
             },
             body: payload,
         });
-
         if (!response.ok) {
             throw new Error(`Error fetching signed URL: ${response.statusText}`);
         }
-        console.log("in fetchMedia: response", response);
+
         // Extract JSON from the response
         const data = await response.json();
-        const mediaSources = {
-            videoSrc: data.video_url,
-            trackSrc: data.subtitle_url,
-          }
-        console.log("in fetchMedia:mediaSources", mediaSources);
-        return mediaSources;
+        const signedUrls = data;
+        return signedUrls;
     } catch (error) {
         console.error('Error in fetchMedia:', error);
         throw error;

@@ -3,18 +3,28 @@
   import SearchForm from "$lib/components/SearchForm.svelte";
   import FacetCounts from "$lib/components/FacetCounts.svelte";
   import SearchResultContainer from "$lib/components/SearchResultContainer.svelte";
-  import type { SolrQuery, SolrResponse } from '$lib/interfaces/solr.interface';
+  import type {
+    SolrHighlighting, SolrQuery, SolrResponse, SolrFacetCounts,
+
+    SolrDocument
+
+  } from '$lib/interfaces/solr.interface';
   import { fetchSolrData, createDefaultSolrQuery } from "$lib/solr/solrSearch";
   import { onMount } from "svelte";
 
   let solrQuery: SolrQuery = createDefaultSolrQuery();
-
-  let searchResult: SolrResponse;
+  let solrResponse: SolrResponse;
+  let highlighting: SolrHighlighting;
+  let docs: SolrDocument[];
+  let facetCounts: SolrFacetCounts;
 
   async function handleSearch() {
     const data = await fetchSolrData(solrQuery);
     if (data) {
-      searchResult = data;
+      solrResponse = data;
+      highlighting = solrResponse.highlighting || {};
+      facetCounts = solrResponse.facet_counts || {};
+      docs = solrResponse.response.docs || [];
     } else {
       console.warn("No data found or an error occurred.");
     }
@@ -27,8 +37,6 @@
   onMount(() => {
     handleReset();
   });
-
-
 </script>
 
 <svelte:head>
@@ -39,12 +47,22 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4">
-      <SearchForm {solrQuery} on:submit={handleSearch} on:reset={handleReset}/>
-      <FacetCounts {solrQuery} onSearch={handleSearch} {searchResult} />
+      <SearchForm {solrQuery}
+        on:submit={handleSearch}
+        on:reset={handleReset}
+      />
+      <FacetCounts
+        {solrQuery}
+        onSearch={handleSearch}
+        {facetCounts}
+      />
     </div>
-    {#if searchResult}
+    {#if solrResponse}
       <div class="col-md-8">
-        <SearchResultContainer {searchResult} {solrQuery} onSearch={handleSearch} />
+        <SearchResultContainer
+          {docs}
+          {highlighting}
+        />
       </div>
     {/if}
   </div>

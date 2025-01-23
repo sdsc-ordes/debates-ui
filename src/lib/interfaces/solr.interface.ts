@@ -27,12 +27,15 @@ export interface SolrDocument {
     end: number;
     segment_nr: number;
     statement: string[];
+    statement_type: string;
     s3_prefix: string;
     version_id: string;
+    version_original: boolean;
     debate_type: string;
     debate_session: string;
     debate_public: boolean;
     debate_schedule: string;
+    statement_language: string;
     id: string;
     _version_: number;
     _root_: string;
@@ -47,7 +50,7 @@ interface SolrResponseBody {
 }
 
 // Interface for Solr facet counts
-interface SolrFacetCounts {
+export interface SolrFacetCounts {
     facet_queries: Record<string, number>;
     facet_fields: Record<string, Array<string | number>>;
     facet_ranges: Record<string, any>;
@@ -55,14 +58,13 @@ interface SolrFacetCounts {
     facet_heatmaps: Record<string, any>;
 }
 
-// Interface for Solr highlighting
-interface SolrHighlighting {
+
+export interface SolrHighlighting {
     [docId: string]: {
-        [fieldName: string]: string[];
+        statement: string[];
     };
 }
 
-// Main Solr response interface
 export interface SolrResponse {
     responseHeader: SolrResponseHeader;
     response: SolrResponseBody;

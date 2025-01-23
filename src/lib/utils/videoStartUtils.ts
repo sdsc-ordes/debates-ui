@@ -1,4 +1,4 @@
-export function jumpToTime(video: HTMLVideoElement, start: number) {
-    video.currentTime = start;
-    video.play();
+export function jumpToTime(mediaElement: HTMLMediaElement, start: number) {
+    mediaElement.currentTime = start;
+    mediaElement.play();
 }
