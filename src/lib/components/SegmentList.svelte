@@ -65,7 +65,7 @@
   .scrollable-container {
     max-height: 300px;
     overflow-y: auto;
-    padding: 0.5rem;
+    padding-top: 1rem;
   }
   ol li {
     list-style-type: none;
