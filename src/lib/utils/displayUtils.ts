@@ -1,4 +1,4 @@
-import type { Speaker } from "$lib/interfaces/mongodb.interface";
+import type { Speaker } from "$lib/interfaces/backend.interface";
 
 export function formatTimeForDisplay(seconds: number): string {
     const hrs = Math.floor(seconds / 3600);
@@ -40,7 +40,5 @@ function getSpeakerDisplay(speaker: Speaker): string {
         }
         displayName += "</ul>"
     }
-
-
     return displayName;
 }

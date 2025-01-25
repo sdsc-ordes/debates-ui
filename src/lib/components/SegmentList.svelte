@@ -1,13 +1,13 @@
 <script lang="ts">
   import type {
     TimeUpdateParameters,
-  } from "$lib/interfaces/videoplayer.interface";
+  } from "$lib/interfaces/mediaplayer.interface";
   import type {
     Segment,
     Speaker,
   } from "$lib/interfaces/backend.interface";
   import { formatTimeForDisplay } from "$lib/utils/displayUtils";
-  import { jumpToTime } from "$lib/utils/videoStartUtils";
+  import { jumpToTime } from "$lib/utils/mediaStartUtils";
   import { displaySpeaker } from "$lib/utils/displayUtils";
 
   export let segments: Segment[] = [];
@@ -18,11 +18,11 @@
 
 <div class="scrollable-container">
   <ol>
-    {#each segments as segment, index}
+    {#each segments as segment}
       <li>
         <div
           class="card text-center {segment.segment_nr ===
-          timeUpdateParameters.currentSegmentIndex
+          timeUpdateParameters.displaySegmentNr
             ? 'current'
             : 'other'}"
           on:click={() => jumpToTime(mediaElement, segment.start)}
@@ -31,6 +31,7 @@
           on:keydown={(e) =>
             (e.key === "Enter" || e.key === " ") &&
             jumpToTime(mediaElement, segment.start)}
+          id=segment-{ segment.segment_nr }
         >
           <div class="card-body">
             <div class="card-title-small" style="color=inherit;">
@@ -39,14 +40,14 @@
             <div class="date-time-item">
               <i
                 class="fa fa-clock {segment.segment_nr ===
-                timeUpdateParameters.currentSegmentIndex
+                timeUpdateParameters.displaySegmentNr
                   ? 'current'
                   : 'other'}"
                 aria-hidden="true"
               ></i>
               <small
                 class="card-subtle {segment.segment_nr ===
-                timeUpdateParameters.currentSegmentIndex
+                timeUpdateParameters.displaySegmentNr
                   ? 'current'
                   : 'other'}"
                 >{formatTimeForDisplay(segment.start)} - {formatTimeForDisplay(

@@ -1,30 +1,31 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { onVideoTimeUpdate } from "$lib/utils/videoTimeUpdate";
-  import { jumpToTime } from "$lib/utils/videoStartUtils";
-  import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
+  import { onMediaTimeUpdate } from "$lib/utils/mediaTimeUpdate";
+  import { jumpToTime } from "$lib/utils/mediaStartUtils";
+  import type { TimeUpdateParameters } from "$lib/interfaces/mediaplayer.interface";
   import type {
     Subtitle,
     Speaker,
+    Segment,
   } from "$lib/interfaces/backend.interface";
   export let startTime: number;
   export let timeUpdateParameters: TimeUpdateParameters;
   export let subtitles: Subtitle[] = [];
   export let subtitles_en: Subtitle[] = [];
   export let speakers: Speaker[] = [];
+  export let segments: Segment[] = [];
   export let mediaElement: HTMLMediaElement;
   export let mediaUrl: string;
   export let media;
 
   function handleTimeUpdate() {
-    timeUpdateParameters = onVideoTimeUpdate(
+    timeUpdateParameters = onMediaTimeUpdate(
       mediaElement.currentTime,
       subtitles,
       subtitles_en,
-      speakers,
-      timeUpdateParameters.currentSubtitleIndex,
-      timeUpdateParameters.currentSubtitleIndexEn
+      segments,
     );
+    console.log(timeUpdateParameters);
   }
 
   onMount(async () => {

@@ -52,7 +52,7 @@
     </h4>
       <div class="facets">
         {#each field.facets as facet}
-          {#if facet.count}
+          {#if facet.count && facet.label }
             <div class="facet-row">
               <button
                 class="facet-item {isActive(field.key, facet.label)

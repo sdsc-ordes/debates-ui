@@ -62,3 +62,12 @@ export interface SignedUrls {
     signedUrls: SignedUrl[];
     signedMediaUrl: string;
 }
+
+export enum SubtitleTypeEnum {
+    Transcript = "Transcript",
+    Translation = "Translation",
+}
+
+export interface SubtitleType {
+    type: SubtitleTypeEnum;
+}

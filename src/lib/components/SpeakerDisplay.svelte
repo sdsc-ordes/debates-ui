@@ -1,29 +1,35 @@
 <script lang="ts">
-  import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
+  import type { TimeUpdateParameters } from "$lib/interfaces/mediaplayer.interface";
   import type { Speaker } from "$lib/interfaces/backend.interface";
+  import { updateSpeakers } from "$lib/api/updateSpeakers";
   import { canEdit } from "$lib/stores/auth";
+
   export let speakers: Speaker[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
-  let editSubtitles = false;
+  export let s3Prefix: string;
+  console.log(s3Prefix);
+  let editSpeakers = false;
 
-  function toggleEditSubtitles() {
-    editSubtitles = !editSubtitles;
+  function toggleEditSpeakers() {
+    editSpeakers = !editSpeakers;
   }
   function saveSpeakers(): void {
-    editSubtitles = !editSubtitles;
+    updateSpeakers(s3Prefix, speakers)
+    editSpeakers = !editSpeakers;
   }
 </script>
 
+{#if $canEdit}
 <div class="card">
   <div class="card-body">
-    {#each speakers as speaker, index}
-      {#if index === timeUpdateParameters.currentSpeakerIndex}
+    {#each speakers as speaker}
+      {#if speaker.speaker_id === timeUpdateParameters.displaySpeakerId && speaker }
         <div class="card-title-small">{speaker.speaker_id}</div>
 
         <!-- EDIT -->
-        {#if $canEdit}
+        {#if $canEdit }
           <p class="card-subtle">Make edits to the speaker information here.</p>
-          {#if editSubtitles}
+          {#if editSpeakers}
             <form class="speaker-form">
               <label for="speaker-id" class="input-label">Name</label>
               <input
@@ -43,50 +49,37 @@
               />
             </form>
           {/if}
-          <!-- DISPLAY -->
-        {:else}
-          <div class="speaker-display">
-            <label class="input-label">Name</label>
-            <div class="display-text">
-              {speaker.name || "Name not provided"}
-            </div>
-
-            <label class="input-label">Role</label>
-            <div class="display-text">
-              {speaker.role_tag || "Role not provided"}
-            </div>
-          </div>
         {/if}
         <!-- BUTTONS -->
-        {#if $canEdit && !editSubtitles}
+        {#if $canEdit && !editSpeakers}
           <div
-            style="display: flex; 
-              align-items: center; 
-              justify-content: start; 
+            style="display: flex;
+              align-items: center;
+              justify-content: start;
               width: 100%;"
           >
             <button
               class="secondary-button"
-              on:click={toggleEditSubtitles}
+              on:click={toggleEditSpeakers}
               aria-label="Edit"
               >Edit
             </button>
           </div>
-        {:else if editSubtitles}
+        {:else if editSpeakers}
           <div
-            style="display: flex; 
-              align-items: center; 
-              justify-content: space-between; 
+            style="display: flex;
+              align-items: center;
+              justify-content: space-between;
               width: 100%;"
           >
             <button
               class="secondary-button"
-              on:click={toggleEditSubtitles}
+              on:click={toggleEditSpeakers}
               aria-label="Cancel"
               >Cancel
             </button>
             <button
-              class="save-button"
+              class="secondary-button"
               on:click={() => saveSpeakers()}
               aria-label="Save"
             >
@@ -98,6 +91,7 @@
     {/each}
   </div>
 </div>
+{/if}
 
 <style>
   .card {

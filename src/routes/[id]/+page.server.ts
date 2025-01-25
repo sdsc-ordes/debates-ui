@@ -14,8 +14,6 @@ export const load: PageServerLoad = async ({ params }) => {
             objectKeys,
             mediaKey,
         );
-        console.log(signedUrls);
-        console.log(metadata);
         return {
             prefix: s3Prefix,
             media: metadata.debate.media,
