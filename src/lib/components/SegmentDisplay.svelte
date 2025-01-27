@@ -1,14 +1,21 @@
 <script lang="ts">
-  import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
-  import type { Subtitle } from "$lib/interfaces/backend.interface";
+  import type { TimeUpdateParameters } from "$lib/interfaces/mediaplayer.interface";
+  import { type Subtitle, SubtitleTypeEnum, type Segment } from "$lib/interfaces/backend.interface";
   import { canEdit } from "$lib/stores/auth";
-  import { jumpToTime } from "$lib/utils/videoStartUtils";
+  import { jumpToTime } from "$lib/utils/mediaStartUtils";
+  import { updateSubtitles } from "$lib/api/updateSubtitles";
   export let subtitles: Subtitle[] = [];
   export let subtitles_en: Subtitle[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
   export let mediaElement: HTMLVideoElement;
+  export let s3Prefix: string;
+  console.log(s3Prefix);
+
   let editSubtitlesTranscription: boolean = false;
   let editSubtitlesTranslation: boolean = false;
+
+  const transcript = SubtitleTypeEnum.Transcript;
+  const translation = SubtitleTypeEnum.Translation;
 
   function updateSubtitle(index: number, updatedText: string) {
     subtitles[index].content = updatedText;
@@ -21,9 +28,11 @@
     editSubtitlesTranslation = !editSubtitlesTranslation;
   }
   function saveSubtitle$Transcription(): void {
+    updateSubtitles(s3Prefix, timeUpdateParameters.displaySegmentNr, subtitles, transcript)
     editSubtitlesTranscription = !editSubtitlesTranscription;
   }
   function saveSubtitle$Translation(): void {
+    updateSubtitles(s3Prefix, timeUpdateParameters.displaySegmentNr, subtitles_en, translation)
     editSubtitlesTranslation = !editSubtitlesTranslation;
   }
 </script>
@@ -31,9 +40,9 @@
 <div class="side-by-side">
   <div class="text-block">
     <div
-      style="display: flex; 
-    align-items: center; 
-    justify-content: start; 
+      style="display: flex;
+    align-items: center;
+    justify-content: start;
     gap: 1rem;
     width: 100%;"
     >
@@ -63,9 +72,9 @@
     </div>
     <p>
       {#each subtitles as subtitle, index}
-        {#if subtitle.segment_nr === timeUpdateParameters.currentSegmentIndex}
+        {#if subtitle.segment_nr === timeUpdateParameters.displaySegmentNr}
           <span
-            class={index === timeUpdateParameters.currentSubtitleIndex - 1
+            class={index === timeUpdateParameters.displaySubtitleIndex - 1
               ? "highlighted"
               : ""}
             on:click={() => jumpToTime(mediaElement, subtitle.start)}
@@ -76,7 +85,9 @@
                   id={`subtitle-${index}`}
                   bind:value={subtitle.content}
                   on:input={(e) => updateSubtitle(index, e.target.value)}
-                  class="editable-textarea"
+                  class={`editable-textarea ${
+                    index === timeUpdateParameters.displaySubtitleIndex - 1 ? "highlighted-textarea" : ""
+                  }`}
                 />
               </div>
             {:else}
@@ -89,13 +100,13 @@
   </div>
   <div class="text-block">
     <div
-      style="display: flex; 
-    align-items: center; 
-    justify-content: start; 
+      style="display: flex;
+    align-items: center;
+    justify-content: start;
     gap: 1rem;
     width: 100%;"
     >
-      <div class="card-title-small">Translation (English)</div>
+      <div class="card-title-small">Translation</div>
       {#if $canEdit && !editSubtitlesTranslation}
         <button
           class="secondary-button"
@@ -121,9 +132,9 @@
     </div>
     <p>
       {#each subtitles_en as subtitle, index}
-        {#if subtitle.segment_nr === timeUpdateParameters.currentSegmentIndex}
+        {#if subtitle.segment_nr === timeUpdateParameters.displaySegmentNr}
           <span
-            class={index === timeUpdateParameters.currentSubtitleIndexEn - 1
+            class={index === timeUpdateParameters.displaySubtitleEnIndex - 1
               ? "highlighted"
               : ""}
             on:click={() => jumpToTime(mediaElement, subtitle.start)}
@@ -134,7 +145,9 @@
                   id={`subtitle-${index}`}
                   bind:value={subtitle.content}
                   on:input={(e) => updateSubtitle(index, e.target.value)}
-                  class="editable-textarea"
+                  class={`editable-textarea ${
+                    index === timeUpdateParameters.displaySubtitleEnIndex - 1 ? "highlighted-textarea" : ""
+                  }`}
                 />
               </div>
             {:else}
@@ -152,7 +165,6 @@
     display: flex;
     gap: 20px;
     max-height: 300px;
-    overflow-y: auto;
     padding: 0.5rem;
   }
 
@@ -160,6 +172,10 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+  }
+
+  .text-block p {
+    overflow-y: auto;
   }
 
   .highlighted {
@@ -171,8 +187,8 @@
     height: 50px;
   }
 
-  h4 {
-    margin-bottom: 10px; 
+  .highlighted-textarea {
+    border: 2px solid var(--secondary-color);
   }
 
   p {

@@ -3,47 +3,43 @@
   import type { PageData } from "./$types";
   import "./page.css";
   import { Notifications, acts } from "@tadashi/svelte-notification";
-  import VideoPlayer from "$lib/components/VideoPlayer.svelte";
+  import MediaPlayer from "$lib/components/MediaPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
+  import { onMediaTimeUpdate } from "$lib/utils/mediaTimeUpdate";
   import DebateHeader from "$lib/components/DebateHeader.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
-  import { getCreatedAtDate, generateUUID } from "$lib/utils/mongoUpdateUtils";
-  import { canEdit } from "$lib/stores/auth";
   import type {
     TimeUpdateParameters,
-  } from "$lib/interfaces/videoplayer.interface";
+  } from "$lib/interfaces/mediaplayer.interface";
   import type {
     Speaker,
     Segment,
     Subtitle,
+    SignedUrl,
     Debate,
-    SignedUrls,
   } from "$lib/interfaces/backend.interface";
     import DebateToolBar from "$lib/components/DebateToolBar.svelte";
 
   export let data: PageData;
-  let signedUrls: SignedUrls = data?.signedUrls;
-  let debate: Debate = data?.debate;
-  console.log(debate);
+  const s3Prefix: string = data?.prefix;
+  const debate: Debate = data?.debate;
   let subtitles: Subtitle[] = data?.subtitles;
   let subtitles_en: Subtitle[] = data?.subtitles_en;
-  let segments: Segment[] = data?.segments;
-  console.log(debate);
+  const segments: Segment[] = data?.segments;
   let speakers: Speaker[] = data?.speakers;
-  const mediaUrl = signedUrls.signedMediaUrl;
+  const mediaUrl: string = data?.signedUrls.signedMediaUrl;
   const media = data.media;
-  const downloadUrls = signedUrls.signedUrls;
+  const downloadUrls: SignedUrl[] = data?.signedUrls.signedUrls;
 
   let startTime: number = Number($page.url.searchParams.get("start") || 0);
+  let timeUpdateParameters: TimeUpdateParameters = onMediaTimeUpdate(
+    startTime,
+    subtitles_en,
+    subtitles,
+    segments,
+  );
   let mediaElement: HTMLVideoElement;
-
-  let timeUpdateParameters: TimeUpdateParameters = {
-    currentSubtitleIndex: -1,
-    currentSubtitleIndexEn: -1,
-    currentSegmentIndex: -1,
-    currentSpeakerIndex: -1,
-  };
 
 </script>
 
@@ -60,20 +56,23 @@
 <DebateHeader { debate } />
 
 <div class="video-layout">
+
   <div class="col-md-3">
     <SegmentList {mediaElement} {segments} {speakers} {timeUpdateParameters} />
   </div>
+
   <div class="col-md-3">
-    <SpeakerDisplay bind:speakers {timeUpdateParameters} />
+    <SpeakerDisplay bind:speakers {timeUpdateParameters} {s3Prefix} />
   </div>
 
   <div class="col-md-6">
 
-    <VideoPlayer
+    <MediaPlayer
       {startTime}
       {subtitles}
       {subtitles_en}
       {speakers}
+      {segments}
       {mediaUrl}
       {media}
       bind:mediaElement
@@ -84,18 +83,18 @@
 
 <DebateToolBar {downloadUrls} />
 
-<SegmentDisplay {subtitles} {subtitles_en} {timeUpdateParameters} {mediaElement} />
+<SegmentDisplay {subtitles} {subtitles_en} {segments} {timeUpdateParameters} {s3Prefix} {mediaElement} />
 
 <Notifications />
 
 <style>
   .video-layout {
   display: flex;
-  justify-content: space-evenly; 
+  justify-content: space-evenly;
 }
 
 .col-md-3, .col-md-6 {
-  flex-grow: 1; 
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }

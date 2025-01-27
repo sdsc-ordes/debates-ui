@@ -11,7 +11,7 @@ export async function fetchSolrData(solrQuery: SolrQuery) {
         facet: "true",
         rows: 100,
     };
-    const facetFields = ["debate_schedule", "statement_type", "debate_session"];
+    const facetFields = ["debate_schedule", "statement_type", "debate_session", "speaker_name", "speaker_role_tag"];
     let searchParams = new URLSearchParams(params);
 
     facetFields.forEach(field => searchParams.append("facet.field", field));
