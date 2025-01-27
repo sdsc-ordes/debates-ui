@@ -26,12 +26,12 @@
 </script>
 
 <!-- UI Layout -->
-<div>
-    <span>Select and Download a File</span>
+<div class="download">
+    <!-- <span>Select and Download a File</span> -->
 
-    <form on:submit|preventDefault>
+    <form class="toolbar-form" on:submit|preventDefault>
         <!-- Dropdown for file selection -->
-        <select bind:value={selectedFileUrl}>
+        <select class="toolbar-select" bind:value={selectedFileUrl}>
             <option value="" disabled>Select a file</option>
             {#each downloadUrls as file}
                 <option value={file.url}>{file.label}</option>
@@ -39,11 +39,38 @@
         </select>
     </form>
 
-    <!-- Download button -->
-    <button type="button" on:click={handleDownload} disabled={!signedUrl}>
+    <button
+        class="secondary-button"
+        type="button"
+        on:click={handleDownload}
+        disabled={!signedUrl}
+    >
         Download
     </button>
-
 </div>
 
+<style>
+    .download {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
+    .toolbar-form {
+        margin: 0;
+    }
+
+    .toolbar-select {
+        height: 20px; /* Matches toolbar height */
+        font-size: 12px;
+        border: 1px solid var(--primary-color);
+        border-radius: 10px;
+        padding: 0 10px;
+        color: var(--text-color);
+        background-color: var(--on-primary);
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+
+</style>

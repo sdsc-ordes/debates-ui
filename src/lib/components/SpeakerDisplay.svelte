@@ -1,108 +1,160 @@
 <script lang="ts">
-    import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
-    import type { Speaker } from "$lib/interfaces/backend.interface";
-    import { canEdit } from '$lib/stores/auth';
-    export let speakers: Speaker[] = [];
-    export let timeUpdateParameters: TimeUpdateParameters;
-    let editSubtitles = false;
+  import type { TimeUpdateParameters } from "$lib/interfaces/videoplayer.interface";
+  import type { Speaker } from "$lib/interfaces/backend.interface";
+  import { canEdit } from "$lib/stores/auth";
+  export let speakers: Speaker[] = [];
+  export let timeUpdateParameters: TimeUpdateParameters;
+  let editSubtitles = false;
 
-    function toggleEditSubtitles() {
-      editSubtitles = !editSubtitles;
-    }
-    function saveSpeakers(): void {
-      editSubtitles = !editSubtitles;
-    }
+  function toggleEditSubtitles() {
+    editSubtitles = !editSubtitles;
+  }
+  function saveSpeakers(): void {
+    editSubtitles = !editSubtitles;
+  }
 </script>
 
-<p>
-  {#each speakers as speaker, index}
-    {#if index === timeUpdateParameters.currentSpeakerIndex}
-      {#if $canEdit}
-        <button class="small-edit-button" on:click={toggleEditSubtitles} aria-label="Edit">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.06-1.19l9.19-9.19 1.75 1.75-9.19 9.19H5.06v-1.75zM22 7.24c0-.39-.15-.78-.44-1.06L18.82 3.44a1.495 1.495 0 0 0-2.12 0L15 5.13l3.75 3.75 1.69-1.69c.28-.28.44-.67.44-1.06z"/>
-          </svg>
-        </button>
+<div class="card">
+  <div class="card-body">
+    {#each speakers as speaker, index}
+      {#if index === timeUpdateParameters.currentSpeakerIndex}
+        <div class="card-title-small">{speaker.speaker_id}</div>
+
+        <!-- EDIT -->
+        {#if $canEdit}
+          <p class="card-subtle">Make edits to the speaker information here.</p>
+          {#if editSubtitles}
+            <form class="speaker-form">
+              <label for="speaker-id" class="input-label">Name</label>
+              <input
+                id="speaker-name"
+                placeholder={speaker.name ? speaker.name : "enter name"}
+                type="text"
+                bind:value={speaker.name}
+                class="editable-input"
+              />
+              <label for="speaker-tags" class="input-label">Role</label>
+              <input
+                id="speaker-tags"
+                placeholder={speaker.role_tag ? speaker.role_tag : "enter role"}
+                type="text"
+                bind:value={speaker.role_tag}
+                class="editable-input"
+              />
+            </form>
+          {/if}
+          <!-- DISPLAY -->
+        {:else}
+          <div class="speaker-display">
+            <label class="input-label">Name</label>
+            <div class="display-text">
+              {speaker.name || "Name not provided"}
+            </div>
+
+            <label class="input-label">Role</label>
+            <div class="display-text">
+              {speaker.role_tag || "Role not provided"}
+            </div>
+          </div>
+        {/if}
+        <!-- BUTTONS -->
+        {#if $canEdit && !editSubtitles}
+          <div
+            style="display: flex; 
+              align-items: center; 
+              justify-content: start; 
+              width: 100%;"
+          >
+            <button
+              class="secondary-button"
+              on:click={toggleEditSubtitles}
+              aria-label="Edit"
+              >Edit
+            </button>
+          </div>
+        {:else if editSubtitles}
+          <div
+            style="display: flex; 
+              align-items: center; 
+              justify-content: space-between; 
+              width: 100%;"
+          >
+            <button
+              class="secondary-button"
+              on:click={toggleEditSubtitles}
+              aria-label="Cancel"
+              >Cancel
+            </button>
+            <button
+              class="save-button"
+              on:click={() => saveSpeakers()}
+              aria-label="Save"
+            >
+              Save
+            </button>
+          </div>
+        {/if}
       {/if}
-      {#if editSubtitles}
-        <div class="speaker">
-          {speaker.speaker_id}<br>
-          <label for="speaker-id"> Name:</label>
-          <input
-            id="speaker-name"
-            placeholder="name"
-            type="text"
-            bind:value={speaker.name}
-            class="editable-input"
-          />
-          <br>
-          <label for="speaker-tags">Role Tag:</label>
-          <input
-            id="speaker-tags"
-            placeholder="tags"
-            type="text"
-            bind:value={speaker.role_tag}
-            class="editable-input"
-          />
-        </div>
-        <button class="save-button"
-          on:click={() => saveSpeakers()}
-          aria-label="Save">
-          Save speakers
-        </button>
-      {:else}
-        {speaker.speaker_id} {speaker.name} {speaker.role_tag}
-      {/if}
-    {/if}
-  {/each}
-</p>
+    {/each}
+  </div>
+</div>
 
 <style>
-  .small-edit-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border: none;
-    border-radius: 50%; /* Makes it circular */
-    background-color: #f0f0f0; /* Light background */
-    color: #333; /* Dark text/icon color */
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    transition: background-color 0.2s, transform 0.2s; /* Smooth interaction effects */
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .small-edit-button:hover {
-    background-color: #e0e0e0; /* Slightly darker on hover */
-    transform: scale(1.1); /* Slightly larger on hover */
+  .speaker-form,
+  .speaker-display {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .small-edit-button:active {
-    background-color: #d0d0d0; /* Darker when active */
-    transform: scale(0.95); /* Slightly smaller when active */
+  .input-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
   }
 
-  .save-button {
-    padding: 5px 5px; /* Adjust padding for a rectangular shape */
-    background-color: #d0d0d0; /* Primary blue color */
-    color: black;
-    border: none;
-    border-radius: 4px; /* Small rounding for edges */
-    font-size: 12px;
-    cursor: pointer;
+  .editable-input {
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--text-color);
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
   }
 
-  .save-button:hover {
-    background-color: #d0d0d0; /* Darker blue on hover */
-  }
-
-  .save-button:active {
-    background-color: #d0d0d0; /* Even darker on click */
-  }
-
-  .save-button:focus {
+  .editable-input:focus {
+    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Focus indicator */
+  }
+
+  .editable-input::placeholder {
+    color: gray;
+    font-style: italic;
+  }
+  .display-text {
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: grey;
+    display: flex;
+    align-items: center;
   }
 </style>

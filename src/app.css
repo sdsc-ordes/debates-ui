@@ -18,6 +18,7 @@
 	--primary-color: #2849A1;
 	--primary-dark-color: #182C61;
 	--secondary-color: #FF5500;
+	--secondary-dark-color: #e13813;
 	--background-color: #f8f9fa;
 	--on-primary: #F6F7FD;
 	--text-color: #1E1E1E;
@@ -96,6 +97,41 @@ em {
 	transition: background-color 0.3s;
 
 }
+
+.secondary-button{
+	color: var(--text-color);
+	background-color: var(--on-primary);
+	border: 1px solid var(--primary-color);;
+	padding: 0 10px;
+	height: 20px;
+	border-radius: 10px;
+	font-size: 12px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.secondary-button:hover {
+	background-color: var(--primary-color);
+	color: var(--on-primary);
+}
+
+.save-button {
+    /* width: 30%; */
+    padding: 5px 5px;
+    background-color: var(--secondary-color);
+    color: var(--on-primary);
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .save-button:hover {
+    background-color: var(--secondary-dark-color);
+  }
 
 .option-button {
 	color: gray;

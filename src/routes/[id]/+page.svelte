@@ -6,7 +6,6 @@
   import VideoPlayer from "$lib/components/VideoPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import DebateHeader from "$lib/components/DebateHeader.svelte";
-  import FileDownload from "$lib/components/FileDownload.svelte";
   import SegmentList from "$lib/components/SegmentList.svelte";
   import SpeakerDisplay from "$lib/components/SpeakerDisplay.svelte";
   import { getCreatedAtDate, generateUUID } from "$lib/utils/mongoUpdateUtils";
@@ -21,6 +20,7 @@
     Debate,
     SignedUrls,
   } from "$lib/interfaces/backend.interface";
+    import DebateToolBar from "$lib/components/DebateToolBar.svelte";
 
   export let data: PageData;
   let signedUrls: SignedUrls = data?.signedUrls;
@@ -82,15 +82,21 @@
   </div>
 </div>
 
-<FileDownload {downloadUrls} />
+<DebateToolBar {downloadUrls} />
 
 <SegmentDisplay {subtitles} {subtitles_en} {timeUpdateParameters} {mediaElement} />
 
 <Notifications />
 
 <style>
-  button {
-    display: block;
-    margin: 0.3rem;
-  }
+  .video-layout {
+  display: flex;
+  justify-content: space-evenly; 
+}
+
+.col-md-3, .col-md-6 {
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+}
 </style>
