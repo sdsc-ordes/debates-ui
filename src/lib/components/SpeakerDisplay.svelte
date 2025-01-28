@@ -19,7 +19,6 @@
   }
 </script>
 
-{#if $canEdit}
 <div class="card">
   <div class="card-body">
     {#each speakers as speaker}
@@ -49,6 +48,19 @@
               />
             </form>
           {/if}
+        <!-- DISPLAY -->
+        {:else}
+          <div class="speaker-display">
+            <label class="input-label">Name</label>
+            <div class="display-text">
+              {speaker.name || "Name not provided"}
+            </div>
+
+            <label class="input-label">Role</label>
+            <div class="display-text">
+              {speaker.role_tag || "Role not provided"}
+            </div>
+          </div>
         {/if}
         <!-- BUTTONS -->
         {#if $canEdit && !editSpeakers}
@@ -91,7 +103,6 @@
     {/each}
   </div>
 </div>
-{/if}
 
 <style>
   .card {
