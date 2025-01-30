@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ params }) => {
     try {
         const s3Prefix: string = params.id;
         const metadata: Promise<ResponseMetadata> = await fetchMetadata(s3Prefix);
-        const objectKeys: string[] = metadata.debate.s3_keys.map(item => item.key);
+        const objectKeys: string[] = metadata.debate.s3_keys.map(item => item.name);
         const mediaKey = metadata.debate.media.key;
         const signedUrls: SignedUrls = await fetchMedia(
             s3Prefix,
