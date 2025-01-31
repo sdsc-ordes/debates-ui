@@ -1,5 +1,5 @@
 import { PUBLIC_BACKEND_SERVER } from "$env/static/public";
-import type { SolrQuery, SolrResponse } from "$lib/interfaces/solr.interface";
+import type { SolrQuery } from "$lib/interfaces/solr.interface";
 const backendUrl = PUBLIC_BACKEND_SERVER
 
 export async function searchSolr(solrQuery: SolrQuery) {

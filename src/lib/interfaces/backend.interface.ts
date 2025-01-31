@@ -71,15 +71,3 @@ export enum SubtitleTypeEnum {
 export interface SubtitleType {
     type: SubtitleTypeEnum;
 }
-
-export interface SolrSearch {
-    queryTerm: string;
-    sortBy: string;
-    facetFields: [];
-    facetFilters: FacetFieldValue[];
-}
-
-interface FacetFieldValue {
-    facetField: string,
-    facetValue: string,
-}
