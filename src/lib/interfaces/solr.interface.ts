@@ -84,3 +84,11 @@ export interface DebateMetadata {
     debate_public: boolean;
     debate_schedule: string;
 }
+
+export function createDefaultSolrQuery(): SolrQuery {
+    return {
+        queryTerm: "",
+        sortBy: "",
+        facetFieldValues: [],
+    };
+}

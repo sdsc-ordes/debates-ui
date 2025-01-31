@@ -74,6 +74,12 @@ export interface SubtitleType {
 
 export interface SolrSearch {
     queryTerm: string;
-    facetFields: number;
-    fq: number;
+    sortBy: string;
+    facetFields: [];
+    facetFilters: FacetFieldValue[];
+}
+
+interface FacetFieldValue {
+    facetField: string,
+    facetValue: string,
 }
