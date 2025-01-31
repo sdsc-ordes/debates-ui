@@ -1,6 +1,10 @@
 export interface SolrQuery {
     queryTerm: string,
     sortBy: string,
+    facetFieldValues: FacetFieldValue[],
+}
+
+interface FacetFieldValue {
     facetField: string,
     facetValue: string,
 }

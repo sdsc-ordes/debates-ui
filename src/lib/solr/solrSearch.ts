@@ -17,8 +17,10 @@ export async function fetchSolrData(solrQuery: SolrQuery) {
     facetFields.forEach(field => searchParams.append("facet.field", field));
     searchParams.append("hl.snippets", "10")
 
-    if (solrQuery.facetField && solrQuery.facetValue) {
-        searchParams.append("fq", `${solrQuery.facetField}: "${solrQuery.facetValue}"`,)
+    if (solrQuery.facetFieldValues && solrQuery.facetFieldValues.length > 0) {
+        solrQuery.facetFieldValues.forEach(({ facetField, facetValue }) => {
+            searchParams.append("fq", `${facetField}:"${facetValue}"`);
+        });
     }
     const apiUrl = `${solrUrl}?${searchParams.toString()}`;
     console.log(apiUrl);

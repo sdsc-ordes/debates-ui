@@ -71,3 +71,9 @@ export enum SubtitleTypeEnum {
 export interface SubtitleType {
     type: SubtitleTypeEnum;
 }
+
+export interface SolrSearch {
+    queryTerm: string;
+    facetFields: number;
+    fq: number;
+}

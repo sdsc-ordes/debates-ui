@@ -30,15 +30,29 @@
     return fields;
   };
 
-  function handleFacetClick(facetField: string, facetValue: string) {
-    solrQuery.facetField = facetField;
-    solrQuery.facetValue = facetValue;
+  function handleFacetAddClick(facetField: string, facetValue: string) {
+    if (!solrQuery.facetFieldValues) {
+            solrQuery.facetFieldValues = [];
+    }
+    solrQuery.facetFieldValues.push({ facetField: facetField, facetValue: facetValue });
     onSearch(solrQuery);
   }
-  function isActive(facetField: string, facetLabel: string): boolean {
-    return (
-      facetField === solrQuery.facetField && facetLabel === solrQuery.facetValue
+
+  function handleFacetRemoveClick(facetField: string, facetValue: string) {
+    if (!solrQuery.facetFieldValues) return;
+
+    // Filter out the facet that matches both field and value
+    solrQuery.facetFieldValues = solrQuery.facetFieldValues.filter(
+        (facet) => !(facet.facetField === facetField && facet.facetValue === facetValue)
     );
+
+      onSearch(solrQuery);
+  }
+
+  function isActive(facetField: string, facetLabel: string): boolean {
+    return solrQuery.facetFieldValues?.some(
+        (facet) => facet.facetField === facetField && facet.facetValue === facetLabel
+    ) ?? false;
   }
 </script>
 
@@ -58,7 +72,7 @@
                 class="facet-item {isActive(field.key, facet.label)
                   ? 'active'
                   : ''}"
-                on:click={() => handleFacetClick(field.key, facet.label)}
+                on:click={() => handleFacetAddClick(field.key, facet.label)}
               >
                 {getDisplayFunction(field.key)(facet.label)}
               </button>
@@ -67,7 +81,7 @@
                 <button
                   class="option-button"
                   type="button"
-                  on:click={() => handleFacetClick("", "")}
+                  on:click={() => handleFacetRemoveClick(field.key, facet.label)}
                 >
                   <i class="fa fa-xmark"></i>
                 </button>
