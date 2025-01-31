@@ -1,6 +1,10 @@
 export interface SolrQuery {
     queryTerm: string,
     sortBy: string,
+    facetFieldValues: FacetFieldValue[],
+}
+
+interface FacetFieldValue {
     facetField: string,
     facetValue: string,
 }
@@ -79,4 +83,12 @@ export interface DebateMetadata {
     debate_topic?: string;
     debate_public: boolean;
     debate_schedule: string;
+}
+
+export function createDefaultSolrQuery(): SolrQuery {
+    return {
+        queryTerm: "",
+        sortBy: "",
+        facetFieldValues: [],
+    };
 }

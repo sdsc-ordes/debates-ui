@@ -9,7 +9,8 @@
     SolrDocument
 
   } from '$lib/interfaces/solr.interface';
-  import { fetchSolrData, createDefaultSolrQuery } from "$lib/solr/solrSearch";
+  import{ searchSolr } from "$lib/api/searchSolr";
+  import { createDefaultSolrQuery } from "$lib/interfaces/solr.interface";
   import { onMount } from "svelte";
 
   let solrQuery: SolrQuery = createDefaultSolrQuery();
@@ -19,7 +20,8 @@
   let facetCounts: SolrFacetCounts;
 
   async function handleSearch() {
-    const data = await fetchSolrData(solrQuery);
+    const data = await searchSolr(solrQuery);
+    console.log(data)
     if (data) {
       solrResponse = data;
       highlighting = solrResponse.highlighting || {};
