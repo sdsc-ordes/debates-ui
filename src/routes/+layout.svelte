@@ -42,10 +42,10 @@
 
 	footer {
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
+		flex-direction: row;
+		justify-content: end;
+		align-items: end;
+		padding: 22px;
 		background-color: var(--primary-dark-color);
 	}
 

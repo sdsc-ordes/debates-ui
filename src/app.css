@@ -1,15 +1,6 @@
 @import '@fontsource/fira-mono';
 
 :root {
-	--font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	--font-mono: 'Fira Mono', monospace;
-	--color-bg-0: rgb(202, 216, 228);
-	--color-bg-1: hsl(209, 36%, 86%);
-	--color-bg-2: hsl(224, 44%, 95%);
-	--color-theme-1: #ff3e00;
-	--color-theme-2: #4075a6;
-	--color-text: rgba(0, 0, 0, 0.7);
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
@@ -86,6 +77,40 @@ em {
 	background-color: var(--primary-dark-color);
 }
 
+.button-primary-dark {
+	background-color: var(--primary-dark-color);
+	color: var(--on-primary);
+	border: none;
+	padding: 5px 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	display: inline-flex;
+	align-items: center;  
+	justify-content: center; 
+}
+
+.button-primary-dark:hover {
+	background-color: var(--primary-color);
+}
+
+.button-highlight{
+	background-color: var(--secondary-color);
+	color: var(--on-primary);
+	border: none;
+	padding: 5px 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	display: inline-flex;
+	align-items: center;  
+	justify-content: center; 
+}
+
+.button-highlight:hover {
+	background-color: var(--secondary-dark-color);
+}
+
 .button-primary i {
 	margin-right: 4px;
 	font-size: 12px;
@@ -133,16 +158,15 @@ em {
     background-color: var(--secondary-dark-color);
   }
 
-.option-button {
-	color: gray;
-	background: none;
-	border: none;
-	cursor: pointer;
-	text-align: left;
+  h1 {
+	font-family: var(--body-font);
+	font-size: 36px;
+	color: var(--text-color);
+	line-height: 1.5;
+	font-weight: bold;
+	padding-top: 3rem;
 }
 
-
-h1,
 h2,
 p {
 	font-weight: 400;
@@ -159,11 +183,6 @@ a {
 
 a:hover {
 	text-decoration: underline;
-}
-
-h1 {
-	font-size: 2rem;
-	text-align: center;
 }
 
 h2 {

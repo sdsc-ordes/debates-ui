@@ -18,7 +18,9 @@
   }
 
   // Helper function to get facet values as key-value pairs
-  const getFacetFields = (facetFields: Record<string, Array<string | number>>) => {
+  const getFacetFields = (
+    facetFields: Record<string, Array<string | number>>,
+  ) => {
     let fields = [];
     for (const [key, values] of Object.entries(facetFields)) {
       let facets = [];
@@ -59,19 +61,18 @@
 {#if facetCounts}
   <div class="filters">
     {#each getFacetFields(facetCounts.facet_fields) as field}
-    <h4 class="facet-title">
-      {field.key
-        .replace(/_/g, " ")
-      }
-    </h4>
+      <h4 class="facet-title">
+        {field.key.replace(/_/g, " ")}
+      </h4>
       <div class="facets">
         {#each field.facets as facet}
-          {#if facet.count && facet.label }
+          {#if facet.count && facet.label}
             <div class="facet-row">
               <button
                 class="facet-item {isActive(field.key, facet.label)
                   ? 'active'
                   : ''}"
+                on:click={() => handleFacetAddClick(field.key, facet.label)}
                 on:click={() => handleFacetAddClick(field.key, facet.label)}
               >
                 {getDisplayFunction(field.key)(facet.label)}
@@ -83,7 +84,7 @@
                   type="button"
                   on:click={() => handleFacetRemoveClick(field.key, facet.label)}
                 >
-                  <i class="fa fa-xmark"></i>
+                  <i class="fa fa-xmark" style="color:var(--primary-dark-color)"></i>
                 </button>
               {/if}
             </div>

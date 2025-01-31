@@ -27,18 +27,5 @@ export function displaySpeaker(speakerId: string, speakers: Speaker[]): string {
     if (!speaker) {
         throw new Error(`Speaker with ID ${speakerId} not found.`);
     }
-    const speakerForDisplay = getSpeakerDisplay(speaker);
-    return speakerForDisplay;
-}
-
-function getSpeakerDisplay(speaker: Speaker): string {
-    let displayName = speaker.name ? speaker.name : speaker.speaker_id;
-    if (speaker.role_tag) {
-        displayName += "<ul>"
-        if (speaker.role_tag) {
-            displayName += `<li>${speaker.role_tag}</li>`;
-        }
-        displayName += "</ul>"
-    }
-    return displayName;
+    return speaker.name || speaker.speaker_id;
 }

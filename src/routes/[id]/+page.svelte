@@ -59,16 +59,15 @@
 <DebateHeader { debate } />
 
 <div class="video-layout">
-
-  <div class="col-md-3">
+  <div class="col-md-3 segment-container">
     <SegmentList {mediaElement} {segments} {speakers} {timeUpdateParameters} />
   </div>
 
-  <div class="col-md-3">
+  <div class="col-md-3 speaker-container">
     <SpeakerDisplay bind:speakers {timeUpdateParameters} {s3Prefix} />
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 video-container">
 
     <MediaPlayer
       {startTime}
@@ -89,14 +88,21 @@
 <SegmentDisplay {subtitles} {subtitles_en} {timeUpdateParameters} {s3Prefix} {mediaElement} />
 
 <style>
-  .video-layout {
-  display: flex;
-  justify-content: space-evenly;
-}
+.video-layout {
+    display: flex;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    align-items: stretch; 
+    height: 30vh;
 
-.col-md-3, .col-md-6 {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
+  }
+
+  .segment-container,
+  .speaker-container,
+  .video-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 90%;
+  }
 </style>
