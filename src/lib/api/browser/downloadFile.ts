@@ -1,5 +1,5 @@
-import { PUBLIC_BACKEND_SERVER } from "$env/static/public";
-const backendUrl = PUBLIC_BACKEND_SERVER
+import { PUBLIC_BACKEND_BROWSER } from "$env/static/public";
+const backendUrl = PUBLIC_BACKEND_BROWSER
 
 export async function downloadFile(prefix: string, key: string) {
     try {

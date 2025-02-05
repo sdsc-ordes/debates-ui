@@ -3,7 +3,7 @@
   import { type Subtitle, SubtitleTypeEnum, type Segment } from "$lib/interfaces/backend.interface";
   import { canEdit } from "$lib/stores/auth";
   import { jumpToTime } from "$lib/utils/mediaStartUtils";
-  import { updateSubtitles } from "$lib/api/updateSubtitles";
+  import { updateSubtitles } from "$lib/api/browser/updateSubtitles";
   export let subtitles: Subtitle[] = [];
   export let subtitles_en: Subtitle[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;

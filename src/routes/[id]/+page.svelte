@@ -2,7 +2,6 @@
   import { page } from "$app/stores";
   import type { PageData } from "./$types";
   import "./page.css";
-  import { Notifications, acts } from "@tadashi/svelte-notification";
   import MediaPlayer from "$lib/components/MediaPlayer.svelte";
   import SegmentDisplay from "$lib/components/SegmentDisplay.svelte";
   import { onMediaTimeUpdate } from "$lib/utils/mediaTimeUpdate";
@@ -22,11 +21,14 @@
     import DebateToolBar from "$lib/components/DebateToolBar.svelte";
 
   export let data: PageData;
+
   const s3Prefix: string = data?.prefix;
   const debate: Debate = data?.debate;
+
   let subtitles: Subtitle[] = data?.subtitles;
   let subtitles_en: Subtitle[] = data?.subtitles_en;
   const segments: Segment[] = data?.segments;
+
   let speakers: Speaker[] = data?.speakers;
   const mediaUrl: string = data?.signedUrls.signedMediaUrl;
   const media = data.media;
@@ -39,6 +41,7 @@
     subtitles,
     segments,
   );
+
   let mediaElement: HTMLVideoElement;
 
 </script>
@@ -84,8 +87,6 @@
 <DebateToolBar {downloadUrls} />
 
 <SegmentDisplay {subtitles} {subtitles_en} {segments} {timeUpdateParameters} {s3Prefix} {mediaElement} />
-
-<Notifications />
 
 <style>
   .video-layout {

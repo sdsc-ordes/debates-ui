@@ -9,7 +9,7 @@
     SolrDocument
 
   } from '$lib/interfaces/solr.interface';
-  import{ searchSolr } from "$lib/api/searchSolr";
+  import{ searchSolr } from "$lib/api/browser/searchSolr";
   import { createDefaultSolrQuery } from "$lib/interfaces/solr.interface";
   import { onMount } from "svelte";
 
