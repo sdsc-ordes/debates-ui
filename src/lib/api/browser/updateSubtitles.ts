@@ -1,6 +1,6 @@
-import { PUBLIC_BACKEND_SERVER } from "$env/static/public";
+import { PUBLIC_BACKEND_BROWSER } from "$env/static/public";
 import type { Subtitle, SubtitleType } from "$lib/interfaces/backend.interface";
-const backendUrl = PUBLIC_BACKEND_SERVER
+const backendUrl = PUBLIC_BACKEND_BROWSER
 
 export async function updateSubtitles(
     prefix: string,

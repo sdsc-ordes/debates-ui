@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { TimeUpdateParameters } from "$lib/interfaces/mediaplayer.interface";
   import type { Speaker } from "$lib/interfaces/backend.interface";
-  import { updateSpeakers } from "$lib/api/updateSpeakers";
+  import { updateSpeakers } from "$lib/api/browser/updateSpeakers";
   import { canEdit } from "$lib/stores/auth";
 
   export let speakers: Speaker[] = [];
