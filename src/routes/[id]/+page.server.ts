@@ -1,7 +1,7 @@
 import type { PageServerLoad } from "./$types";
 import type { SignedUrls, ResponseMetadata } from "$lib/interfaces/backend.interface";
-import { fetchMedia } from "$lib/api/server/fetchMedia";
-import { fetchMetadata } from "$lib/api/server/fetchMetadata";
+import { fetchMedia } from "$lib/server/fetchMedia";
+import { fetchMetadata } from "$lib/server/fetchMetadata";
 
 export const load: PageServerLoad = async ({ params }) => {
     try {
