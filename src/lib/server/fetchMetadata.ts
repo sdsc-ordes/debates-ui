@@ -1,11 +1,10 @@
-import type { DebateMetadata } from "$lib/interfaces/backend.interface";
-import { PUBLIC_BACKEND_SERVER } from "$env/static/public";
-const backendUrl = PUBLIC_BACKEND_SERVER
+import type { DebateMetadata } from "$lib/interfaces/metadata.interface";
+import { BackendUrl } from "$lib/config";
 
 export async function fetchMetadata(s3Prefix: string): DebateMetadata {
     try {
         // FastAPI endpoint to fetch metadata
-        const apiUrl = `${backendUrl}/mongo-metadata`;
+        const apiUrl = `${BackendUrl}/mongo-metadata`;
 
         // Request payload for fetching metadata
         const payload = JSON.stringify({ prefix: s3Prefix, expiration: 3600 });

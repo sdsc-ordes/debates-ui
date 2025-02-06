@@ -3,7 +3,7 @@ import type {
 } from "$lib/interfaces/mediaplayer.interface";
 import type {
     Subtitle, Speaker, Segment
-} from "$lib/interfaces/backend.interface";
+} from "$lib/interfaces/metadata.interface";
 
 export function onMediaTimeUpdate(
     currentTime: number,
@@ -11,12 +11,10 @@ export function onMediaTimeUpdate(
     subtitles_en: Subtitle[],
     segments: Segment[],
 ): TimeUpdateParameters {
-    console.log(currentTime);
     const displaySegmentNr = getDisplaySegmentNr(currentTime, segments);
     const displaySubtitleIndex = getDisplaySubtitleIndex(currentTime, subtitles);
     const displaySubtitleEnIndex = getDisplaySubtitleIndex(currentTime, subtitles_en);
     const displaySpeakerId = getDisplaySpeakerId(displaySegmentNr, segments);
-    console.log(displaySegmentNr);
     return {
         displaySubtitleIndex,
         displaySubtitleEnIndex,
@@ -71,7 +69,6 @@ function getDisplaySpeakerId(
 ) {
     if (displaySegmentNr) {
         let segment = segments.find(seg => seg.segment_nr === displaySegmentNr);
-        console.log(segment)
         if (segment) {
             return segment.speaker_id
         }

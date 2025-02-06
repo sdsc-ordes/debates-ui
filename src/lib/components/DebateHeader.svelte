@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Debate } from "$lib/interfaces/backend.interface";
+  import type { Debate } from "$lib/interfaces/metadata.interface";
   import { displayIsoDate } from "$lib/utils/displayUtils";
 
   export let debate: Debate;

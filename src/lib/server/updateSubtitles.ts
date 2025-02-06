@@ -1,6 +1,5 @@
-import { PUBLIC_BACKEND_BROWSER } from "$env/static/public";
-import type { Subtitle, SubtitleType } from "$lib/interfaces/backend.interface";
-const backendUrl = PUBLIC_BACKEND_BROWSER
+import { BackendUrl } from "$lib/config";
+import type { Subtitle, SubtitleType } from "$lib/interfaces/metadata.interface";
 
 export async function updateSubtitles(
     prefix: string,
@@ -10,7 +9,7 @@ export async function updateSubtitles(
 ) {
     try {
         // FastAPI endpoint to update speakers
-        const apiUrl = `${backendUrl}/update-subtitles`;
+        const apiUrl = `${BackendUrl}/update-subtitles`;
 
         // Request payload for update speakers
         const payload = JSON.stringify({

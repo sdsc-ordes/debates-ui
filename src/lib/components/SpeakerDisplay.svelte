@@ -1,21 +1,44 @@
 <script lang="ts">
   import type { TimeUpdateParameters } from "$lib/interfaces/mediaplayer.interface";
-  import type { Speaker } from "$lib/interfaces/backend.interface";
-  import { updateSpeakers } from "$lib/api/browser/updateSpeakers";
+  import type { Speaker } from "$lib/interfaces/metadata.interface";
   import { canEdit } from "$lib/stores/auth";
+  let errorMessage: string | null = null;
 
   export let speakers: Speaker[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
   export let s3Prefix: string;
-  console.log(s3Prefix);
   let editSpeakers = false;
 
   function toggleEditSpeakers() {
     editSpeakers = !editSpeakers;
   }
-  function saveSpeakers(): void {
-    updateSpeakers(s3Prefix, speakers)
+
+  async function saveSpeakers() {
+    const SpeakerUpdateRequest = {
+      prefix: s3Prefix,
+      speakers: speakers,
+    }
     editSpeakers = !editSpeakers;
+    errorMessage = null;
+    try {
+      const response = await fetch('/api/speakers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(SpeakerUpdateRequest)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        errorMessage = errorData.error || `Search failed: ${response.status} ${response.statusText}`; // Display detailed error
+        console.error(errorMessage);
+        return;
+      }
+    } catch (error) {
+      errorMessage = `An unexpected error occurred: ${error.message}`;
+      console.error(errorMessage);
+    }
   }
 </script>
 

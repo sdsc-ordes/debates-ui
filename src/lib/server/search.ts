@@ -1,11 +1,10 @@
-import { PUBLIC_BACKEND_BROWSER } from "$env/static/public";
-import type { SolrQuery } from "$lib/interfaces/solr.interface";
-const backendUrl = PUBLIC_BACKEND_BROWSER
+import { BackendUrl } from "$lib/config";
+import type { SolrQuery } from "$lib/interfaces/search.interface";
 
 export async function searchSolr(solrQuery: SolrQuery) {
     try {
         // FastAPI endpoint to fetch metadata
-        const apiUrl = `${backendUrl}/search-solr`;
+        const apiUrl = `${BackendUrl}/search-solr`;
         const facetFields: string[] = [
             "debate_schedule", "statement_type", "debate_session", "speaker_name", "speaker_role_tag"];
         const payload = JSON.stringify({
@@ -14,7 +13,6 @@ export async function searchSolr(solrQuery: SolrQuery) {
             facetFields: facetFields,
             facetFilters: solrQuery.facetFieldValues,
         });
-        console.log(payload);
 
         // Fetch metadata from FastAPI backend
         const response = await fetch(apiUrl, {

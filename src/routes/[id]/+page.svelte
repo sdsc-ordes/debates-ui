@@ -17,7 +17,7 @@
     Subtitle,
     SignedUrl,
     Debate,
-  } from "$lib/interfaces/backend.interface";
+  } from "$lib/interfaces/metadata.interface";
     import DebateToolBar from "$lib/components/DebateToolBar.svelte";
 
   export let data: PageData;
@@ -86,7 +86,7 @@
 
 <DebateToolBar {downloadUrls} />
 
-<SegmentDisplay {subtitles} {subtitles_en} {segments} {timeUpdateParameters} {s3Prefix} {mediaElement} />
+<SegmentDisplay {subtitles} {subtitles_en} {timeUpdateParameters} {s3Prefix} {mediaElement} />
 
 <style>
   .video-layout {

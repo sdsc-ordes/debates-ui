@@ -1,16 +1,12 @@
-
 <script lang="ts">
   import SearchForm from "$lib/components/SearchForm.svelte";
   import FacetCounts from "$lib/components/FacetCounts.svelte";
   import SearchResultContainer from "$lib/components/SearchResultContainer.svelte";
   import type {
     SolrHighlighting, SolrQuery, SolrResponse, SolrFacetCounts,
-
     SolrDocument
-
-  } from '$lib/interfaces/solr.interface';
-  import{ searchSolr } from "$lib/api/browser/searchSolr";
-  import { createDefaultSolrQuery } from "$lib/interfaces/solr.interface";
+  } from '$lib/interfaces/search.interface';
+  import { createDefaultSolrQuery } from "$lib/interfaces/search.interface";
   import { onMount } from "svelte";
 
   let solrQuery: SolrQuery = createDefaultSolrQuery();
@@ -18,17 +14,34 @@
   let highlighting: SolrHighlighting;
   let docs: SolrDocument[];
   let facetCounts: SolrFacetCounts;
+  let errorMessage: string | null = null; // For displaying errors
 
   async function handleSearch() {
-    const data = await searchSolr(solrQuery);
-    console.log(data)
-    if (data) {
-      solrResponse = data;
-      highlighting = solrResponse.highlighting || {};
-      facetCounts = solrResponse.facet_counts || {};
-      docs = solrResponse.response.docs || [];
-    } else {
-      console.warn("No data found or an error occurred.");
+    errorMessage = null; // Clear any previous errors
+    try {
+      const response = await fetch('/api/search', {  // Call the API endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(solrQuery) // Send the solrQuery in the body
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json(); // Try to get error details
+        errorMessage = errorData.error || `Search failed: ${response.status} ${response.statusText}`; // Display detailed error
+        console.error(errorMessage);
+        return; // Stop processing if the request failed
+      }
+
+      const data = await response.json();
+      solrResponse = data.raw_response;
+      highlighting = solrResponse?.highlighting ?? null;
+      facetCounts = solrResponse?.facet_counts ?? null;
+      docs = solrResponse?.response?.docs ?? [];
+    } catch (error) {
+      errorMessage = `An unexpected error occurred: ${error.message}`;
+      console.error(errorMessage);
     }
   }
 
@@ -53,11 +66,13 @@
         on:submit={handleSearch}
         on:reset={handleReset}
       />
+      {#if facetCounts}
       <FacetCounts
         {solrQuery}
         onSearch={handleSearch}
         {facetCounts}
       />
+      {/if}
     </div>
     {#if solrResponse}
       <div class="col-md-8">

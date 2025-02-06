@@ -1,4 +1,4 @@
-import type { Speaker } from "$lib/interfaces/backend.interface";
+import type { Speaker } from "$lib/interfaces/metadata.interface";
 
 export function formatTimeForDisplay(seconds: number): string {
     const hrs = Math.floor(seconds / 3600);

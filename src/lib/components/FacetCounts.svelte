@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SolrQuery, SolrFacetCounts } from "$lib/interfaces/solr.interface";
+  import type { SolrQuery, SolrFacetCounts } from "$lib/interfaces/search.interface";
   import { displayIsoDate } from "$lib/utils/displayUtils";
 
   export let solrQuery: SolrQuery;

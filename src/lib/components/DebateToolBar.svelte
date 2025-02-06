@@ -1,6 +1,6 @@
 <script lang="ts">
     import FileDownload from "./FileDownload.svelte";
-    import type { SignedUrl } from "$lib/interfaces/backend.interface";
+    import type { SignedUrl } from "$lib/interfaces/metadata.interface";
 
     export let downloadUrls: SignedUrl[] = [];
 </script>

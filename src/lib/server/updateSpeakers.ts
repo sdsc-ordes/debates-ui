@@ -1,12 +1,10 @@
-import { PUBLIC_BACKEND_BROWSER } from "$env/static/public";
-import type { Speaker } from "$lib/interfaces/backend.interface";
-const backendUrl = PUBLIC_BACKEND_BROWSER
+import { BackendUrl } from "$lib/config";
+import type { Speaker } from "$lib/interfaces/metadata.interface";
 
 export async function updateSpeakers(prefix: string, speakers: Speaker[]) {
     try {
         // FastAPI endpoint to update speakers
-        const apiUrl = `${backendUrl}/update-speakers`;
-        console.log(speakers);
+        const apiUrl = `${BackendUrl}/update-speakers`;
         // Request payload for update speakers
         const payload = JSON.stringify({
             prefix: prefix,
