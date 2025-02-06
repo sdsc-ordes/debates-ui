@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
-    import type { SolrQuery } from "$lib/interfaces/solr.interface";
+    import type { SolrQuery } from "$lib/interfaces/search.interface";
 
     export let solrQuery: SolrQuery;
 

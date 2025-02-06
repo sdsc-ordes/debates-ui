@@ -1,7 +1,7 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { replaceWithHighlightedVersion } from '$lib/utils/highlightSearchTerms';
-    import type { SolrDocument, SolrHighlighting } from "$lib/interfaces/solr.interface";
+    import type { SolrDocument, SolrHighlighting } from "$lib/interfaces/search.interface";
     import {
         formatTimeForDisplay,
         displayIsoDate,

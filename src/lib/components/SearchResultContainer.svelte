@@ -1,6 +1,6 @@
 <script lang="ts">
   import SearchResultItem from "$lib/components/SearchResultItem.svelte";
-  import type { SolrDocument, SolrHighlighting } from "$lib/interfaces/solr.interface";
+  import type { SolrDocument, SolrHighlighting } from "$lib/interfaces/search.interface";
 
   export let docs: SolrDocument[];
   export let highlighting: SolrHighlighting;
