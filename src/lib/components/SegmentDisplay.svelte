@@ -38,7 +38,7 @@
     editSubtitlesTranslation = !editSubtitlesTranslation;
   }
   async function updateSubtitles(prefix: string, segmentNr: number, subtitles: Subtitle[], type: string) {
-    const SubtitleUpdateRequest = {
+    const subtitleUpdateRequest = {
       prefix: prefix,
       segmentNr: segmentNr,
       subtitles: subtitles,
