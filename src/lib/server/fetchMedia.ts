@@ -1,6 +1,5 @@
 import type { S3Key, SignedUrls } from "$lib/interfaces/backend.interface";
-import { PUBLIC_BACKEND_SERVER } from "$env/static/public";
-const backendUrl = PUBLIC_BACKEND_SERVER
+import { BackendUrl } from "$lib/config";
 
 export async function fetchMedia(
     s3Prefix: string,
@@ -9,7 +8,7 @@ export async function fetchMedia(
 ): Promise<SignedUrls> {
     try {
         // FastAPI endpoint to retrieve signed URLs
-        const apiUrl = `${backendUrl}/get-media-urls`;
+        const apiUrl = `${BackendUrl}/get-media-urls`;
 
         // Request payload for signed URLs
         const payload = JSON.stringify({
