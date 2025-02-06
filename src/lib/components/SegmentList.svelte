@@ -5,7 +5,7 @@
   import type {
     Segment,
     Speaker,
-  } from "$lib/interfaces/backend.interface";
+  } from "$lib/interfaces/metadata.interface";
   import { formatTimeForDisplay } from "$lib/utils/displayUtils";
   import { jumpToTime } from "$lib/utils/mediaStartUtils";
   import { displaySpeaker } from "$lib/utils/displayUtils";

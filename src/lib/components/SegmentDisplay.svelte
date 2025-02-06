@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { TimeUpdateParameters } from "$lib/interfaces/mediaplayer.interface";
-  import { type Subtitle, SubtitleTypeEnum, type Segment } from "$lib/interfaces/backend.interface";
+  import { type Subtitle, SubtitleTypeEnum, type Segment } from "$lib/interfaces/metadata.interface";
   import { canEdit } from "$lib/stores/auth";
   import { jumpToTime } from "$lib/utils/mediaStartUtils";
   import { updateSubtitles } from "$lib/api/browser/updateSubtitles";
@@ -9,7 +9,6 @@
   export let timeUpdateParameters: TimeUpdateParameters;
   export let mediaElement: HTMLVideoElement;
   export let s3Prefix: string;
-  console.log(s3Prefix);
 
   let editSubtitlesTranscription: boolean = false;
   let editSubtitlesTranslation: boolean = false;
@@ -27,6 +26,7 @@
   function toggleEditSubtitlesTranslation() {
     editSubtitlesTranslation = !editSubtitlesTranslation;
   }
+  
   function saveSubtitle$Transcription(): void {
     updateSubtitles(s3Prefix, timeUpdateParameters.displaySegmentNr, subtitles, transcript)
     editSubtitlesTranscription = !editSubtitlesTranscription;

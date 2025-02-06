@@ -1,5 +1,5 @@
 import type { PageServerLoad } from "./$types";
-import type { SignedUrls, ResponseMetadata } from "$lib/interfaces/backend.interface";
+import type { SignedUrls, ResponseMetadata } from "$lib/interfaces/metadata.interface";
 import { fetchMedia } from "$lib/server/fetchMedia";
 import { fetchMetadata } from "$lib/server/fetchMetadata";
 

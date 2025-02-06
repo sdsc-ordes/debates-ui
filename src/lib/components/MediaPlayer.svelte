@@ -7,7 +7,7 @@
     Subtitle,
     Speaker,
     Segment,
-  } from "$lib/interfaces/backend.interface";
+  } from "$lib/interfaces/metadata.interface";
   export let startTime: number;
   export let timeUpdateParameters: TimeUpdateParameters;
   export let subtitles: Subtitle[] = [];
@@ -25,7 +25,6 @@
       subtitles_en,
       segments,
     );
-    console.log(timeUpdateParameters);
   }
 
   onMount(async () => {

@@ -1,4 +1,4 @@
-import type { DebateMetadata } from "$lib/interfaces/backend.interface";
+import type { DebateMetadata } from "$lib/interfaces/metadata.interface";
 import { BackendUrl } from "$lib/config";
 
 export async function fetchMetadata(s3Prefix: string): DebateMetadata {

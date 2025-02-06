@@ -1,4 +1,4 @@
-import type { S3Key, SignedUrls } from "$lib/interfaces/backend.interface";
+import type { S3Key, SignedUrls } from "$lib/interfaces/metadata.interface";
 import { BackendUrl } from "$lib/config";
 
 export async function fetchMedia(
