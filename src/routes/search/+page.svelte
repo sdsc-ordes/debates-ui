@@ -1,4 +1,3 @@
-
 <script lang="ts">
   import SearchForm from "$lib/components/SearchForm.svelte";
   import FacetCounts from "$lib/components/FacetCounts.svelte";
@@ -36,10 +35,10 @@
       }
 
       const data = await response.json();
-      solrResponse = data.raw_response; // Access the raw_response
-      highlighting = solrResponse.highlighting || {};
-      facetCounts = solrResponse.facet_counts || {};
-      docs = solrResponse.response.docs || [];
+      solrResponse = data.raw_response;
+      highlighting = solrResponse?.highlighting ?? null;
+      facetCounts = solrResponse?.facet_counts ?? null;
+      docs = solrResponse?.response?.docs ?? [];
     } catch (error) {
       errorMessage = `An unexpected error occurred: ${error.message}`;
       console.error(errorMessage);
@@ -67,11 +66,13 @@
         on:submit={handleSearch}
         on:reset={handleReset}
       />
+      {#if facetCounts}
       <FacetCounts
         {solrQuery}
         onSearch={handleSearch}
         {facetCounts}
       />
+      {/if}
     </div>
     {#if solrResponse}
       <div class="col-md-8">
