@@ -51,7 +51,7 @@
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(SubtitleUpdateRequest)
+        body: JSON.stringify(subtitleUpdateRequest)
       });
 
       if (!response.ok) {
