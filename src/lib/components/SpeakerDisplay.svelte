@@ -2,7 +2,7 @@
   import type { TimeUpdateParameters } from "$lib/interfaces/mediaplayer.interface";
   import type { Speaker } from "$lib/interfaces/metadata.interface";
   import { canEdit } from "$lib/stores/auth";
-  let errorMessage: string | null = null; // For displaying errors
+  let errorMessage: string | null = null;
 
   export let speakers: Speaker[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
