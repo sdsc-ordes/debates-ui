@@ -6,8 +6,8 @@
   import type {
     SolrHighlighting, SolrQuery, SolrResponse, SolrFacetCounts,
     SolrDocument
-  } from '$lib/interfaces/solr.interface';
-  import { createDefaultSolrQuery } from "$lib/interfaces/solr.interface";
+  } from '$lib/interfaces/search.interface';
+  import { createDefaultSolrQuery } from "$lib/interfaces/search.interface";
   import { onMount } from "svelte";
 
   let solrQuery: SolrQuery = createDefaultSolrQuery();

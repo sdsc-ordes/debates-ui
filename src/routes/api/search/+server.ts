@@ -1,4 +1,4 @@
-import type { SolrQuery } from "$lib/interfaces/solr.interface";
+import type { SolrQuery } from "$lib/interfaces/search.interface";
 import { searchSolr } from "$lib/server/search";
 
 export async function POST({ request }) {

@@ -1,5 +1,5 @@
 import { BackendUrl } from "$lib/config";
-import type { SolrQuery } from "$lib/interfaces/solr.interface";
+import type { SolrQuery } from "$lib/interfaces/search.interface";
 
 export async function searchSolr(solrQuery: SolrQuery) {
     try {
@@ -13,7 +13,6 @@ export async function searchSolr(solrQuery: SolrQuery) {
             facetFields: facetFields,
             facetFilters: solrQuery.facetFieldValues,
         });
-        console.log(payload);
 
         // Fetch metadata from FastAPI backend
         const response = await fetch(apiUrl, {
