@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { TimeUpdateParameters } from "$lib/interfaces/mediaplayer.interface";
-  import { type Subtitle, SubtitleTypeEnum, type Segment } from "$lib/interfaces/metadata.interface";
+  import { type Subtitle, SubtitleTypeEnum } from "$lib/interfaces/metadata.interface";
   import { canEdit } from "$lib/stores/auth";
   import { jumpToTime } from "$lib/utils/mediaStartUtils";
-  import { updateSubtitles } from "$lib/api/browser/updateSubtitles";
+
   export let subtitles: Subtitle[] = [];
   export let subtitles_en: Subtitle[] = [];
   export let timeUpdateParameters: TimeUpdateParameters;
@@ -12,6 +12,8 @@
 
   let editSubtitlesTranscription: boolean = false;
   let editSubtitlesTranslation: boolean = false;
+
+  let errorMessage: string | null = null; // For displaying errors
 
   const transcript = SubtitleTypeEnum.Transcript;
   const translation = SubtitleTypeEnum.Translation;
@@ -26,7 +28,7 @@
   function toggleEditSubtitlesTranslation() {
     editSubtitlesTranslation = !editSubtitlesTranslation;
   }
-  
+
   function saveSubtitle$Transcription(): void {
     updateSubtitles(s3Prefix, timeUpdateParameters.displaySegmentNr, subtitles, transcript)
     editSubtitlesTranscription = !editSubtitlesTranscription;
@@ -34,6 +36,34 @@
   function saveSubtitle$Translation(): void {
     updateSubtitles(s3Prefix, timeUpdateParameters.displaySegmentNr, subtitles_en, translation)
     editSubtitlesTranslation = !editSubtitlesTranslation;
+  }
+  async function updateSubtitles(prefix: string, segmentNr: number, subtitles: Subtitle[], type: string) {
+    const SubtitleUpdateRequest = {
+      prefix: prefix,
+      segmentNr: segmentNr,
+      subtitles: subtitles,
+      subtitleType: type,
+    }
+    errorMessage = null;
+    try {
+      const response = await fetch('/api/subtitles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(SubtitleUpdateRequest)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        errorMessage = errorData.error || `Search failed: ${response.status} ${response.statusText}`; // Display detailed error
+        console.error(errorMessage);
+        return;
+      }
+    } catch (error) {
+      errorMessage = `An unexpected error occurred: ${error.message}`;
+      console.error(errorMessage);
+    }
   }
 </script>
 
