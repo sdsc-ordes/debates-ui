@@ -5,7 +5,8 @@
 This is the frontend for https://github.com/sdsc-ordes/political-debates-ui.
 The frontend is made in SvelteKit. It has two pages:
 - A search page to search in video transcripts on a Solr Instance
-- A videoplayer page where a video can be played along with transcript and speaker information that can be edited. The metadata of the video is retrieved form a mongo db. It is planned but not yet implemented to store the updated metadata as a new version back to the mongodb.
+- A videoplayer page where a video can be played along with transcript and speaker information that can be edited. The metadata of the video is retrieved form a mongo db.
+- There is an edit route: `/edit`: going on that route allows to switch into edit mode and edit the video metadata and spreaker information
 
 
 ## Technology
