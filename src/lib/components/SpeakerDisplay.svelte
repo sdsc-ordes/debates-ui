@@ -48,16 +48,16 @@
       {#if speaker.speaker_id === timeUpdateParameters.displaySpeakerId && speaker}
         <div class="card-title-small">{speaker.speaker_id}</div>
 
-        <!-- EDIT -->
+        <!-- EDITABLE SECTION -->
         {#if $canEdit}
-          <!-- EDIT -->
-          <p class="card-subtle">Make edits to the speaker information here.</p>
+          <p class="card-subtle">Edit speaker details below:</p>
+
           {#if editSpeakers}
             <form class="speaker-form">
               <label for="speaker-name" class="input-label">Name</label>
               <input
                 id="speaker-name"
-                placeholder={speaker.name || "enter name"}
+                placeholder="Enter name"
                 type="text"
                 bind:value={speaker.name}
                 class="editable-input"
@@ -65,75 +65,48 @@
               <label for="speaker-tags" class="input-label">Role</label>
               <input
                 id="speaker-tags"
-                placeholder={speaker.role_tag || "enter role"}
+                placeholder="Enter role"
                 type="text"
                 bind:value={speaker.role_tag}
                 class="editable-input"
               />
             </form>
           {:else}
-            <!-- DISPLAY -->
+            <!-- DISPLAY MODE -->
             <div class="speaker-display">
               <label class="input-label">Name</label>
-              <div class="display-text">
-                {speaker.name || "Name not provided"}
-              </div>
+              <div class="display-text">{speaker.name || "Name not provided"}</div>
 
               <label class="input-label">Role</label>
-              <div class="display-text">
-                {speaker.role_tag || "Role not provided"}
-              </div>
+              <div class="display-text">{speaker.role_tag || "Role not provided"}</div>
             </div>
           {/if}
         {:else}
-          <!-- DISPLAY for non-editable state -->
+          <!-- NON-EDITABLE VIEW -->
           <div class="speaker-display">
             <label class="input-label">Name</label>
-            <div class="display-text">
-              {speaker.name || "Name not provided"}
-            </div>
+            <div class="display-text">{speaker.name || "Name not provided"}</div>
 
             <label class="input-label">Role</label>
-            <div class="display-text">
-              {speaker.role_tag || "Role not provided"}
-            </div>
+            <div class="display-text">{speaker.role_tag || "Role not provided"}</div>
           </div>
         {/if}
-        <!-- BUTTONS -->
-        {#if $canEdit && !editSpeakers}
-          <div
-            style="display: flex;
-              align-items: center;
-              justify-content: start;
-              width: 100%;"
-          >
-            <button
-              class="secondary-button"
-              on:click={toggleEditSpeakers}
-              aria-label="Edit"
-              >Edit
-            </button>
-          </div>
-        {:else if editSpeakers}
-          <div
-            style="display: flex;
-              align-items: center;
-              justify-content: space-between;
-              width: 100%;"
-          >
-            <button
-              class="secondary-button"
-              on:click={toggleEditSpeakers}
-              aria-label="Cancel"
-              >Cancel
-            </button>
-            <button
-              class="secondary-button"
-              on:click={() => saveSpeakers()}
-              aria-label="Save"
-            >
-              Save
-            </button>
+
+        <!-- BUTTON CONTROLS -->
+        {#if $canEdit}
+          <div class="button-group">
+            {#if editSpeakers}
+              <button class="secondary-button" on:click={toggleEditSpeakers} aria-label="Cancel">
+                Cancel
+              </button>
+              <button class="secondary-button" on:click={saveSpeakers} aria-label="Save">
+                Save
+              </button>
+            {:else}
+              <button class="secondary-button" on:click={toggleEditSpeakers} aria-label="Edit">
+                Edit
+              </button>
+            {/if}
           </div>
         {/if}
       {/if}
@@ -141,32 +114,36 @@
   </div>
 </div>
 
+
 <style>
   .card {
+    /* width: fit-content; */
+    max-width: 100%;
+    max-height: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-
-    height: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
   }
+
   .card-body {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    justify-content: space-evenly;
+    /* gap: 1rem; */
   }
 
   .speaker-form,
   .speaker-display {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    /* gap: 1rem; */
   }
 
   .input-label {
     font-size: 14px;
     font-weight: 500;
-    color: #555;
+    color: #333;
   }
 
   .editable-input {
@@ -175,10 +152,8 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
-    color: var(--text-color);
-    transition:
-      border-color 0.3s ease,
-      box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
   }
 
   .editable-input:focus {
@@ -200,4 +175,12 @@
     display: flex;
     align-items: center;
   }
+
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+
 </style>

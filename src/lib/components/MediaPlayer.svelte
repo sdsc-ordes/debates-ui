@@ -44,7 +44,7 @@
       controls
       disablePictureInPicture
     >
-      <source src={mediaUrl} type={media.type}/{media.format} />
+      <source src={mediaUrl} type="{media.type}/{media.format}" />
       Your browser does not support the video tag.
     </video>
   {:else if media.type === "audio"}
@@ -55,7 +55,7 @@
       controls
       autoplay
     >
-      <source src={mediaUrl} type={media.type}/{media.format} />
+      <source src={mediaUrl} type="{media.type}/{media.format}" />
       Your browser does not support the audio tag.
     </audio>
   {/if}
@@ -63,13 +63,16 @@
 
 <style>
   .media {
-    max-width: 600px;
-    height: 100%;
-    /* border: 1px solid #ddd; */
+    max-width: 100%;
+    object-fit: contain;
   }
 
   .media-container {
-    text-align: center;
-    /* margin: 20px auto; */
+    width: 100%;
+    height: 100%; /* Forces it to respect the parent container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
   }
 </style>
