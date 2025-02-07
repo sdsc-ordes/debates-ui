@@ -15,10 +15,9 @@
 	</main>
 
 	<footer>
-		<p>
-			powered by <a href="https://kit.svelte.dev">kit.svelte.dev</a> and
-			<a href="https://solr.apache.org/">Apache Solr</a>
-		</p>
+		<a href={'https://www.datascience.ch/'}>
+			<img src='/logos/sdsc_white.svg' width={206} height={33} alt='logo-footer' />
+		</a>
 	</footer>
 </div>
 
@@ -43,10 +42,11 @@
 
 	footer {
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
+		flex-direction: row;
+		justify-content: end;
+		align-items: end;
+		padding: 22px;
+		background-color: var(--primary-dark-color);
 	}
 
 	footer a {

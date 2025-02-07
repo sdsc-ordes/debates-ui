@@ -31,7 +31,7 @@
           on:keydown={(e) =>
             (e.key === "Enter" || e.key === " ") &&
             jumpToTime(mediaElement, segment.start)}
-          id=segment-{ segment.segment_nr }
+          id='segment-{ segment.segment_nr }'
         >
           <div class="card-body">
             <div class="card-title-small" style="color=inherit;">
@@ -64,9 +64,9 @@
 
 <style>
   .scrollable-container {
-    max-height: 300px;
     overflow-y: auto;
-    padding-top: 1rem;
+    /* padding-top: 1rem;
+    margin-top: 1; */
   }
   ol li {
     list-style-type: none;
@@ -82,7 +82,7 @@
     display: flex;
     flex-direction:row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 1rem;
   }
 

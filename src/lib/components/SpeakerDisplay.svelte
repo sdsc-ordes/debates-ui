@@ -45,18 +45,19 @@
 <div class="card">
   <div class="card-body">
     {#each speakers as speaker}
-      {#if speaker.speaker_id === timeUpdateParameters.displaySpeakerId && speaker }
+      {#if speaker.speaker_id === timeUpdateParameters.displaySpeakerId && speaker}
         <div class="card-title-small">{speaker.speaker_id}</div>
 
         <!-- EDIT -->
-        {#if $canEdit }
+        {#if $canEdit}
+          <!-- EDIT -->
           <p class="card-subtle">Make edits to the speaker information here.</p>
           {#if editSpeakers}
             <form class="speaker-form">
-              <label for="speaker-id" class="input-label">Name</label>
+              <label for="speaker-name" class="input-label">Name</label>
               <input
                 id="speaker-name"
-                placeholder={speaker.name ? speaker.name : "enter name"}
+                placeholder={speaker.name || "enter name"}
                 type="text"
                 bind:value={speaker.name}
                 class="editable-input"
@@ -64,15 +65,28 @@
               <label for="speaker-tags" class="input-label">Role</label>
               <input
                 id="speaker-tags"
-                placeholder={speaker.role_tag ? speaker.role_tag : "enter role"}
+                placeholder={speaker.role_tag || "enter role"}
                 type="text"
                 bind:value={speaker.role_tag}
                 class="editable-input"
               />
             </form>
+          {:else}
+            <!-- DISPLAY -->
+            <div class="speaker-display">
+              <label class="input-label">Name</label>
+              <div class="display-text">
+                {speaker.name || "Name not provided"}
+              </div>
+
+              <label class="input-label">Role</label>
+              <div class="display-text">
+                {speaker.role_tag || "Role not provided"}
+              </div>
+            </div>
           {/if}
-        <!-- DISPLAY -->
         {:else}
+          <!-- DISPLAY for non-editable state -->
           <div class="speaker-display">
             <label class="input-label">Name</label>
             <div class="display-text">
@@ -132,13 +146,14 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
+
+    height: 100%;
   }
   .card-body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    justify-content: space-evenly;
   }
 
   .speaker-form,

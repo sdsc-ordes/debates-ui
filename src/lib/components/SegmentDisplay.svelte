@@ -74,7 +74,7 @@
     align-items: center;
     justify-content: start;
     gap: 1rem;
-    width: 100%;"
+    width: 90%;"
     >
       <div class="card-title-small">Transcription</div>
       {#if $canEdit && !editSubtitlesTranscription}
@@ -193,7 +193,8 @@
 <style>
   .side-by-side {
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
+    gap: 2rem;
     max-height: 300px;
     padding: 0.5rem;
   }

@@ -63,12 +63,13 @@
 
 <style>
   .media {
-    width: 600px;
-    border: 1px solid #ddd;
+    max-width: 600px;
+    height: 100%;
+    /* border: 1px solid #ddd; */
   }
 
   .media-container {
     text-align: center;
-    margin: 20px auto;
+    /* margin: 20px auto; */
   }
 </style>
