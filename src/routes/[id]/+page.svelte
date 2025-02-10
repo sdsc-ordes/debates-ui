@@ -89,20 +89,38 @@
 
 <style>
 .video-layout {
-    display: flex;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    align-items: stretch; 
-    height: 30vh;
+  display: flex;
+  gap: 1rem; /* Adds spacing between elements */
+  justify-content: center;
+  align-items: flex-start; /* Aligns everything to the top */
+  width: 100%;
+  height:30vh;
+  padding-bottom: 1rem;
+}
 
-  }
+.segment-container {
+  flex: 1;
+  max-width: 25%;
+  max-height: 100%;
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+}
 
-  .segment-container,
-  .speaker-container,
-  .video-container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 90%;
-  }
+.speaker-container {
+  flex: 1;
+  max-width: 25%;
+  max-height: 30vh;
+  max-height: 100%;
+}
+
+.video-container {
+  flex: 2;
+  max-width: 40%;
+  max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
 </style>
