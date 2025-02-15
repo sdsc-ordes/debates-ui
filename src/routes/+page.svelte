@@ -9,12 +9,6 @@
 			<a href="https://github.com/sdsc-ordes/political-debates-ui">
 				<i class="fab fa-github"></i>
 			</a>
-			<a
-				href="/edit"
-				class="button-primary-dark"
-				style="color: var(--on-primary); text-decoration: none; "
-				>Edit</a
-			>
 		</div>
 		<h1 style="">UNHCR Political Debates</h1>
 		<div>
