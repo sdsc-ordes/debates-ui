@@ -1,13 +1,26 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
+	import { canEdit } from "$lib/stores/auth";
+	let homePath = '/';
+	$: if ($canEdit) {
+        console.log("User can edit!");
+		homePath = '/edit';
+    }
 </script>
 
 <header>
 	<div class="corner">
 		<nav>
+			<label>
+			{#if !$canEdit}
+			    Reader
+			{:else}
+			    Editor
+			{/if}
+			</label>
 			<ul>
-				<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-					<a href="/">Home</a>
+				<li aria-current={$page.url.pathname === homePath ? 'page' : undefined}>
+					<a href="{homePath}">Home</a>
 				</li>
 				<li aria-current={$page.url.pathname === '/search' ? 'page' : undefined}>
 					<a href="/search">Search</a>
@@ -87,6 +100,24 @@
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		text-decoration: none;
+		transition: color 0.2s linear;
+	}
+
+	nav label {
+		position: relative;
+		height: 100%;
+		display: flex;
+		height: 100%;
+		align-items: center;
+		margin: 15px;
+		padding: 20 0.5rem;
+		color: var(--text-color);
+		font-weight: 700;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		text-decoration: none;
+		border-bottom: 3px solid var(--primary-color);
 		transition: color 0.2s linear;
 	}
 

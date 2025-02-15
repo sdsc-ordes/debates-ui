@@ -27,12 +27,6 @@
 			<a href="https://github.com/sdsc-ordes/political-debates-ui">
 				<i class="fab fa-github"></i>
 			</a>
-			<a
-				href="/"
-				class="button-primary-dark"
-				style="color: var(--on-primary); text-decoration: none;"
-				>Home</a
-			>
 		</div>
 		<div style="display: flex; align-items: center; gap: 0rem;">
 			<h1>UNHCR Political Debates</h1>
@@ -43,10 +37,10 @@
 			style="display: flex; flex-direction: column; justify-content: start; align-items: start; gap: 2rem; width: 100%;"
 		>
 			<div>
-				This is the edit page of the prototype. 
+				You are logged in as Editor. 
 				<br /><br />
 				You can now navigate the search and debates pages and make edits
-				to the metadata and content. Click on ony debate and edit the speaker name and role. 
+				to the metadata and content. Click on a debate and edit the speaker name and role. 
 				Similarly, you can correct the debate transcriptions and translations per segment. 
 				<br /><br />
 				Attention! All edits you make to the speakers and
