@@ -11,7 +11,7 @@
     export let doc: SolrDocument;
 
     const navigateToVideoPlayer = () => {
-        goto(`/${encodeURIComponent(doc.s3_prefix)}?start=${encodeURIComponent(doc.start)}`);
+        goto(`/mediaplayer/${encodeURIComponent(doc.s3_prefix)}?start=${encodeURIComponent(doc.start)}`);
     };
 </script>
 
