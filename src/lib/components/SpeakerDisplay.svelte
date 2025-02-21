@@ -147,7 +147,7 @@
   }
 
   .editable-input {
-    height: 40px;
+    max-height: 40px;
     padding: 0 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -166,7 +166,7 @@
     font-style: italic;
   }
   .display-text {
-    height: 40px;
+    max-height: 40px;
     padding: 0 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
